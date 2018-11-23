@@ -3090,16 +3090,18 @@
 	var __vue_script__ = script;
 	/* template */
 	var __vue_render__ = function __vue_render__() {
-	  var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { ref: "slider", staticClass: "slider slider-horizontal", on: { "mousedown": _vm._onMousedown, "mouseenter": _vm._onMouseenter } }, [_vm._ssrNode("<div" + _vm._ssrClass("slider-wrapper", { 'slider-sliding': _vm.isSliding }) + "><div class=\"slider-track-wrapper\"><div class=\"slider-track-background\"" + _vm._ssrStyle(null, _vm._trackBackgroundStyles, null) + "></div> <div class=\"slider-track-fill\"" + _vm._ssrStyle(null, _vm._trackFillStyles, null) + "></div></div> <div class=\"slider-ticks-container\"><div class=\"slider-ticks\"></div></div> <div class=\"slider-thumb-container\"" + _vm._ssrStyle(null, _vm._thumbContainerStyles, null) + "><div class=\"slider-focus-ring\"></div> <div class=\"slider-thumb\"></div> <div class=\"slider-thumb-label\"><span class=\"slider-thumb-label-text\">" + _vm._ssrEscape(_vm._s(_vm.displayValue)) + "</span></div></div></div>")]);
+	  var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { ref: "slider", staticClass: "slider slider-horizontal", on: { "mousedown": _vm._onMousedown, "mouseenter": _vm._onMouseenter } }, [_c('div', { staticClass: "slider-wrapper", class: { 'slider-sliding': _vm.isSliding } }, [_c('div', { staticClass: "slider-track-wrapper" }, [_c('div', { staticClass: "slider-track-background", style: _vm._trackBackgroundStyles }), _vm._v(" "), _c('div', { staticClass: "slider-track-fill", style: _vm._trackFillStyles })]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', { staticClass: "slider-thumb-container", style: _vm._thumbContainerStyles }, [_c('div', { staticClass: "slider-focus-ring" }), _vm._v(" "), _c('div', { staticClass: "slider-thumb" }), _vm._v(" "), _c('div', { staticClass: "slider-thumb-label" }, [_c('span', { staticClass: "slider-thumb-label-text" }, [_vm._v(_vm._s(_vm.displayValue))])])])])]);
 	};
-	var __vue_staticRenderFns__ = [];
+	var __vue_staticRenderFns__ = [function () {
+	  var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "slider-ticks-container" }, [_c('div', { staticClass: "slider-ticks" })]);
+	}];
 
 	/* style */
 	var __vue_inject_styles__ = undefined;
 	/* scoped */
 	var __vue_scope_id__ = undefined;
 	/* module identifier */
-	var __vue_module_identifier__ = "data-v-721d50c2";
+	var __vue_module_identifier__ = undefined;
 	/* functional template */
 	var __vue_is_functional_template__ = false;
 	/* component normalizer */
@@ -3151,8 +3153,7 @@
 	}
 
 	exports.install = install;
-	exports.default = plugin;
-	exports.Slider = Slider;
+	exports.default = Slider;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 

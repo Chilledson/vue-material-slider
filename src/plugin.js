@@ -23,5 +23,4 @@ if (GlobalVue) {
   GlobalVue.use(plugin);
 }
 
-export default plugin;
-export { Slider };
+export default Slider;

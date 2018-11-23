@@ -205,7 +205,8 @@ export default {
       _roundToDecimal: null,
       _step: 1,
       _percent: 0,
-      _isActive: false
+      _isActive: false,
+      _valueOnSlideStart: null
     }
   },
   mounted () {

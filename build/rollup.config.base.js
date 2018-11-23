@@ -7,8 +7,7 @@ import { uglify } from 'rollup-plugin-uglify';
 
 const plugins = [
   vue({
-    css: false,
-    template: { optimizeSSR: true }
+    css: false
   }),
   resolve({
     jsnext: true,

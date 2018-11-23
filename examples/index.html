@@ -4,14 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <script src="https://unpkg.com/vue"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.2.0/webcomponents-loader.js"></script>
+  <title>Vue slider</title>
+
+  <!-- development version, includes helpful console warnings -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
   <link rel="stylesheet" href="../dist/vue-material-slider.min.css">
   <script src="../dist/vue-material-slider.min.js"></script>
 </head>
 <body>
-  <vue-material-slider></vue-material-slider>
-  
+  <div id="app">
+    <vue-material-slider
+      :min="min"
+      :max="max"
+      v-model="val"
+    ></vue-material-slider>
+  </div>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        min: 0,
+        max: 50,
+        val: 20,
+      }
+    })
+  </script>
 </body>
 </html>
