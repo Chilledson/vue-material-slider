@@ -15,8 +15,16 @@
   "scripts": {
     "build": "rollup -c --config build/rollup.config.base.js --environment BUILD:production"
   },
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "Lewis Wright",
+    "email": "lewiswright96@hotmail.co.uk"
+  },
+  "keywords": [
+    "vue",
+    "vuejs",
+    "plugin"
+  ],
+  "license": "MIT",
   "peerDependencies": {
     "vue": "^2.5.2"
   },
