@@ -33,26 +33,15 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
-    "babel-eslint": "^10.0.1",
     "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-rewire-exports": "^1.0.1",
     "babel-preset-env": "^1.6.0",
-    "babel-preset-latest": "^6.24.1",
-    "clean-css": "^4.2.1",
-    "eslint": "^5.9.0",
     "rollup": "^0.67.3",
     "rollup-plugin-babel": "^3.0.7",
-    "rollup-plugin-babel-minify": "^6.2.0",
-    "rollup-plugin-buble": "^0.19.4",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-css-only": "^0.4.0",
     "rollup-plugin-node-resolve": "^3.4.0",
-    "rollup-plugin-replace": "^2.1.0",
     "rollup-plugin-uglify": "^6.0.0",
     "rollup-plugin-vue": "^4.3.2",
-    "rollup-plugin-vue-template-compiler": "^1.0.3",
-    "rollup-plugin-vue2": "^0.8.0",
-    "vue": "^2.5.17",
     "vue-template-compiler": "^2.5.17"
   }
 }
