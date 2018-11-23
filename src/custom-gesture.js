@@ -35,6 +35,7 @@ export class GestureConfig {
    * @returns Newly-created HammerJS instance.
    */
   buildHammer(element) {
+
     if (!hammer) {
       return noopHammerInstance;
     }

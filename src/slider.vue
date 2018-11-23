@@ -1,25 +1,25 @@
 <template>
-  <div class="mat-slider mat-slider-horizontal"
+  <div class="slider slider-horizontal"
     @mousedown="_onMousedown"
     @mouseenter="_onMouseenter"
     ref="slider"
   >
     <div 
-      class="mat-slider-wrapper"
-      v-bind:class="{'mat-slider-sliding': isSliding}"
+      class="slider-wrapper"
+      v-bind:class="{'slider-sliding': isSliding}"
     >
-      <div class="mat-slider-track-wrapper">
-        <div class="mat-slider-track-background" v-bind:style="_trackBackgroundStyles"></div>
-        <div class="mat-slider-track-fill" v-bind:style="_trackFillStyles"></div>
+      <div class="slider-track-wrapper">
+        <div class="slider-track-background" v-bind:style="_trackBackgroundStyles"></div>
+        <div class="slider-track-fill" v-bind:style="_trackFillStyles"></div>
       </div>
-      <div class="mat-slider-ticks-container">
-        <div class="mat-slider-ticks"></div>
+      <div class="slider-ticks-container">
+        <div class="slider-ticks"></div>
       </div>
-      <div class="mat-slider-thumb-container" v-bind:style="_thumbContainerStyles">
-        <div class="mat-slider-focus-ring"></div>
-        <div class="mat-slider-thumb"></div>
-        <div class="mat-slider-thumb-label">
-          <span class="mat-slider-thumb-label-text">{{displayValue}}</span>
+      <div class="slider-thumb-container" v-bind:style="_thumbContainerStyles">
+        <div class="slider-focus-ring"></div>
+        <div class="slider-thumb"></div>
+        <div class="slider-thumb-label">
+          <span class="slider-thumb-label-text">{{displayValue}}</span>
         </div>
       </div>
     </div>
@@ -356,11 +356,8 @@ export default {
 
 </script>
 
-<style scoped>
-h1, h2 {
-  font-family: Lato;
-}
-.mat-slider {
+<style>
+.slider {
   display: inline-block;
   position: relative;
   box-sizing: border-box;
@@ -369,11 +366,11 @@ h1, h2 {
   vertical-align: middle
 }
 
-.mat-slider-wrapper {
+.slider-wrapper {
   position: absolute
 }
 
-.mat-slider {
+.slider {
   display: inline-block;
   position: relative;
   box-sizing: border-box;
@@ -382,33 +379,33 @@ h1, h2 {
   vertical-align: middle;
 }
 
-.mat-slider-track-wrapper {
+.slider-track-wrapper {
   position: absolute;
   top: 0;
   left: 0;
   overflow: hidden
 }
 
-.mat-slider-track-fill {
+.slider-track-fill {
   position: absolute;
   transform-origin: 0 0;
   transition: transform .4s cubic-bezier(.25, .8, .25, 1), background-color .4s cubic-bezier(.25, .8, .25, 1)
 }
 
-.mat-slider-track-background {
+.slider-track-background {
   position: absolute;
   transform-origin: 100% 100%;
   transition: transform .4s cubic-bezier(.25, .8, .25, 1), background-color .4s cubic-bezier(.25, .8, .25, 1)
 }
 
-.mat-slider-ticks-container {
+.slider-ticks-container {
   position: absolute;
   left: 0;
   top: 0;
   overflow: hidden
 }
 
-.mat-slider-ticks {
+.slider-ticks {
   background-repeat: repeat;
   background-clip: content-box;
   box-sizing: border-box;
@@ -416,13 +413,13 @@ h1, h2 {
   transition: opacity .4s cubic-bezier(.25, .8, .25, 1)
 }
 
-.mat-slider-thumb-container {
+.slider-thumb-container {
   position: absolute;
   z-index: 1;
   transition: transform .4s cubic-bezier(.25, .8, .25, 1)
 }
 
-.mat-slider-focus-ring {
+.slider-focus-ring {
   position: absolute;
   width: 30px;
   height: 30px;
@@ -432,27 +429,27 @@ h1, h2 {
   transition: transform .4s cubic-bezier(.25, .8, .25, 1), background-color .4s cubic-bezier(.25, .8, .25, 1), opacity .4s cubic-bezier(.25, .8, .25, 1)
 }
 
-.cdk-keyboard-focused .mat-slider-focus-ring,
-.cdk-program-focused .mat-slider-focus-ring {
+.cdk-keyboard-focused .slider-focus-ring,
+.cdk-program-focused .slider-focus-ring {
   transform: scale(1);
   opacity: 1
 }
 
-.mat-slider:not(.mat-slider-disabled) .mat-slider-thumb,
-.mat-slider:not(.mat-slider-disabled) .mat-slider-thumb-label {
+.slider:not(.slider-disabled) .slider-thumb,
+.slider:not(.slider-disabled) .slider-thumb-label {
   cursor: -webkit-grab;
   cursor: grab
 }
 
-.mat-slider-sliding:not(.mat-slider-disabled) .mat-slider-thumb,
-.mat-slider-sliding:not(.mat-slider-disabled) .mat-slider-thumb-label,
-.mat-slider:not(.mat-slider-disabled) .mat-slider-thumb-label:active,
-.mat-slider:not(.mat-slider-disabled) .mat-slider-thumb:active {
+.slider-sliding:not(.slider-disabled) .slider-thumb,
+.slider-sliding:not(.slider-disabled) .slider-thumb-label,
+.slider:not(.slider-disabled) .slider-thumb-label:active,
+.slider:not(.slider-disabled) .slider-thumb:active {
   cursor: -webkit-grabbing;
   cursor: grabbing
 }
 
-.mat-slider-thumb {
+.slider-thumb {
   position: absolute;
   right: -10px;
   bottom: -10px;
@@ -465,7 +462,7 @@ h1, h2 {
   transition: transform .4s cubic-bezier(.25, .8, .25, 1), background-color .4s cubic-bezier(.25, .8, .25, 1), border-color .4s cubic-bezier(.25, .8, .25, 1)
 }
 
-.mat-slider-thumb-label {
+.slider-thumb-label {
   display: none;
   align-items: center;
   justify-content: center;
@@ -477,24 +474,24 @@ h1, h2 {
 }
 
 /* @media screen and (-ms-high-contrast:active) {
-  .mat-slider-thumb-label {
+  .slider-thumb-label {
       outline: solid 1px
   }
 } */
 
-.mat-slider-thumb-label-text {
+.slider-thumb-label-text {
   z-index: 1;
   opacity: 0;
   transition: opacity .4s cubic-bezier(.25, .8, .25, 1)
 }
 
-.mat-slider-sliding .mat-slider-thumb-container,
-.mat-slider-sliding .mat-slider-track-background,
-.mat-slider-sliding .mat-slider-track-fill {
+.slider-sliding .slider-thumb-container,
+.slider-sliding .slider-track-background,
+.slider-sliding .slider-track-fill {
   transition-duration: 0s
 }
 
-.mat-slider-has-ticks .mat-slider-wrapper::after {
+.slider-has-ticks .slider-wrapper::after {
   content: '';
   position: absolute;
   border-width: 0;
@@ -503,287 +500,287 @@ h1, h2 {
   transition: opacity .4s cubic-bezier(.25, .8, .25, 1)
 }
 
-.mat-slider-has-ticks.cdk-focused:not(.mat-slider-hide-last-tick) .mat-slider-wrapper::after,
-.mat-slider-has-ticks:hover:not(.mat-slider-hide-last-tick) .mat-slider-wrapper::after {
+.slider-has-ticks.cdk-focused:not(.slider-hide-last-tick) .slider-wrapper::after,
+.slider-has-ticks:hover:not(.slider-hide-last-tick) .slider-wrapper::after {
   opacity: 1
 }
 
-.mat-slider-has-ticks.cdk-focused:not(.mat-slider-disabled) .mat-slider-ticks,
-.mat-slider-has-ticks:hover:not(.mat-slider-disabled) .mat-slider-ticks {
+.slider-has-ticks.cdk-focused:not(.slider-disabled) .slider-ticks,
+.slider-has-ticks:hover:not(.slider-disabled) .slider-ticks {
   opacity: 1
 }
 
-.mat-slider-thumb-label-showing .mat-slider-focus-ring {
+.slider-thumb-label-showing .slider-focus-ring {
   transform: scale(0);
   opacity: 0
 }
 
-.mat-slider-thumb-label-showing .mat-slider-thumb-label {
+.slider-thumb-label-showing .slider-thumb-label {
   display: flex
 }
 
-.mat-slider-axis-inverted .mat-slider-track-fill {
+.slider-axis-inverted .slider-track-fill {
   transform-origin: 100% 100%
 }
 
-.mat-slider-axis-inverted .mat-slider-track-background {
+.slider-axis-inverted .slider-track-background {
   transform-origin: 0 0
 }
 
-.mat-slider:not(.mat-slider-disabled).cdk-focused.mat-slider-thumb-label-showing .mat-slider-thumb {
+.slider:not(.slider-disabled).cdk-focused.slider-thumb-label-showing .slider-thumb {
   transform: scale(0)
 }
 
-.mat-slider:not(.mat-slider-disabled).cdk-focused .mat-slider-thumb-label {
+.slider:not(.slider-disabled).cdk-focused .slider-thumb-label {
   border-radius: 50% 50% 0
 }
 
-.mat-slider:not(.mat-slider-disabled).cdk-focused .mat-slider-thumb-label-text {
+.slider:not(.slider-disabled).cdk-focused .slider-thumb-label-text {
   opacity: 1
 }
 
-.mat-slider:not(.mat-slider-disabled).cdk-mouse-focused .mat-slider-thumb,
-.mat-slider:not(.mat-slider-disabled).cdk-program-focused .mat-slider-thumb,
-.mat-slider:not(.mat-slider-disabled).cdk-touch-focused .mat-slider-thumb {
+.slider:not(.slider-disabled).cdk-mouse-focused .slider-thumb,
+.slider:not(.slider-disabled).cdk-program-focused .slider-thumb,
+.slider:not(.slider-disabled).cdk-touch-focused .slider-thumb {
   border-width: 2px;
   transform: scale(1)
 }
 
-.mat-slider-disabled .mat-slider-focus-ring {
+.slider-disabled .slider-focus-ring {
   transform: scale(0);
   opacity: 0
 }
 
-.mat-slider-disabled .mat-slider-thumb {
+.slider-disabled .slider-thumb {
   border-width: 4px;
   transform: scale(.5)
 }
 
-.mat-slider-disabled .mat-slider-thumb-label {
+.slider-disabled .slider-thumb-label {
   display: none
 }
 
-.mat-slider-horizontal {
+.slider-horizontal {
   height: 48px;
   min-width: 128px
 }
 
-.mat-slider-horizontal .mat-slider-wrapper {
+.slider-horizontal .slider-wrapper {
   height: 2px;
   top: 23px;
   left: 8px;
   right: 8px
 }
 
-.mat-slider-horizontal .mat-slider-wrapper::after {
+.slider-horizontal .slider-wrapper::after {
   height: 2px;
   border-left-width: 2px;
   right: 0;
   top: 0
 }
 
-.mat-slider-horizontal .mat-slider-track-wrapper {
+.slider-horizontal .slider-track-wrapper {
   height: 2px;
   width: 100%
 }
 
-.mat-slider-horizontal .mat-slider-track-fill {
+.slider-horizontal .slider-track-fill {
   height: 2px;
   width: 100%;
   transform: scaleX(0)
 }
 
-.mat-slider-horizontal .mat-slider-track-background {
+.slider-horizontal .slider-track-background {
   height: 2px;
   width: 100%;
   transform: scaleX(1)
 }
 
-.mat-slider-horizontal .mat-slider-ticks-container {
+.slider-horizontal .slider-ticks-container {
   height: 2px;
   width: 100%
 }
 
 @media screen and (-ms-high-contrast:active) {
-  .mat-slider-horizontal .mat-slider-ticks-container {
+  .slider-horizontal .slider-ticks-container {
       height: 0;
       outline: solid 2px;
       top: 1px
   }
 }
 
-.mat-slider-horizontal .mat-slider-ticks {
+.slider-horizontal .slider-ticks {
   height: 2px;
   width: 100%
 }
 
-.mat-slider-horizontal .mat-slider-thumb-container {
+.slider-horizontal .slider-thumb-container {
   width: 100%;
   height: 0;
   top: 50%
 }
 
-.mat-slider-horizontal .mat-slider-focus-ring {
+.slider-horizontal .slider-focus-ring {
   top: -15px;
   right: -15px
 }
 
-.mat-slider-horizontal .mat-slider-thumb-label {
+.slider-horizontal .slider-thumb-label {
   right: -14px;
   top: -40px;
   transform: translateY(26px) scale(.01) rotate(45deg)
 }
 
-.mat-slider-horizontal .mat-slider-thumb-label-text {
+.slider-horizontal .slider-thumb-label-text {
   transform: rotate(-45deg)
 }
 
-.mat-slider-horizontal.cdk-focused .mat-slider-thumb-label {
+.slider-horizontal.cdk-focused .slider-thumb-label {
   transform: rotate(45deg)
 }
 
 @media screen and (-ms-high-contrast:active) {
-  .mat-slider-horizontal.cdk-focused .mat-slider-thumb-label,
-  .mat-slider-horizontal.cdk-focused .mat-slider-thumb-label-text {
+  .slider-horizontal.cdk-focused .slider-thumb-label,
+  .slider-horizontal.cdk-focused .slider-thumb-label-text {
       transform: none
   }
 }
 
-.mat-slider-vertical {
+.slider-vertical {
   width: 48px;
   min-height: 128px
 }
 
-.mat-slider-vertical .mat-slider-wrapper {
+.slider-vertical .slider-wrapper {
   width: 2px;
   top: 8px;
   bottom: 8px;
   left: 23px
 }
 
-.mat-slider-vertical .mat-slider-wrapper::after {
+.slider-vertical .slider-wrapper::after {
   width: 2px;
   border-top-width: 2px;
   bottom: 0;
   left: 0
 }
 
-.mat-slider-vertical .mat-slider-track-wrapper {
+.slider-vertical .slider-track-wrapper {
   height: 100%;
   width: 2px
 }
 
-.mat-slider-vertical .mat-slider-track-fill {
+.slider-vertical .slider-track-fill {
   height: 100%;
   width: 2px;
   transform: scaleY(0)
 }
 
-.mat-slider-vertical .mat-slider-track-background {
+.slider-vertical .slider-track-background {
   height: 100%;
   width: 2px;
   transform: scaleY(1)
 }
 
-.mat-slider-vertical .mat-slider-ticks-container {
+.slider-vertical .slider-ticks-container {
   width: 2px;
   height: 100%
 }
 
 @media screen and (-ms-high-contrast:active) {
-  .mat-slider-vertical .mat-slider-ticks-container {
+  .slider-vertical .slider-ticks-container {
       width: 0;
       outline: solid 2px;
       left: 1px
   }
 }
 
-.mat-slider-vertical .mat-slider-focus-ring {
+.slider-vertical .slider-focus-ring {
   bottom: -15px;
   left: -15px
 }
 
-.mat-slider-vertical .mat-slider-ticks {
+.slider-vertical .slider-ticks {
   width: 2px;
   height: 100%
 }
 
-.mat-slider-vertical .mat-slider-thumb-container {
+.slider-vertical .slider-thumb-container {
   height: 100%;
   width: 0;
   left: 50%
 }
 
-.mat-slider-vertical .mat-slider-thumb {
+.slider-vertical .slider-thumb {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden
 }
 
-.mat-slider-vertical .mat-slider-thumb-label {
+.slider-vertical .slider-thumb-label {
   bottom: -14px;
   left: -40px;
   transform: translateX(26px) scale(.01) rotate(-45deg)
 }
 
-.mat-slider-vertical .mat-slider-thumb-label-text {
+.slider-vertical .slider-thumb-label-text {
   transform: rotate(45deg)
 }
 
-.mat-slider-vertical.cdk-focused .mat-slider-thumb-label {
+.slider-vertical.cdk-focused .slider-thumb-label {
   transform: rotate(-45deg)
 }
 
-[dir=rtl] .mat-slider-wrapper::after {
+[dir=rtl] .slider-wrapper::after {
   left: 0;
   right: auto
 }
 
-[dir=rtl] .mat-slider-horizontal .mat-slider-track-fill {
+[dir=rtl] .slider-horizontal .slider-track-fill {
   transform-origin: 100% 100%
 }
 
-[dir=rtl] .mat-slider-horizontal .mat-slider-track-background {
+[dir=rtl] .slider-horizontal .slider-track-background {
   transform-origin: 0 0
 }
 
-[dir=rtl] .mat-slider-horizontal.mat-slider-axis-inverted .mat-slider-track-fill {
+[dir=rtl] .slider-horizontal.slider-axis-inverted .slider-track-fill {
   transform-origin: 0 0
 }
 
-[dir=rtl] .mat-slider-horizontal.mat-slider-axis-inverted .mat-slider-track-background {
+[dir=rtl] .slider-horizontal.slider-axis-inverted .slider-track-background {
   transform-origin: 100% 100%
 }
 
-.mat-slider._mat-animation-noopable .mat-slider-focus-ring,
-.mat-slider._mat-animation-noopable .mat-slider-has-ticks .mat-slider-wrapper::after,
-.mat-slider._mat-animation-noopable .mat-slider-thumb,
-.mat-slider._mat-animation-noopable .mat-slider-thumb-container,
-.mat-slider._mat-animation-noopable .mat-slider-thumb-label,
-.mat-slider._mat-animation-noopable .mat-slider-thumb-label-text,
-.mat-slider._mat-animation-noopable .mat-slider-ticks,
-.mat-slider._mat-animation-noopable .mat-slider-track-background,
-.mat-slider._mat-animation-noopable .mat-slider-track-fill {
+.slider._animation-noopable .slider-focus-ring,
+.slider._animation-noopable .slider-has-ticks .slider-wrapper::after,
+.slider._animation-noopable .slider-thumb,
+.slider._animation-noopable .slider-thumb-container,
+.slider._animation-noopable .slider-thumb-label,
+.slider._animation-noopable .slider-thumb-label-text,
+.slider._animation-noopable .slider-ticks,
+.slider._animation-noopable .slider-track-background,
+.slider._animation-noopable .slider-track-fill {
     transition: none
 }
 
-.mat-slider-track-fill,
-.mat-slider-thumb,
-.mat-slider-thumb-label {
+.slider-track-fill,
+.slider-thumb,
+.slider-thumb-label {
   background-color: #ffd740; }
 
-.mat-slider-thumb-label-text {
+.slider-thumb-label-text {
   color: rgba(0, 0, 0, 0.87); }
 
-.mat-slider-track-background {
+.slider-track-background {
   background-color: rgba(0, 0, 0, 0.25);
 }
 
-.mat-slider-horizontal {
+.slider-horizontal {
   height: 48px;
   min-width: 128px;
 }
 
-.mat-slider {
+.slider {
   min-width: 100%;
 }
 </style>
