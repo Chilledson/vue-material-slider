@@ -3151,7 +3151,8 @@
 	}
 
 	exports.install = install;
-	exports.default = Slider;
+	exports.default = plugin;
+	exports.Slider = Slider;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 
