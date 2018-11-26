@@ -1,7 +1,16 @@
 <template>
-  <div class="slider slider-horizontal"
+  <div class="slider"
+    :class="{
+      'slider-disabled': disabled,
+      'slider-vertical': vertical,
+      'slider-thumb-label-showing': false,
+      'slider-sliding': isSliding,
+      'slider-horizontal': !vertical,
+      'slider-axis-inverted': _invertAxis
+      }"
     @mousedown="_onMousedown"
     @mouseenter="_onMouseenter"
+    @focus="_focusHostElement"
     ref="slider"
   >
     <div 
@@ -45,6 +54,18 @@ export default {
     value: [Number, String],
     min: [Number, String],
     max: [Number, String],
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    invert: {
+      type: Boolean,
+      default: true
+    },
+    vertical: {
+      type: Boolean,
+      default: false
+    },
   },
   watch: {
     value (val) {
@@ -135,9 +156,7 @@ export default {
         let axis = this.vertical ? 'Y' : 'X';
         // For a horizontal slider in RTL languages we push the thumb container off the left edge
         // instead of the right edge to avoid causing a horizontal scrollbar to appear.
-        let invertOffset = false
-        
-            // (this._getDirection() == 'rtl' && !this.vertical) ? !this._invertAxis : this._invertAxis;
+        let invertOffset = this._shouldInvertMouseCoords()
         let offset = (invertOffset ? this.percent : 1 - this.percent) * 100;
         return {
           'transform': `translate${axis}(-${offset}%)`
@@ -148,8 +167,7 @@ export default {
       get() {
         const axis = this.vertical ? 'Y' : 'X';
         const scale = this.vertical ? `1, ${1 - this.percent}, 1` : `${1 - this.percent}, 1, 1`;
-        // const sign = this._shouldInvertMouseCoords() ? '-' : '';
-        const sign = ''
+        const sign = this._shouldInvertMouseCoords() ? '-' : '';
         return {
           // scale3d avoids some rendering issues in Chrome. See #12071.
           transform: `translate${axis}(${sign}${this._thumbGap}px) scale3d(${scale})`
@@ -160,8 +178,8 @@ export default {
       get() {
         const axis = this.vertical ? 'Y' : 'X';
         const scale = this.vertical ? `1, ${this.percent}, 1` : `${this.percent}, 1, 1`;
-        // const sign = this._shouldInvertMouseCoords() ? '-' : '';
-        const sign = ''
+        const sign = this._shouldInvertMouseCoords() ? '' : '-';
+        
         return {
           // scale3d avoids some rendering issues in Chrome. See #12071.
           transform: `translate${axis}(${sign}${this._thumbGap}px) scale3d(${scale})`
@@ -190,13 +208,11 @@ export default {
         // top. However from a y-axis standpoint this is inverted.
         return this.vertical ? !this.invert : this.invert;
       }
-    }
+    },
   },
   data () {
     return {
-      disabled: false,
       mc: null,
-      vertical: false,
       isSliding: false,
       _sliderDimensions: null,
       _min: 0,
@@ -205,7 +221,9 @@ export default {
       _roundToDecimal: null,
       _step: 1,
       _percent: 0,
-      _isActive: false
+      _isActive: false,
+      _dir: 'ltr',
+      _percent: 0
     }
   },
   mounted () {
@@ -307,6 +325,10 @@ export default {
       // The exact value is calculated from the event and used to find the closest snap value.
       let percent = this._clamp((posComponent - offset) / size);
 
+      if (this._shouldInvertMouseCoords()) {
+        percent = 1 - percent;
+      }
+
       // Since the steps may not divide cleanly into the max value, if the user
       // slide to 0 or 100 percent, we jump to the min/max value. This approach
       // is slightly more intuitive than using `Math.ceil` below, because it
@@ -346,7 +368,7 @@ export default {
       this.$emit('change', this.val);
     },
     _getDirection() {
-      return (this.$data._dir && this.$data._dir == 'rtl') ? 'rtl' : 'ltr';
+      return (this.$data._dir == 'rtl') ? 'rtl' : 'ltr';
     },
     _shouldInvertMouseCoords() {
       return (this._getDirection() == 'rtl' && !this.vertical) ? !this._invertAxis : this._invertAxis;
@@ -782,5 +804,15 @@ export default {
 
 .slider {
   min-width: 100%;
+}
+
+.slider-min-value:not(.slider-thumb-label-showing) .slider-thumb {
+    border-color: rgba(0,0,0,.26);
+    background-color: transparent;
+}
+
+.slider-disabled .slider-thumb {
+    border-width: 4px;
+    transform: scale(.5);
 }
 </style>
