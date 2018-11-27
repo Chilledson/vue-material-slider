@@ -6,11 +6,13 @@
       'slider-thumb-label-showing': false,
       'slider-sliding': isSliding,
       'slider-horizontal': !vertical,
-      'slider-axis-inverted': _invertAxis
+      'slider-axis-inverted': _invertAxis,
+      'slider-focused': isActive
       }"
     @mousedown="_onMousedown"
     @mouseenter="_onMouseenter"
     @focus="_focusHostElement"
+    @blur="_onBlur"
     ref="slider"
   >
     <div 
@@ -60,7 +62,7 @@ export default {
     },
     invert: {
       type: Boolean,
-      default: true
+      default: false
     },
     vertical: {
       type: Boolean,
@@ -192,7 +194,7 @@ export default {
           return DISABLED_THUMB_GAP;
         }
         if (this._isMinValue && !this.thumbLabel) {
-          return this._isActive ? MIN_VALUE_ACTIVE_THUMB_GAP : MIN_VALUE_NONACTIVE_THUMB_GAP;
+          return this.isActive ? MIN_VALUE_ACTIVE_THUMB_GAP : MIN_VALUE_NONACTIVE_THUMB_GAP;
         }
         return 0;
       }
@@ -214,6 +216,7 @@ export default {
     return {
       mc: null,
       isSliding: false,
+      isActive: false,
       _sliderDimensions: null,
       _min: 0,
       _max: 100,
@@ -221,7 +224,6 @@ export default {
       _roundToDecimal: null,
       _step: 1,
       _percent: 0,
-      _isActive: false,
       _dir: 'ltr',
       _percent: 0
     }
@@ -352,7 +354,12 @@ export default {
     _clamp(value, min = 0, max = 1) {
       return Math.max(min, Math.min(value, max));
     },
+    _onBlur() {
+      console.log(this.isActive)
+      this.isActive = false;
+    },
     _focusHostElement() {
+      this.isActive = true;
       this.$refs.slider.focus();
     },
     _calculateValue(percentage) {
@@ -809,6 +816,11 @@ export default {
 .slider-min-value:not(.slider-thumb-label-showing) .slider-thumb {
     border-color: rgba(0,0,0,.26);
     background-color: transparent;
+}
+
+.slider-focused .slider-thumb {
+  border-width: 2px;
+  transform: scale(1);
 }
 
 .slider-disabled .slider-thumb {
