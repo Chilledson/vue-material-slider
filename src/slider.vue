@@ -2,6 +2,7 @@
   <div class="slider slider-horizontal"
     @mousedown="_onMousedown"
     @mouseenter="_onMouseenter"
+    @keydown="_onKeydown"
     ref="slider"
   >
     <div 
@@ -148,8 +149,8 @@ export default {
       get() {
         const axis = this.vertical ? 'Y' : 'X';
         const scale = this.vertical ? `1, ${1 - this.percent}, 1` : `${1 - this.percent}, 1, 1`;
-        // const sign = this._shouldInvertMouseCoords() ? '-' : '';
-        const sign = ''
+        const sign = this._shouldInvertMouseCoords() ? '-' : '';
+
         return {
           // scale3d avoids some rendering issues in Chrome. See #12071.
           transform: `translate${axis}(${sign}${this._thumbGap}px) scale3d(${scale})`
@@ -160,8 +161,8 @@ export default {
       get() {
         const axis = this.vertical ? 'Y' : 'X';
         const scale = this.vertical ? `1, ${this.percent}, 1` : `${this.percent}, 1, 1`;
-        // const sign = this._shouldInvertMouseCoords() ? '-' : '';
-        const sign = ''
+        const sign = this._shouldInvertMouseCoords() ? '-' : '';
+
         return {
           // scale3d avoids some rendering issues in Chrome. See #12071.
           transform: `translate${axis}(${sign}${this._thumbGap}px) scale3d(${scale})`
@@ -206,7 +207,8 @@ export default {
       _step: 1,
       _percent: 0,
       _isActive: false,
-      _valueOnSlideStart: null
+      _valueOnSlideStart: null,
+      _dir: 'rtl'
     }
   },
   mounted () {
@@ -219,7 +221,6 @@ export default {
     this.val = this.value
     if (this.min) this.curMin = this.min
     if (this.max) this.curMax = this.max
-
   },
   methods: {
     _onMouseenter() {
@@ -308,6 +309,10 @@ export default {
       // The exact value is calculated from the event and used to find the closest snap value.
       let percent = this._clamp((posComponent - offset) / size);
 
+      if (this._shouldInvertMouseCoords()) {
+        percent = 1 - percent;
+      }
+
       // Since the steps may not divide cleanly into the max value, if the user
       // slide to 0 or 100 percent, we jump to the min/max value. This approach
       // is slightly more intuitive than using `Math.ceil` below, because it
@@ -324,6 +329,66 @@ export default {
         // The value needs to snap to the min and max.
         this.val = this._clamp(closestValue, this.curMin, this.curMax);
       }
+    },
+    _onKeydown(event) {
+      if (this.disabled) { return; }
+
+      console.log(event)
+
+      let oldValue = this.val;
+
+      switch (event.keyCode) {
+        case PAGE_UP:
+          this._increment(10);
+          break;
+        case PAGE_DOWN:
+          this._increment(-10);
+          break;
+        case END:
+          this.value = this.max;
+          break;
+        case HOME:
+          this.value = this.min;
+          break;
+        case LEFT_ARROW:
+          // NOTE: For a sighted user it would make more sense that when they press an arrow key on an
+          // inverted slider the thumb moves in that direction. However for a blind user, nothing
+          // about the slider indicates that it is inverted. They will expect left to be decrement,
+          // regardless of how it appears on the screen. For speakers ofRTL languages, they probably
+          // expect left to mean increment. Therefore we flip the meaning of the side arrow keys for
+          // RTL. For inverted sliders we prefer a good a11y experience to having it "look right" for
+          // sighted users, therefore we do not swap the meaning.
+          this._increment(this._getDirection() == 'rtl' ? 1 : -1);
+          break;
+        case UP_ARROW:
+          this._increment(1);
+          break;
+        case RIGHT_ARROW:
+          // See comment on LEFT_ARROW about the conditions under which we flip the meaning.
+          this._increment(this._getDirection() == 'rtl' ? -1 : 1);
+          break;
+        case DOWN_ARROW:
+          this._increment(-1);
+          break;
+        default:
+          // Return if the key is not one that we explicitly handle to avoid calling preventDefault on
+          // it.
+          return;
+      }
+
+      if (oldValue != this.value) {
+        this._emitInputEvent();
+        this._emitChangeEvent();
+      }
+
+      this._isSliding = true;
+      event.preventDefault();
+    },  
+    _onKeyup() {
+      this._isSliding = false;
+    },
+    _increment(numSteps) {
+      this.val = this._clamp((this.val || 0) + this.step * numSteps, this.curMin, this.curMax);
     },
     _getSliderDimensions() {
       return this.$refs.slider ? this.$refs.slider.getBoundingClientRect() : null;
@@ -347,9 +412,10 @@ export default {
       this.$emit('change', this.val);
     },
     _getDirection() {
-      return (this.$data._dir && this.$data._dir == 'rtl') ? 'rtl' : 'ltr';
+      return (this.$data._dir == 'rtl') ? 'rtl' : 'ltr';
     },
     _shouldInvertMouseCoords() {
+      console.log(this._invertAxis)
       return (this._getDirection() == 'rtl' && !this.vertical) ? !this._invertAxis : this._invertAxis;
     }
   }
