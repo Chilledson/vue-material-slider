@@ -1,39 +1,29 @@
 # vue-material-slider
-This is a port of the [Angular material slider](https://material.angular.io/components/slider/overview), currently only basic features but more are on the way. 
 
-## Contents
--  [Installation](#installation)
--  [Usage](#usage)
--  [ToDo's](#todo)
+## Project setup
+```
+npm install
+```
 
-## Installation
+### Compiles and hot-reloads for development
 ```
-npm install vue-material-slider --save
+npm run serve
 ```
-## Usage
-Import and use in vue
 
-```javascript
-import  Vue  from  'vue'
-import  VueMaterialSlider  from  'vue-material-slider'
-Vue.use(VueMaterialSlider)
+### Compiles and minifies for production
 ```
-Use in your components
-```html
-<vue-material-slider
-:min="10"
-:max="20"
-v-model="value"
-></vue-material-slider>
+npm run build
 ```
-## Todo
 
-|Feature|Done?|
-|--|--|
-|Min/max  | Y |
-|v-model integration| Y |
-|Orientation  | N |
-|Keyboard support| N |
-|Thumb label| N |
-|Custom theming| N |
-|Step| N |
+### Run your tests
+```
+npm run test
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

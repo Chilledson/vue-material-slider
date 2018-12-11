@@ -1,47 +1,53 @@
 {
   "name": "vue-material-slider",
-  "version": "1.0.0",
-  "description": "Material slider for vue js based on Angular Materials slider",
-  "main": "dist/vue-material-slider.umd.js",
-  "module": "dist/vue-material-slider.esm.js",
-  "unpkg": "dist/vue-material-slider.min.js",
-  "browser": {
-    "./sfc": "src/vue-material-slider.vue"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Chilledson/vue-material-slider.git"
-  },
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "build": "rollup -c --config build/rollup.config.base.js --environment BUILD:production"
-  },
-  "author": {
-    "name": "Lewis Wright",
-    "email": "lewiswright96@hotmail.co.uk"
-  },
-  "keywords": [
-    "vue",
-    "vuejs",
-    "plugin"
-  ],
-  "license": "MIT",
-  "peerDependencies": {
-    "vue": "^2.5.2"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "build:prod": "rollup -c --config build/rollup.config.base.js --environment BUILD:production"
   },
   "dependencies": {
-    "hammerjs": "^2.0.8"
+    "hammerjs": "^2.0.8",
+    "vue": "^2.5.17"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-preset-env": "^1.6.0",
-    "rollup": "^0.67.3",
-    "rollup-plugin-babel": "^3.0.7",
-    "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-css-only": "^0.4.0",
-    "rollup-plugin-node-resolve": "^3.4.0",
-    "rollup-plugin-uglify": "^6.0.0",
-    "rollup-plugin-vue": "^4.3.2",
+    "@vue/cli-plugin-babel": "^3.1.1",
+    "@vue/cli-plugin-eslint": "^3.1.5",
+    "@vue/cli-service": "^3.1.4",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-vue": "^4.7.1",
     "vue-template-compiler": "^2.5.17"
-  }
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }
