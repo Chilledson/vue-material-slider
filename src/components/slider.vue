@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { GestureConfig } from "./custom-gesture";
+import { GestureConfig } from "../custom-gesture";
 import {
   DOWN_ARROW,
   END,
@@ -50,7 +50,7 @@ import {
   PAGE_UP,
   RIGHT_ARROW,
   UP_ARROW
-} from "./keycodes";
+} from "../keycodes";
 
 /** The thumb gap size for a disabled slider. */
 const DISABLED_THUMB_GAP = 7;
