@@ -443,8 +443,6 @@ export default {
     _onKeydown(event) {
       if (this.disabled) { return; }
 
-      console.log(event)
-
       let oldValue = this.val;
 
       switch (event.keyCode) {
