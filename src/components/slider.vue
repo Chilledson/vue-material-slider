@@ -29,7 +29,7 @@
 
 <script>
 
-import { GestureConfig } from './custom-gesture'
+import { GestureConfig } from '../custom-gesture'
 
 /** The thumb gap size for a disabled slider. */
 const DISABLED_THUMB_GAP = 7;
@@ -136,9 +136,7 @@ export default {
         let axis = this.vertical ? 'Y' : 'X';
         // For a horizontal slider in RTL languages we push the thumb container off the left edge
         // instead of the right edge to avoid causing a horizontal scrollbar to appear.
-        let invertOffset = false
-        
-            // (this._getDirection() == 'rtl' && !this.vertical) ? !this._invertAxis : this._invertAxis;
+        let invertOffset = (this._getDirection() == 'rtl' && !this.vertical) ? !this._invertAxis : this._invertAxis;
         let offset = (invertOffset ? this.percent : 1 - this.percent) * 100;
         return {
           'transform': `translate${axis}(-${offset}%)`
@@ -412,10 +410,9 @@ export default {
       this.$emit('change', this.val);
     },
     _getDirection() {
-      return (this.$data._dir == 'rtl') ? 'rtl' : 'ltr';
+      return this.$data._dir == 'rtl' ? 'rtl' : 'ltr';
     },
     _shouldInvertMouseCoords() {
-      console.log(this._invertAxis)
       return (this._getDirection() == 'rtl' && !this.vertical) ? !this._invertAxis : this._invertAxis;
     }
   }

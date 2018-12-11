@@ -1,4 +1,4 @@
-import Slider from './slider.vue';
+import Slider from './components/slider.vue';
 
 // Declare install function executed by Vue.use()
 export function install(Vue) {

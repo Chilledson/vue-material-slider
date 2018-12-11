@@ -14,8 +14,8 @@ npm install vue-material-slider --save
 Import and use in vue
 
 ```javascript
-import  Vue  from  'vue'
-import  VueMaterialSlider  from  'vue-material-slider'
+import Vue from 'vue'
+import VueMaterialSlider from 'vue-material-slider'
 Vue.use(VueMaterialSlider)
 ```
 Use in your components
