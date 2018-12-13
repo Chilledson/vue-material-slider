@@ -4,17 +4,17 @@
     :class="{
       'slider-disabled': disabled,
       'slider-vertical': vertical,
-      'slider-thumb-label-showing': false,
       'slider-sliding': isSliding,
       'slider-horizontal': !vertical,
       'slider-axis-inverted': _invertAxis,
       'slider-focused': isActive,
-      'slider-min-value': _isMinValue
-      }"
+      'slider-min-value': _isMinValue,
+      'slider-thumb-label-showing': thumbLabel,
+    }"
     @mousedown="_onMousedown"
     @mouseenter="_onMouseenter"
     @keydown="_onKeydown"
-    @focus="_focusHostElement"
+    @focus="_onFocus"
     @keyup="_onKeyup"
     @blur="_onBlur"
     ref="slider"
@@ -176,7 +176,10 @@ export default {
         let axis = this.vertical ? "Y" : "X";
         // For a horizontal slider in RTL languages we push the thumb container off the left edge
         // instead of the right edge to avoid causing a horizontal scrollbar to appear.
-        let invertOffset = this._shouldInvertMouseCoords();
+        let invertOffset =
+          this._getDirection() == "rtl" && !this.vertical
+            ? !this._invertAxis
+            : this._invertAxis;
         let offset = (invertOffset ? this.percent : 1 - this.percent) * 100;
         return {
           transform: `translate${axis}(-${offset}%)`
@@ -186,7 +189,9 @@ export default {
     _trackBackgroundStyles: {
       get() {
         const axis = this.vertical ? "Y" : "X";
-        const scale = this.vertical ? `1, ${1 - this.percent}, 1` : `${1 - this.percent}, 1, 1`;
+        const scale = this.vertical
+          ? `1, ${1 - this.percent}, 1`
+          : `${1 - this.percent}, 1, 1`;
         const sign = this._shouldInvertMouseCoords() ? "-" : "";
         return {
           // scale3d avoids some rendering issues in Chrome. See #12071.
@@ -199,7 +204,9 @@ export default {
     _trackFillStyles: {
       get() {
         const axis = this.vertical ? "Y" : "X";
-        const scale = this.vertical ? `1, ${this.percent}, 1` : `${this.percent}, 1, 1`;
+        const scale = this.vertical
+          ? `1, ${this.percent}, 1`
+          : `${this.percent}, 1, 1`;
         const sign = this._shouldInvertMouseCoords() ? "" : "-";
 
         return {
@@ -221,6 +228,14 @@ export default {
             : MIN_VALUE_NONACTIVE_THUMB_GAP;
         }
         return 0;
+      }
+    },
+    thumbLabel: {
+      get() {
+        return this.$data._thumbLabel;
+      },
+      set(value) {
+        this.$data._thumbLabel = value;
       }
     },
     percent: {
@@ -256,7 +271,7 @@ export default {
       _isActive: false,
       _valueOnSlideStart: null,
       _dir: "ltr",
-      _percent: 0
+      _thumbLabel: false,
     };
   },
   mounted() {
@@ -279,7 +294,6 @@ export default {
       // We save the dimensions of the slider here so we can use them to update the spacing of the
       // ticks and determine where on the slider click and slide events happen.
       this.$data._sliderDimensions = this._getSliderDimensions();
-      // this.$data._updateTickIntervalPercent();
     },
     _onMousedown(event) {
       // Don't do anything if the slider is disabled or the
@@ -289,9 +303,9 @@ export default {
       }
 
       const oldValue = this.val;
-      this._focusHostElement();
       this.isSliding = false;
 
+      this._focusHostElement();
       this._updateValueFromPosition({ x: event.clientX, y: event.clientY });
 
       // Emit a change and input event if the value changed.
@@ -401,6 +415,9 @@ export default {
     _onKeyup() {
       this._isSliding = false;
     },
+    _onFocus() {
+      this.$data._sliderDimensions = this._getSliderDimensions();
+    },
     _updateValueFromPosition(pos) {
       if (!this.$data._sliderDimensions) {
         return;
@@ -441,7 +458,9 @@ export default {
       }
     },
     _onKeydown(event) {
-      if (this.disabled) { return; }
+      if (this.disabled) {
+        return;
+      }
 
       let oldValue = this.val;
 
@@ -466,14 +485,14 @@ export default {
           // expect left to mean increment. Therefore we flip the meaning of the side arrow keys for
           // RTL. For inverted sliders we prefer a good a11y experience to having it "look right" for
           // sighted users, therefore we do not swap the meaning.
-          this._increment(this._getDirection() == 'rtl' ? 1 : -1);
+          this._increment(this._getDirection() == "rtl" ? 1 : -1);
           break;
         case UP_ARROW:
           this._increment(1);
           break;
         case RIGHT_ARROW:
           // See comment on LEFT_ARROW about the conditions under which we flip the meaning.
-          this._increment(this._getDirection() == 'rtl' ? -1 : 1);
+          this._increment(this._getDirection() == "rtl" ? -1 : 1);
           break;
         case DOWN_ARROW:
           this._increment(-1);
@@ -491,12 +510,16 @@ export default {
 
       this._isSliding = true;
       event.preventDefault();
-    },  
+    },
     _onKeyup() {
       this._isSliding = false;
     },
     _increment(numSteps) {
-      this.val = this._clamp((this.val || 0) + this.step * numSteps, this.curMin, this.curMax);
+      this.val = this._clamp(
+        (this.val || 0) + this.step * numSteps,
+        this.curMin,
+        this.curMax
+      );
     },
     _getSliderDimensions() {
       return this.$refs.slider
@@ -696,13 +719,13 @@ export default {
   transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.slider-has-ticks.cdk-focused:not(.slider-hide-last-tick)
+.slider-has-ticks:focus:not(.slider-hide-last-tick)
   .slider-wrapper::after,
 .slider-has-ticks:hover:not(.slider-hide-last-tick) .slider-wrapper::after {
   opacity: 1;
 }
 
-.slider-has-ticks.cdk-focused:not(.slider-disabled) .slider-ticks,
+.slider-has-ticks:focus:not(.slider-disabled) .slider-ticks,
 .slider-has-ticks:hover:not(.slider-disabled) .slider-ticks {
   opacity: 1;
 }
@@ -724,16 +747,16 @@ export default {
   transform-origin: 0 0;
 }
 
-.slider:not(.slider-disabled).cdk-focused.slider-thumb-label-showing
+.slider:not(.slider-disabled):focus.slider-thumb-label-showing
   .slider-thumb {
   transform: scale(0);
 }
 
-.slider:not(.slider-disabled).cdk-focused .slider-thumb-label {
+.slider:not(.slider-disabled):focus .slider-thumb-label {
   border-radius: 50% 50% 0;
 }
 
-.slider:not(.slider-disabled).cdk-focused .slider-thumb-label-text {
+.slider:not(.slider-disabled):focus .slider-thumb-label-text {
   opacity: 1;
 }
 
@@ -833,13 +856,13 @@ export default {
   transform: rotate(-45deg);
 }
 
-.slider-horizontal.cdk-focused .slider-thumb-label {
+.slider-horizontal:focus .slider-thumb-label {
   transform: rotate(45deg);
 }
 
 @media screen and (-ms-high-contrast: active) {
-  .slider-horizontal.cdk-focused .slider-thumb-label,
-  .slider-horizontal.cdk-focused .slider-thumb-label-text {
+  .slider-horizontal:focus .slider-thumb-label,
+  .slider-horizontal:focus .slider-thumb-label-text {
     transform: none;
   }
 }
@@ -924,7 +947,7 @@ export default {
   transform: rotate(45deg);
 }
 
-.slider-vertical.cdk-focused .slider-thumb-label {
+.slider-vertical:focus .slider-thumb-label {
   transform: rotate(-45deg);
 }
 
@@ -994,4 +1017,5 @@ export default {
   border-width: 4px;
   transform: scale(0.5);
 }
+
 </style>
