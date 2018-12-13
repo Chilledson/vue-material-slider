@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve src/components/slider.vue",
+    "serve": "vue serve src/components/slider.vue",
     "build:prod": "npm run build:wc && npm run build:lib",
     "build:wc": "vue-cli-service build src/components/slider.vue --target wc --name vue-material-slider --dest dist/wc",
     "build:lib": "vue-cli-service build src/components/slider.vue --target lib --name vue-material-slider --dest dist/lib",

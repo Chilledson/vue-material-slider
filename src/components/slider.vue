@@ -82,6 +82,19 @@ export default {
     tabindex: {
       type: Number,
       default: 0
+    },
+    thumbLabel: {
+      type: Boolean,
+      default: false
+    },
+    dir: {
+      type: String,
+      validator: (value) => (value.includes('rtl') || value.includes('ltr')), 
+      default: 'ltr'
+    },
+    displayWith: {
+      type: Function,
+      default: null
     }
   },
   watch: {
@@ -181,6 +194,7 @@ export default {
             ? !this._invertAxis
             : this._invertAxis;
         let offset = (invertOffset ? this.percent : 1 - this.percent) * 100;
+
         return {
           transform: `translate${axis}(-${offset}%)`
         };
@@ -230,14 +244,6 @@ export default {
         return 0;
       }
     },
-    thumbLabel: {
-      get() {
-        return this.$data._thumbLabel;
-      },
-      set(value) {
-        this.$data._thumbLabel = value;
-      }
-    },
     percent: {
       get() {
         return this._clamp(this.$data._percent);
@@ -269,9 +275,7 @@ export default {
       _step: 1,
       _percent: 0,
       _isActive: false,
-      _valueOnSlideStart: null,
-      _dir: "ltr",
-      _thumbLabel: false,
+      _valueOnSlideStart: null
     };
   },
   mounted() {
@@ -549,7 +553,7 @@ export default {
       this.$emit("change", this.val);
     },
     _getDirection() {
-      return this.$data._dir == "rtl" ? "rtl" : "ltr";
+      return this.dir == "rtl" ? "rtl" : "ltr";
     },
     _shouldInvertMouseCoords() {
       return this._getDirection() == "rtl" && !this.vertical
@@ -777,13 +781,12 @@ export default {
   transform: scale(0.5);
 }
 
-.slider-disabled .slider-thumb-label {
-  display: none;
+.slider-disabled .slider-thumb, .slider-disabled .slider-track-background, .slider-disabled .slider-track-fill, .slider-disabled:hover .slider-track-background {
+    background-color: rgba(0,0,0,.26);
 }
 
-.slider-horizontal {
-  height: 48px;
-  min-width: 128px;
+.slider-disabled .slider-thumb-label {
+  display: none;
 }
 
 .slider-horizontal .slider-wrapper {
@@ -1000,7 +1003,7 @@ export default {
 
 .slider-horizontal {
   height: 48px;
-  min-width: 128px;
+  min-width: 256px;
 }
 
 .slider-min-value:not(.slider-thumb-label-showing) .slider-thumb {
@@ -1011,11 +1014,6 @@ export default {
 .slider-focused .slider-thumb {
   border-width: 2px;
   transform: scale(1);
-}
-
-.slider-disabled .slider-thumb {
-  border-width: 4px;
-  transform: scale(0.5);
 }
 
 </style>
