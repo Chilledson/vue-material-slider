@@ -2,11 +2,13 @@
   "name": "vue-material-slider",
   "version": "0.1.0",
   "private": true,
+  "main": "./dist/lib/vue-material-slider.common.js",
   "scripts": {
     "serve": "vue-cli-service serve src/components/slider.vue",
-    "build:prod": "npm run build:wc && npm run build:lib",
+    "build": "npm run build:wc && npm run build:lib && npm run build:app",
     "build:wc": "vue-cli-service build src/components/slider.vue --target wc --name vue-material-slider --dest dist/wc",
     "build:lib": "vue-cli-service build src/components/slider.vue --target lib --name vue-material-slider --dest dist/lib",
+    "build:app": "vue-cli-service build src/components/slider.vue --target app --name vue-material-slider --dest dist/app",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -27,6 +29,13 @@
     "eslint-plugin-vue": "^5.0.0-0",
     "vue-template-compiler": "^2.5.17"
   },
+  "files": [
+    "dist/*",
+    "src/*",
+    "public/*",
+    "*.json",
+    "*.js"
+  ],
   "eslintConfig": {
     "root": true,
     "env": {
