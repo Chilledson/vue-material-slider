@@ -1,19 +1,20 @@
-# vue-material-slider
+# Vue Material Slider
+This is a port of the [Angular material slider](https://material.angular.io/components/slider/overview), currently only basic features but more are on the way. 
 
-## Project setup
-```
-npm install
-```
+## Contents
+- [Vue Material Slider](#vue-material-slider)
+  - [Contents](#contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Properties](#properties)
+  - [Todo](#todo)
 
-### Compiles and hot-reloads for development
+## Installation
 ```
-npm run serve
+npm install vue-material-slider --save
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
+## Usage
+Import and use in vue
 
 ```javascript
 import Vue from 'vue'
@@ -28,7 +29,27 @@ Use in your components
 v-model="value"
 ></vue-material-slider>
 ```
+
+## Properties
+| Prop| Type| default| Description |
+| --- | --- | --- |--- |
+| min | number | 0 | The minimum value of the slider |
+| max | number | 100| The maximum value of the slider |
+| thumbLabel | boolean | false | Whether or not to show the label |
+| invert | boolean | false| Set to true to reverse the slider |
+| vertical | boolean | false | Set to true to make the slider vertical |
+| displayWith| function | null | Function that will be used to format the value before it is displayed in the thumb label. Can be used to format very large number in order for them to fit into the slider thumb. |
+| disabled | boolean | false| Whether the component is disabled.|
+
+
 ## Todo
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+|Feature|Done?|
+|--|--|
+|Min/max  | Y |
+|v-model integration| Y |
+|Orientation  | N |
+|Keyboard support| N |
+|Thumb label| N |
+|Custom theming| N |
+|Step| N |
