@@ -48,8 +48,8 @@ v-model="value"
 |--|--|
 |Min/max  | Y |
 |v-model integration| Y |
-|Orientation  | N |
-|Keyboard support| N |
-|Thumb label| N |
+|Orientation  | Y |
+|Keyboard support| Y |
+|Thumb label| Y |
 |Custom theming| N |
 |Step| N |
