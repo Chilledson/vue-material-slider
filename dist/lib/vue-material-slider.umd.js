@@ -4082,21 +4082,21 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"13d423fc-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/slider.vue?vue&type=template&id=1589654e&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"44345972-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/slider.vue?vue&type=template&id=c29bddb4&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"slider",staticClass:"slider",class:{
     'slider-disabled': _vm.disabled,
     'slider-vertical': _vm.vertical,
-    'slider-thumb-label-showing': false,
     'slider-sliding': _vm.isSliding,
     'slider-horizontal': !_vm.vertical,
     'slider-axis-inverted': _vm._invertAxis,
     'slider-focused': _vm.isActive,
-    'slider-min-value': _vm._isMinValue
-    },attrs:{"tabindex":_vm.tabindex},on:{"mousedown":_vm._onMousedown,"mouseenter":_vm._onMouseenter,"keydown":_vm._onKeydown,"focus":_vm._onFocus,"keyup":_vm._onKeyup,"blur":_vm._onBlur}},[_c('div',{staticClass:"slider-wrapper",class:{'slider-sliding': _vm.isSliding}},[_c('div',{staticClass:"slider-track-wrapper"},[_c('div',{staticClass:"slider-track-background",style:(_vm._trackBackgroundStyles)}),_c('div',{staticClass:"slider-track-fill",style:(_vm._trackFillStyles)})]),_vm._m(0),_c('div',{staticClass:"slider-thumb-container",style:(_vm._thumbContainerStyles)},[_c('div',{staticClass:"slider-focus-ring"}),_c('div',{staticClass:"slider-thumb"}),_c('div',{staticClass:"slider-thumb-label"},[_c('span',{staticClass:"slider-thumb-label-text"},[_vm._v(_vm._s(_vm.displayValue))])])])])])}
+    'slider-min-value': _vm._isMinValue,
+    'slider-thumb-label-showing': _vm.thumbLabel,
+  },attrs:{"tabindex":_vm.tabindex},on:{"mousedown":_vm._onMousedown,"mouseenter":_vm._onMouseenter,"keydown":_vm._onKeydown,"focus":_vm._onFocus,"keyup":_vm._onKeyup,"blur":_vm._onBlur}},[_c('div',{staticClass:"slider-wrapper",class:{'slider-sliding': _vm.isSliding}},[_c('div',{staticClass:"slider-track-wrapper"},[_c('div',{staticClass:"slider-track-background",style:(_vm._trackBackgroundStyles)}),_c('div',{staticClass:"slider-track-fill",style:(_vm._trackFillStyles)})]),_vm._m(0),_c('div',{staticClass:"slider-thumb-container",style:(_vm._thumbContainerStyles)},[_c('div',{staticClass:"slider-focus-ring"}),_c('div',{staticClass:"slider-thumb"}),_c('div',{staticClass:"slider-thumb-label"},[_c('span',{staticClass:"slider-thumb-label-text"},[_vm._v(_vm._s(_vm.displayValue))])])])])])}
 var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"slider-ticks-container"},[_c('div',{staticClass:"slider-ticks"})])}]
 
 
-// CONCATENATED MODULE: ./src/components/slider.vue?vue&type=template&id=1589654e&
+// CONCATENATED MODULE: ./src/components/slider.vue?vue&type=template&id=c29bddb4&
 
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/defineProperty.js
 function _defineProperty(obj, key, value) {
@@ -4501,8 +4501,7 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
         var axis = this.vertical ? "Y" : "X"; // For a horizontal slider in RTL languages we push the thumb container off the left edge
         // instead of the right edge to avoid causing a horizontal scrollbar to appear.
 
-        var invertOffset = this._shouldInvertMouseCoords();
-
+        var invertOffset = this._getDirection() == "rtl" && !this.vertical ? !this._invertAxis : this._invertAxis;
         var offset = (invertOffset ? this.percent : 1 - this.percent) * 100;
         return {
           transform: "translate".concat(axis, "(-").concat(offset, "%)")
@@ -4544,6 +4543,14 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
         return 0;
       }
     },
+    thumbLabel: {
+      get: function get() {
+        return this.$data._thumbLabel;
+      },
+      set: function set(value) {
+        this.$data._thumbLabel = value;
+      }
+    },
     percent: {
       get: function get() {
         return this._clamp(this.$data._percent);
@@ -4563,7 +4570,7 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
     }
   },
   data: function data() {
-    return _defineProperty({
+    return {
       mc: null,
       isSliding: false,
       isActive: false,
@@ -4576,8 +4583,9 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
       _percent: 0,
       _isActive: false,
       _valueOnSlideStart: null,
-      _dir: "ltr"
-    }, "_percent", 0);
+      _dir: "ltr",
+      _thumbLabel: false
+    };
   },
   mounted: function mounted() {
     this.mc = new custom_gesture_GestureConfig().buildHammer(this.$refs.slider);
@@ -4597,7 +4605,7 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
       // ticks and determine where on the slider click and slide events happen.
 
 
-      this.$data._sliderDimensions = this._getSliderDimensions(); // this.$data._updateTickIntervalPercent();
+      this.$data._sliderDimensions = this._getSliderDimensions();
     },
     _onMousedown: function _onMousedown(event) {
       // Don't do anything if the slider is disabled or the
@@ -4751,8 +4759,6 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
       this._isSliding = false;
     },
     _onFocus: function _onFocus() {
-      this._focusHostElement();
-
       this.$data._sliderDimensions = this._getSliderDimensions();
     },
     _updateValueFromPosition: function _updateValueFromPosition(pos) {
@@ -4822,7 +4828,7 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
         // expect left to mean increment. Therefore we flip the meaning of the side arrow keys for
         // RTL. For inverted sliders we prefer a good a11y experience to having it "look right" for
         // sighted users, therefore we do not swap the meaning.
-        this._increment(this._getDirection() == 'rtl' ? 1 : -1);
+        this._increment(this._getDirection() == "rtl" ? 1 : -1);
 
         break;
 
@@ -4833,7 +4839,7 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
 
       case RIGHT_ARROW:
         // See comment on LEFT_ARROW about the conditions under which we flip the meaning.
-        this._increment(this._getDirection() == 'rtl' ? -1 : 1);
+        this._increment(this._getDirection() == "rtl" ? -1 : 1);
 
         break;
 
