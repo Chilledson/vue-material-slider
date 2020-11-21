@@ -89,8 +89,8 @@ export default {
     },
     dir: {
       type: String,
-      validator: (value) => (value.includes('rtl') || value.includes('ltr')), 
-      default: 'ltr'
+      validator: value => value.includes("rtl") || value.includes("ltr"),
+      default: "ltr"
     },
     displayWith: {
       type: Function,
@@ -102,10 +102,14 @@ export default {
       this.val = Number(val);
     },
     min(val) {
-      if (val) this.curMin = Number(val);
+      if (val) {
+        this.curMin = Number(val);
+      }
     },
     max(val) {
-      if (val) this.curMax = Number(val);
+      if (val) {
+        this.curMax = Number(val);
+      }
     }
   },
   computed: {
@@ -203,31 +207,26 @@ export default {
     _trackBackgroundStyles: {
       get() {
         const axis = this.vertical ? "Y" : "X";
-        const scale = this.vertical
-          ? `1, ${1 - this.percent}, 1`
-          : `${1 - this.percent}, 1, 1`;
+        
+        const scale = this.vertical ? `1, ${1 - this.percent}, 1` : `${1 - this.percent}, 1, 1`;
         const sign = this._shouldInvertMouseCoords() ? "-" : "";
+
         return {
           // scale3d avoids some rendering issues in Chrome. See #12071.
-          transform: `translate${axis}(${sign}${
-            this._thumbGap
-          }px) scale3d(${scale})`
+          transform: `translate${axis}(${sign}${this._thumbGap}px) scale3d(${scale})`
         };
       }
     },
     _trackFillStyles: {
       get() {
         const axis = this.vertical ? "Y" : "X";
-        const scale = this.vertical
-          ? `1, ${this.percent}, 1`
-          : `${this.percent}, 1, 1`;
+
+        const scale = this.vertical ? `1, ${this.percent}, 1` : `${this.percent}, 1, 1`;
         const sign = this._shouldInvertMouseCoords() ? "" : "-";
 
         return {
           // scale3d avoids some rendering issues in Chrome. See #12071.
-          transform: `translate${axis}(${sign}${
-            this._thumbGap
-          }px) scale3d(${scale})`
+          transform: `translate${axis}(${sign}${this._thumbGap}px) scale3d(${scale})`
         };
       }
     },
@@ -275,7 +274,8 @@ export default {
       _step: 1,
       _percent: 0,
       _isActive: false,
-      _valueOnSlideStart: null
+      _valueOnSlideStart: null,
+      _thumbLabel: false
     };
   },
   mounted() {
@@ -723,8 +723,7 @@ export default {
   transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.slider-has-ticks:focus:not(.slider-hide-last-tick)
-  .slider-wrapper::after,
+.slider-has-ticks:focus:not(.slider-hide-last-tick) .slider-wrapper::after,
 .slider-has-ticks:hover:not(.slider-hide-last-tick) .slider-wrapper::after {
   opacity: 1;
 }
@@ -751,8 +750,7 @@ export default {
   transform-origin: 0 0;
 }
 
-.slider:not(.slider-disabled):focus.slider-thumb-label-showing
-  .slider-thumb {
+.slider:not(.slider-disabled):focus.slider-thumb-label-showing .slider-thumb {
   transform: scale(0);
 }
 
@@ -781,8 +779,11 @@ export default {
   transform: scale(0.5);
 }
 
-.slider-disabled .slider-thumb, .slider-disabled .slider-track-background, .slider-disabled .slider-track-fill, .slider-disabled:hover .slider-track-background {
-    background-color: rgba(0,0,0,.26);
+.slider-disabled .slider-thumb,
+.slider-disabled .slider-track-background,
+.slider-disabled .slider-track-fill,
+.slider-disabled:hover .slider-track-background {
+  background-color: rgba(0, 0, 0, 0.26);
 }
 
 .slider-disabled .slider-thumb-label {
@@ -1015,5 +1016,4 @@ export default {
   border-width: 2px;
   transform: scale(1);
 }
-
 </style>
