@@ -97,7 +97,7 @@ export default {
     },
     thumbLabel: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     dir: {
       type: String,
@@ -155,9 +155,7 @@ export default {
         return this.displayWith(this.val);
       }
 
-      // Note that this could be improved further by rounding something like 0.999 to 1 or
-      // 0.899 to 0.9, however it is very performance sensitive, because it gets called on
-      // every change detection cycle.
+      // When incrementing using a decimal value make sure its rounded 
       if (this.roundToDecimal && this.val && this.val % 1 !== 0) {
         return this.val.toFixed(this.roundToDecimal);
       }
