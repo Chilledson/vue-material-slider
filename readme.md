@@ -1,5 +1,5 @@
 # Vue Material Slider
-This is a port of the [Angular material slider](https://material.angular.io/components/slider/overview), currently only basic features but more are on the way. 
+A material design slider build with vue.
 
 ## Contents
 - [Vue Material Slider](#vue-material-slider)
@@ -7,7 +7,6 @@ This is a port of the [Angular material slider](https://material.angular.io/comp
   - [Installation](#installation)
   - [Usage](#usage)
   - [Properties](#properties)
-  - [Todo](#todo)
 
 ## Installation
 ```
@@ -40,16 +39,5 @@ v-model="value"
 | vertical | boolean | false | Set to true to make the slider vertical |
 | displayWith| function | null | Function that will be used to format the value before it is displayed in the thumb label. Can be used to format very large number in order for them to fit into the slider thumb. |
 | disabled | boolean | false| Whether the component is disabled.|
+| stepSize | number | 1 | The size of each step |
 
-
-## Todo
-
-|Feature|Done?|
-|--|--|
-|Min/max  | Y |
-|v-model integration| Y |
-|Orientation  | Y |
-|Keyboard support| Y |
-|Thumb label| Y |
-|Custom theming| N |
-|Step| N |
