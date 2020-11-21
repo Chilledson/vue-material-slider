@@ -108,6 +108,10 @@ export default {
       type: Function,
       default: null,
     },
+    stepSize: {
+      type: [String, Number],
+      default: 1
+    }
   },
   watch: {
     value(val) {
@@ -267,7 +271,7 @@ export default {
       isActive: false,
       sliderDimensions: null,
       roundToDecimal: null,
-      localStep: 1,
+      localStep: null,
       localPercent: 0,
       localValue: this.value,
       valueOnSlideStart: null,
@@ -281,6 +285,7 @@ export default {
 
     // Set initial values
     this.val = this.localValue;
+    this.step = this.stepSize;
     if (this.min) this.curMin = this.min;
     if (this.max) this.curMax = this.max;
   },
