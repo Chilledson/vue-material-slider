@@ -6,33 +6,36 @@
       'slider-vertical': vertical,
       'slider-sliding': isSliding,
       'slider-horizontal': !vertical,
-      'slider-axis-inverted': _invertAxis,
+      'slider-axis-inverted': invertAxis,
       'slider-focused': isActive,
-      'slider-min-value': _isMinValue,
+      'slider-min-value': isMinValue,
       'slider-thumb-label-showing': thumbLabel,
     }"
-    @mousedown="_onMousedown"
-    @mouseenter="_onMouseenter"
-    @keydown="_onKeydown"
-    @focus="_onFocus"
-    @keyup="_onKeyup"
-    @blur="_onBlur"
+    @mousedown="onMousedown"
+    @mouseenter="onMouseenter"
+    @keydown="onKeydown"
+    @focus="onFocus"
+    @keyup="onKeyup"
+    @blur="onBlur"
     ref="slider"
     :tabindex="tabindex"
   >
-    <div class="slider-wrapper" v-bind:class="{'slider-sliding': isSliding}">
+    <div class="slider-wrapper" v-bind:class="{ 'slider-sliding': isSliding }">
       <div class="slider-track-wrapper">
-        <div class="slider-track-background" v-bind:style="_trackBackgroundStyles"></div>
-        <div class="slider-track-fill" v-bind:style="_trackFillStyles"></div>
+        <div
+          class="slider-track-background"
+          v-bind:style="trackBackgroundStyles"
+        ></div>
+        <div class="slider-track-fill" v-bind:style="trackFillStyles"></div>
       </div>
       <div class="slider-ticks-container">
         <div class="slider-ticks"></div>
       </div>
-      <div class="slider-thumb-container" v-bind:style="_thumbContainerStyles">
+      <div class="slider-thumb-container" v-bind:style="thumbContainerStyles">
         <div class="slider-focus-ring"></div>
         <div class="slider-thumb"></div>
         <div class="slider-thumb-label">
-          <span class="slider-thumb-label-text">{{displayValue}}</span>
+          <span class="slider-thumb-label-text">{{ displayValue }}</span>
         </div>
       </div>
     </div>
@@ -49,7 +52,7 @@ import {
   PAGE_DOWN,
   PAGE_UP,
   RIGHT_ARROW,
-  UP_ARROW
+  UP_ARROW,
 } from "../keycodes";
 
 /** The thumb gap size for a disabled slider. */
@@ -64,38 +67,47 @@ const MIN_VALUE_ACTIVE_THUMB_GAP = 10;
 export default {
   name: "vue-material-slider",
   props: {
-    value: [Number, String],
-    min: [Number, String],
-    max: [Number, String],
+    value: {
+      type: [Number, String],
+      default: 0,
+    },
+    min: {
+      type: [Number, String],
+      default: 0,
+    },
+    max: {
+      type: [Number, String],
+      default: 100,
+    },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     invert: {
       type: Boolean,
-      default: false
+      default: false,
     },
     vertical: {
       type: Boolean,
-      default: false
+      default: false,
     },
     tabindex: {
       type: Number,
-      default: 0
+      default: 0,
     },
     thumbLabel: {
       type: Boolean,
-      default: false
+      default: false,
     },
     dir: {
       type: String,
-      validator: value => value.includes("rtl") || value.includes("ltr"),
-      default: "ltr"
+      validator: (value) => value.includes("rtl") || value.includes("ltr"),
+      default: "ltr",
     },
     displayWith: {
       type: Function,
-      default: null
-    }
+      default: null,
+    },
   },
   watch: {
     value(val) {
@@ -110,29 +122,29 @@ export default {
       if (val) {
         this.curMax = Number(val);
       }
-    }
+    },
   },
   computed: {
     val: {
       get() {
-        if (this.$data._value === null) {
-          this.$data._value = this.$data._min;
+        if (this.localValue === null) {
+          return this.min;
         }
-        return this.$data._value;
+        return this.localValue;
       },
       set(v) {
-        if (v !== this.$data._value) {
+        if (v !== this.localValue) {
           let value = v;
           // While incrementing by a decimal we can end up with values like 33.300000000000004.
           // Truncate it to ensure that it matches the label and to make it easier to work with.
-          if (this.$data._roundToDecimal) {
-            value = parseFloat(value.toFixed(this.$data._roundToDecimal));
+          if (this.roundToDecimal) {
+            value = parseFloat(value.toFixed(this.roundToDecimal));
           }
 
-          this.$data._value = value;
-          this.$data._percent = this._calculatePercentage(this.$data._value);
+          this.localValue = value;
+          this.localPercent = this.calculatePercentage(this.localValue);
         }
-      }
+      },
     },
     displayValue: {
       get() {
@@ -143,163 +155,166 @@ export default {
         // Note that this could be improved further by rounding something like 0.999 to 1 or
         // 0.899 to 0.9, however it is very performance sensitive, because it gets called on
         // every change detection cycle.
-        if (this._roundToDecimal && this.val && this.val % 1 !== 0) {
-          return this.val.toFixed(this._roundToDecimal);
+        if (this.roundToDecimal && this.val && this.val % 1 !== 0) {
+          return this.val.toFixed(this.roundToDecimal);
         }
 
         return this.val;
-      }
+      },
     },
     curMin: {
       get() {
-        return this.$data._min;
+        return this.min;
       },
       set(v) {
-        this.$data._min = v;
+        this.min = v;
 
-        if (this.$data._value === null) {
-          this.val = this.$data._min;
+        if (this.localValue === null) {
+          this.val = this.min;
         }
 
-        this.$data._percent = this._calculatePercentage(this.$data._value);
-      }
+        this.localPercent = this.calculatePercentage(this.localValue);
+      },
     },
     curMax: {
       get() {
-        return this.$data._max;
+        return this.max;
       },
-      set(v = this.$data._max) {
-        this.$data._max = v;
-        this.$data._percent = this._calculatePercentage(this.$data._value);
-      }
+      set(v = this.max) {
+        this.max = v;
+        this.localPercent = this.calculatePercentage(this.localValue);
+      },
     },
     step: {
       get() {
-        return this.$data._step;
+        return this.localStep;
       },
       set(v) {
-        this.$data._step = v;
+        this.localStep = v;
 
-        if (this._step % 1 !== 0) {
-          this.$data._roundToDecimal = this.$data._step
+        if (this.localStep % 1 !== 0) {
+          this.roundToDecimal = this.localStep
             .toString()
             .split(".")
             .pop().length;
         }
-      }
+      },
     },
-    _thumbContainerStyles: {
+    thumbContainerStyles: {
       get() {
         let axis = this.vertical ? "Y" : "X";
         // For a horizontal slider in RTL languages we push the thumb container off the left edge
         // instead of the right edge to avoid causing a horizontal scrollbar to appear.
         let invertOffset =
-          this._getDirection() == "rtl" && !this.vertical
-            ? !this._invertAxis
-            : this._invertAxis;
+          this.getDirection() == "rtl" && !this.vertical
+            ? !this.invertAxis
+            : this.invertAxis;
         let offset = (invertOffset ? this.percent : 1 - this.percent) * 100;
 
         return {
-          transform: `translate${axis}(-${offset}%)`
+          transform: `translate${axis}(-${offset}%)`,
         };
-      }
+      },
     },
-    _trackBackgroundStyles: {
-      get() {
-        const axis = this.vertical ? "Y" : "X";
-        
-        const scale = this.vertical ? `1, ${1 - this.percent}, 1` : `${1 - this.percent}, 1, 1`;
-        const sign = this._shouldInvertMouseCoords() ? "-" : "";
-
-        return {
-          // scale3d avoids some rendering issues in Chrome. See #12071.
-          transform: `translate${axis}(${sign}${this._thumbGap}px) scale3d(${scale})`
-        };
-      }
-    },
-    _trackFillStyles: {
+    trackBackgroundStyles: {
       get() {
         const axis = this.vertical ? "Y" : "X";
 
-        const scale = this.vertical ? `1, ${this.percent}, 1` : `${this.percent}, 1, 1`;
-        const sign = this._shouldInvertMouseCoords() ? "" : "-";
+        const scale = this.vertical
+          ? `1, ${1 - this.percent}, 1`
+          : `${1 - this.percent}, 1, 1`;
+        const sign = this.shouldInvertMouseCoords() ? "-" : "";
 
         return {
           // scale3d avoids some rendering issues in Chrome. See #12071.
-          transform: `translate${axis}(${sign}${this._thumbGap}px) scale3d(${scale})`
+          transform: `translate${axis}(${sign}${this.thumbGap}px) scale3d(${scale})`,
         };
-      }
+      },
     },
-    _thumbGap: {
+    trackFillStyles: {
+      get() {
+        const axis = this.vertical ? "Y" : "X";
+
+        const scale = this.vertical
+          ? `1, ${this.percent}, 1`
+          : `${this.percent}, 1, 1`;
+        const sign = this.shouldInvertMouseCoords() ? "" : "-";
+
+        return {
+          // scale3d avoids some rendering issues in Chrome. See #12071.
+          transform: `translate${axis}(${sign}${this.thumbGap}px) scale3d(${scale})`,
+        };
+      },
+    },
+    thumbGap: {
       get() {
         if (this.disabled) {
           return DISABLED_THUMB_GAP;
         }
-        if (this._isMinValue && !this.thumbLabel) {
+        if (this.isMinValue && !this.thumbLabel) {
           return this.isActive
             ? MIN_VALUE_ACTIVE_THUMB_GAP
             : MIN_VALUE_NONACTIVE_THUMB_GAP;
         }
         return 0;
-      }
+      },
     },
     percent: {
       get() {
-        return this._clamp(this.$data._percent);
-      }
+        return this.clamp(this.localPercent);
+      },
     },
-    _invertAxis: {
+    invertAxis: {
       get() {
         // Standard non-inverted mode for a vertical slider should be dragging the thumb from bottom to
         // top. However from a y-axis standpoint this is inverted.
         return this.vertical ? !this.invert : this.invert;
-      }
+      },
     },
-    _isMinValue: {
+    isMinValue: {
       get() {
         return this.percent === 0;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       mc: null,
       isSliding: false,
       isActive: false,
-      _sliderDimensions: null,
-      _min: 0,
-      _max: 100,
-      _value: null,
-      _roundToDecimal: null,
-      _step: 1,
-      _percent: 0,
-      _isActive: false,
-      _valueOnSlideStart: null,
-      _thumbLabel: false
+      sliderDimensions: null,
+      // min: 0,
+      // max: 100,
+      roundToDecimal: null,
+      localStep: 1,
+      localPercent: 0,
+      localValue: this.value,
+      valueOnSlideStart: null,
+      // thumbLabel: false
     };
   },
   mounted() {
     this.mc = new GestureConfig().buildHammer(this.$refs.slider);
-    this.mc.on("slide", this._onSlide);
-    this.mc.on("slideend", this._onSlideEnd);
-    this.mc.on("slidestart", this._onSlideStart);
+    this.mc.on("slide", this.onSlide);
+    this.mc.on("slideend", this.onSlideEnd);
+    this.mc.on("slidestart", this.onSlideStart);
 
     // Set initial values
-    this.val = this.value;
+    this.val = this.localValue;
     if (this.min) this.curMin = this.min;
     if (this.max) this.curMax = this.max;
   },
   methods: {
-    _onMouseenter() {
+    onMouseenter() {
       if (this.disabled) {
         return;
       }
 
       // We save the dimensions of the slider here so we can use them to update the spacing of the
       // ticks and determine where on the slider click and slide events happen.
-      this.$data._sliderDimensions = this._getSliderDimensions();
+      this.sliderDimensions = this.getSliderDimensions();
     },
-    _onMousedown(event) {
+    onMousedown(event) {
       // Don't do anything if the slider is disabled or the
       // user is using anything other than the main mouse button.
       if (this.disabled || event.button !== 0) {
@@ -309,136 +324,82 @@ export default {
       const oldValue = this.val;
       this.isSliding = false;
 
-      this._focusHostElement();
-      this._updateValueFromPosition({ x: event.clientX, y: event.clientY });
+      this.focusHostElement();
+      this.updateValueFromPosition({ x: event.clientX, y: event.clientY });
 
       // Emit a change and input event if the value changed.
       if (oldValue != this.val) {
-        this._emitInputEvent();
-        this._emitChangeEvent();
+        this.emitInputEvent();
+        this.emitChangeEvent();
       }
     },
-    _onSlide(event) {
+    onSlide(event) {
       if (this.disabled) {
         return;
       }
 
       if (!this.isSliding) {
-        this._onSlideStart(null);
+        this.onSlideStart(event);
       }
 
       event.preventDefault();
 
       let oldValue = this.val;
-      this._updateValueFromPosition({ x: event.center.x, y: event.center.y });
+      this.updateValueFromPosition({ x: event.center.x, y: event.center.y });
 
       if (oldValue != this.val) {
-        this._emitInputEvent();
-        this._emitChangeEvent();
+        this.emitInputEvent();
+        this.emitChangeEvent();
       }
     },
-    _onSlideStart(event) {
+    onSlideStart(event) {
       if (this.disabled || this.isSliding) {
         return;
       }
 
       // Simulate mouseenter in case this is a mobile device.
-      this._onMouseenter();
+      this.onMouseenter();
 
       this.isSliding = true;
-      this._focusHostElement();
-      this.$data._valueOnSlideStart = this.val;
+      this.focusHostElement();
+      this.valueOnSlideStart = this.val;
 
       if (event) {
-        this._updateValueFromPosition({ x: event.center.x, y: event.center.y });
+        this.updateValueFromPosition({ x: event.center.x, y: event.center.y });
         event.preventDefault();
       }
     },
-    _onSlideEnd() {
+    onSlideEnd() {
       this.isSliding = false;
 
-      if (this.$data._valueOnSlideStart != this.val && !this.disabled) {
-        this._emitChangeEvent();
+      if (this.valueOnSlideStart != this.val && !this.disabled) {
+        this.emitChangeEvent();
       }
-      this.$data._valueOnSlideStart = null;
+      this.valueOnSlideStart = null;
     },
-    _onKeydown(event) {
-      if (this.disabled) {
-        return;
-      }
-
-      let oldValue = this.value;
-
-      switch (event.keyCode) {
-        case PAGE_UP:
-          this._increment(10);
-          break;
-        case PAGE_DOWN:
-          this._increment(-10);
-          break;
-        case END:
-          this.value = this.max;
-          break;
-        case HOME:
-          this.value = this.min;
-          break;
-        case LEFT_ARROW:
-          // NOTE: For a sighted user it would make more sense that when they press an arrow key on an
-          // inverted slider the thumb moves in that direction. However for a blind user, nothing
-          // about the slider indicates that it is inverted. They will expect left to be decrement,
-          // regardless of how it appears on the screen. For speakers ofRTL languages, they probably
-          // expect left to mean increment. Therefore we flip the meaning of the side arrow keys for
-          // RTL. For inverted sliders we prefer a good a11y experience to having it "look right" for
-          // sighted users, therefore we do not swap the meaning.
-          this._increment(this._getDirection() == "rtl" ? 1 : -1);
-          break;
-        case UP_ARROW:
-          this._increment(1);
-          break;
-        case RIGHT_ARROW:
-          // See comment on LEFT_ARROW about the conditions under which we flip the meaning.
-          this._increment(this._getDirection() == "rtl" ? -1 : 1);
-          break;
-        case DOWN_ARROW:
-          this._increment(-1);
-          break;
-        default:
-          // Return if the key is not one that we explicitly handle to avoid calling preventDefault on
-          // it.
-          return;
-      }
-
-      if (oldValue != this.value) {
-        this._emitInputEvent();
-        this._emitChangeEvent();
-      }
-
-      this._isSliding = true;
-      event.preventDefault();
+    onKeyup() {
+      this.isSliding = false;
     },
-    _onKeyup() {
-      this._isSliding = false;
+    onFocus() {
+      this.sliderDimensions = this.getSliderDimensions();
     },
-    _onFocus() {
-      this.$data._sliderDimensions = this._getSliderDimensions();
-    },
-    _updateValueFromPosition(pos) {
-      if (!this.$data._sliderDimensions) {
+    updateValueFromPosition(pos) {
+      if (!this.sliderDimensions) {
         return;
       }
 
       let offset = this.vertical
-        ? this.$data._sliderDimensions.top
-        : this.$data._sliderDimensions.left;
+        ? this.sliderDimensions.top
+        : this.sliderDimensions.left;
       let size = this.vertical
-        ? this.$data._sliderDimensions.height
-        : this.$data._sliderDimensions.width;
+        ? this.sliderDimensions.height
+        : this.sliderDimensions.width;
       let posComponent = this.vertical ? pos.y : pos.x;
 
       // The exact value is calculated from the event and used to find the closest snap value.
-      let percent = this._clamp((posComponent - offset) / size);
+      let percent = this.clamp((posComponent - offset) / size);
 
-      if (this._shouldInvertMouseCoords()) {
+      if (this.shouldInvertMouseCoords()) {
         percent = 1 - percent;
       }
 
@@ -451,17 +412,17 @@ export default {
       } else if (percent === 1) {
         this.val = this.curMax;
       } else {
-        const exactValue = this._calculateValue(percent);
+        const exactValue = this.calculateValue(percent);
         // This calculation finds the closest step by finding the closest
         // whole number divisible by the step relative to the min.
         const closestValue =
           Math.round((exactValue - this.curMin) / this.step) * this.step +
           this.curMin;
         // The value needs to snap to the min and max.
-        this.val = this._clamp(closestValue, this.curMin, this.curMax);
+        this.val = this.clamp(closestValue, this.curMin, this.curMax);
       }
     },
-    _onKeydown(event) {
+    onKeydown(event) {
       if (this.disabled) {
         return;
       }
@@ -470,16 +431,16 @@ export default {
 
       switch (event.keyCode) {
         case PAGE_UP:
-          this._increment(10);
+          this.increment(10);
           break;
         case PAGE_DOWN:
-          this._increment(-10);
+          this.increment(-10);
           break;
         case END:
-          this.value = this.max;
+          this.localValue = this.max;
           break;
         case HOME:
-          this.value = this.min;
+          this.localValue = this.min;
           break;
         case LEFT_ARROW:
           // NOTE: For a sighted user it would make more sense that when they press an arrow key on an
@@ -489,17 +450,17 @@ export default {
           // expect left to mean increment. Therefore we flip the meaning of the side arrow keys for
           // RTL. For inverted sliders we prefer a good a11y experience to having it "look right" for
           // sighted users, therefore we do not swap the meaning.
-          this._increment(this._getDirection() == "rtl" ? 1 : -1);
+          this.increment(this.getDirection() == "rtl" ? 1 : -1);
           break;
         case UP_ARROW:
-          this._increment(1);
+          this.increment(1);
           break;
         case RIGHT_ARROW:
           // See comment on LEFT_ARROW about the conditions under which we flip the meaning.
-          this._increment(this._getDirection() == "rtl" ? -1 : 1);
+          this.increment(this.getDirection() == "rtl" ? -1 : 1);
           break;
         case DOWN_ARROW:
-          this._increment(-1);
+          this.increment(-1);
           break;
         default:
           // Return if the key is not one that we explicitly handle to avoid calling preventDefault on
@@ -507,67 +468,57 @@ export default {
           return;
       }
 
-      if (oldValue != this.value) {
-        this._emitInputEvent();
-        this._emitChangeEvent();
+      if (oldValue != this.localValue) {
+        this.emitInputEvent();
+        this.emitChangeEvent();
       }
 
-      this._isSliding = true;
+      this.isSliding = true;
       event.preventDefault();
     },
-    _onKeyup() {
-      this._isSliding = false;
-    },
-    _increment(numSteps) {
-      this.val = this._clamp(
+    increment(numSteps) {
+      this.val = this.clamp(
         (this.val || 0) + this.step * numSteps,
         this.curMin,
         this.curMax
       );
     },
-    _getSliderDimensions() {
+    getSliderDimensions() {
       return this.$refs.slider
         ? this.$refs.slider.getBoundingClientRect()
         : null;
     },
-    _clamp(value, min = 0, max = 1) {
+    clamp(value, min = 0, max = 1) {
       return Math.max(min, Math.min(value, max));
     },
-    _onBlur() {
+    onBlur() {
       this.isActive = false;
     },
-    _focusHostElement() {
+    focusHostElement() {
       this.isActive = true;
       this.$refs.slider.focus();
     },
-    _calculateValue(percentage) {
+    calculateValue(percentage) {
       return this.curMin + percentage * (this.curMax - this.curMin);
     },
-    _calculatePercentage(value) {
+    calculatePercentage(value) {
       return ((value || 0) - this.curMin) / (this.curMax - this.curMin);
     },
-    _emitInputEvent() {
+    emitInputEvent() {
       this.$emit("input", this.val);
     },
-    _emitChangeEvent() {
+    emitChangeEvent() {
       this.$emit("change", this.val);
     },
-    _getDirection() {
+    getDirection() {
       return this.dir == "rtl" ? "rtl" : "ltr";
     },
-    _shouldInvertMouseCoords() {
-      return this._getDirection() == "rtl" && !this.vertical
-        ? !this._invertAxis
-        : this._invertAxis;
+    shouldInvertMouseCoords() {
+      return this.getDirection() == "rtl" && !this.vertical
+        ? !this.invertAxis
+        : this.invertAxis;
     },
-    _increment(numSteps) {
-      this.val = this._clamp(
-        (this.val || 0) + this.step * numSteps,
-        this.curMin,
-        this.curMax
-      );
-    }
-  }
+  },
 };
 </script>
 
