@@ -96,170 +96,26 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ({
 
-/***/ "01f9":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var LIBRARY = __webpack_require__("2d00");
-var $export = __webpack_require__("5ca1");
-var redefine = __webpack_require__("2aba");
-var hide = __webpack_require__("32e9");
-var Iterators = __webpack_require__("84f2");
-var $iterCreate = __webpack_require__("41a0");
-var setToStringTag = __webpack_require__("7f20");
-var getPrototypeOf = __webpack_require__("38fd");
-var ITERATOR = __webpack_require__("2b4c")('iterator');
-var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
-var FF_ITERATOR = '@@iterator';
-var KEYS = 'keys';
-var VALUES = 'values';
-
-var returnThis = function () { return this; };
-
-module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
-  $iterCreate(Constructor, NAME, next);
-  var getMethod = function (kind) {
-    if (!BUGGY && kind in proto) return proto[kind];
-    switch (kind) {
-      case KEYS: return function keys() { return new Constructor(this, kind); };
-      case VALUES: return function values() { return new Constructor(this, kind); };
-    } return function entries() { return new Constructor(this, kind); };
-  };
-  var TAG = NAME + ' Iterator';
-  var DEF_VALUES = DEFAULT == VALUES;
-  var VALUES_BUG = false;
-  var proto = Base.prototype;
-  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-  var $default = $native || getMethod(DEFAULT);
-  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
-  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
-  var methods, key, IteratorPrototype;
-  // Fix native
-  if ($anyNative) {
-    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
-    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
-      // Set @@toStringTag to native iterators
-      setToStringTag(IteratorPrototype, TAG, true);
-      // fix for some old engines
-      if (!LIBRARY && typeof IteratorPrototype[ITERATOR] != 'function') hide(IteratorPrototype, ITERATOR, returnThis);
-    }
-  }
-  // fix Array#{values, @@iterator}.name in V8 / FF
-  if (DEF_VALUES && $native && $native.name !== VALUES) {
-    VALUES_BUG = true;
-    $default = function values() { return $native.call(this); };
-  }
-  // Define iterator
-  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
-    hide(proto, ITERATOR, $default);
-  }
-  // Plug for library
-  Iterators[NAME] = $default;
-  Iterators[TAG] = returnThis;
-  if (DEFAULT) {
-    methods = {
-      values: DEF_VALUES ? $default : getMethod(VALUES),
-      keys: IS_SET ? $default : getMethod(KEYS),
-      entries: $entries
-    };
-    if (FORCED) for (key in methods) {
-      if (!(key in proto)) redefine(proto, key, methods[key]);
-    } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
-  }
-  return methods;
-};
-
-
-/***/ }),
-
-/***/ "0bfb":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// 21.2.5.3 get RegExp.prototype.flags
-var anObject = __webpack_require__("cb7c");
-module.exports = function () {
-  var that = anObject(this);
-  var result = '';
-  if (that.global) result += 'g';
-  if (that.ignoreCase) result += 'i';
-  if (that.multiline) result += 'm';
-  if (that.unicode) result += 'u';
-  if (that.sticky) result += 'y';
-  return result;
-};
-
-
-/***/ }),
-
-/***/ "0d58":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = __webpack_require__("ce10");
-var enumBugKeys = __webpack_require__("e11e");
-
-module.exports = Object.keys || function keys(O) {
-  return $keys(O, enumBugKeys);
-};
-
-
-/***/ }),
-
-/***/ "1495":
-/***/ (function(module, exports, __webpack_require__) {
-
-var dP = __webpack_require__("86cc");
-var anObject = __webpack_require__("cb7c");
-var getKeys = __webpack_require__("0d58");
-
-module.exports = __webpack_require__("9e1e") ? Object.defineProperties : function defineProperties(O, Properties) {
-  anObject(O);
-  var keys = getKeys(Properties);
-  var length = keys.length;
-  var i = 0;
-  var P;
-  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
-  return O;
-};
-
-
-/***/ }),
-
 /***/ "1bd8":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"44345972-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/slider.vue?vue&type=template&id=332f0e6c&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"25dd6196-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/slider.vue?vue&type=template&id=195bd0b0&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"slider",staticClass:"slider",class:{
     'slider-disabled': _vm.disabled,
     'slider-vertical': _vm.vertical,
     'slider-sliding': _vm.isSliding,
     'slider-horizontal': !_vm.vertical,
-    'slider-axis-inverted': _vm._invertAxis,
+    'slider-axis-inverted': _vm.invertAxis,
     'slider-focused': _vm.isActive,
-    'slider-min-value': _vm._isMinValue,
+    'slider-min-value': _vm.isMinValue,
     'slider-thumb-label-showing': _vm.thumbLabel,
-  },attrs:{"tabindex":_vm.tabindex},on:{"mousedown":_vm._onMousedown,"mouseenter":_vm._onMouseenter,"keydown":_vm._onKeydown,"focus":_vm._onFocus,"keyup":_vm._onKeyup,"blur":_vm._onBlur}},[_c('div',{staticClass:"slider-wrapper",class:{'slider-sliding': _vm.isSliding}},[_c('div',{staticClass:"slider-track-wrapper"},[_c('div',{staticClass:"slider-track-background",style:(_vm._trackBackgroundStyles)}),_c('div',{staticClass:"slider-track-fill",style:(_vm._trackFillStyles)})]),_vm._m(0),_c('div',{staticClass:"slider-thumb-container",style:(_vm._thumbContainerStyles)},[_c('div',{staticClass:"slider-focus-ring"}),_c('div',{staticClass:"slider-thumb"}),_c('div',{staticClass:"slider-thumb-label"},[_c('span',{staticClass:"slider-thumb-label-text"},[_vm._v(_vm._s(_vm.displayValue))])])])])])}
+  },attrs:{"tabindex":_vm.tabindex},on:{"mousedown":_vm.onMousedown,"mouseenter":_vm.onMouseenter,"keydown":_vm.onKeydown,"focus":_vm.onFocus,"keyup":_vm.onKeyup,"blur":_vm.onBlur}},[_c('div',{staticClass:"slider-wrapper",class:{ 'slider-sliding': _vm.isSliding }},[_c('div',{staticClass:"slider-track-wrapper"},[_c('div',{staticClass:"slider-track-background",style:(_vm.trackBackgroundStyles)}),_vm._v(" "),_c('div',{staticClass:"slider-track-fill",style:(_vm.trackFillStyles)})]),_vm._v(" "),_vm._m(0),_vm._v(" "),_c('div',{staticClass:"slider-thumb-container",style:(_vm.thumbContainerStyles)},[_c('div',{staticClass:"slider-focus-ring"}),_vm._v(" "),_c('div',{staticClass:"slider-thumb"}),_vm._v(" "),_c('div',{staticClass:"slider-thumb-label"},[_c('span',{staticClass:"slider-thumb-label-text"},[_vm._v(_vm._s(_vm.displayValue))])])])])])}
 var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"slider-ticks-container"},[_c('div',{staticClass:"slider-ticks"})])}]
 
 
-// CONCATENATED MODULE: ./src/components/slider.vue?vue&type=template&id=332f0e6c&
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.to-string.js
-var es6_regexp_to_string = __webpack_require__("6b54");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.split.js
-var es6_regexp_split = __webpack_require__("28a5");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es7.array.includes.js
-var es7_array_includes = __webpack_require__("6762");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
-var web_dom_iterable = __webpack_require__("ac6a");
+// CONCATENATED MODULE: ./src/components/slider.vue?vue&type=template&id=195bd0b0&
 
 // EXTERNAL MODULE: ./node_modules/hammerjs/hammer.js
 var hammer = __webpack_require__("c8b5");
@@ -267,14 +123,13 @@ var hammer_default = /*#__PURE__*/__webpack_require__.n(hammer);
 
 // CONCATENATED MODULE: ./src/custom-gesture.js
 
-
-var SUPPORTED_HAMMER_GESTURES = ['longpress', 'slide', 'slidestart', 'slideend', 'slideright', 'slideleft'];
+const SUPPORTED_HAMMER_GESTURES = ['longpress', 'slide', 'slidestart', 'slideend', 'slideright', 'slideleft'];
 /**
  * Fake HammerInstance that is used when a Hammer instance is requested when HammerJS has not
  * been loaded on the page.
  */
 
-var noopHammerInstance = {
+const noopHammerInstance = {
   on: () => {},
   off: () => {}
 };
@@ -298,20 +153,20 @@ class custom_gesture_GestureConfig {
       return noopHammerInstance;
     }
 
-    var mc = new hammer_default.a(element, this._hammerOptions || undefined); // Default Hammer Recognizers.
+    const mc = new hammer_default.a(element, this._hammerOptions || undefined); // Default Hammer Recognizers.
 
-    var pan = new hammer_default.a.Pan();
-    var swipe = new hammer_default.a.Swipe();
-    var press = new hammer_default.a.Press(); // Notice that a HammerJS recognizer can only depend on one other recognizer once.
+    const pan = new hammer_default.a.Pan();
+    const swipe = new hammer_default.a.Swipe();
+    const press = new hammer_default.a.Press(); // Notice that a HammerJS recognizer can only depend on one other recognizer once.
     // Otherwise the previous `recognizeWith` will be dropped.
     // TODO: Confirm threshold numbers with Material Design UX Team
 
-    var slide = this._createRecognizer(pan, {
+    const slide = this._createRecognizer(pan, {
       event: 'slide',
       threshold: 0
     }, swipe);
 
-    var longpress = this._createRecognizer(press, {
+    const longpress = this._createRecognizer(press, {
       event: 'longpress',
       time: 500
     }); // Overwrite the default `pan` event to use the swipe event.
@@ -331,13 +186,8 @@ class custom_gesture_GestureConfig {
   /** Creates a new recognizer, without affecting the default recognizers of HammerJS */
 
 
-  _createRecognizer(base, options) {
-    var recognizer = new base.constructor(options);
-
-    for (var _len = arguments.length, inheritances = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-      inheritances[_key - 2] = arguments[_key];
-    }
-
+  _createRecognizer(base, options, ...inheritances) {
+    let recognizer = new base.constructor(options);
     inheritances.push(base);
     inheritances.forEach(item => recognizer.recognizeWith(item));
     return recognizer;
@@ -345,128 +195,128 @@ class custom_gesture_GestureConfig {
 
 }
 // CONCATENATED MODULE: ./src/keycodes.js
-var MAC_ENTER = 3;
-var BACKSPACE = 8;
-var TAB = 9;
-var NUM_CENTER = 12;
-var ENTER = 13;
-var SHIFT = 16;
-var CONTROL = 17;
-var ALT = 18;
-var PAUSE = 19;
-var CAPS_LOCK = 20;
-var ESCAPE = 27;
-var SPACE = 32;
-var PAGE_UP = 33;
-var PAGE_DOWN = 34;
-var END = 35;
-var HOME = 36;
-var LEFT_ARROW = 37;
-var UP_ARROW = 38;
-var RIGHT_ARROW = 39;
-var DOWN_ARROW = 40;
-var PLUS_SIGN = 43;
-var PRINT_SCREEN = 44;
-var INSERT = 45;
-var DELETE = 46;
-var ZERO = 48;
-var ONE = 49;
-var TWO = 50;
-var THREE = 51;
-var FOUR = 52;
-var FIVE = 53;
-var SIX = 54;
-var SEVEN = 55;
-var EIGHT = 56;
-var NINE = 57;
-var FF_SEMICOLON = 59;
-var FF_EQUALS = 61;
-var QUESTION_MARK = 63;
-var AT_SIGN = 64;
-var A = 65;
-var B = 66;
-var C = 67;
-var D = 68;
-var E = 69;
-var F = 70;
-var G = 71;
-var H = 72;
-var I = 73;
-var J = 74;
-var K = 75;
-var L = 76;
-var M = 77;
-var N = 78;
-var O = 79;
-var P = 80;
-var Q = 81;
-var R = 82;
-var S = 83;
-var T = 84;
-var U = 85;
-var V = 86;
-var W = 87;
-var X = 88;
-var Y = 89;
-var Z = 90;
-var META = 91;
-var MAC_WK_CMD_LEFT = 91;
-var MAC_WK_CMD_RIGHT = 93;
-var CONTEXT_MENU = 93;
-var NUMPAD_ZERO = 96;
-var NUMPAD_ONE = 97;
-var NUMPAD_TWO = 98;
-var NUMPAD_THREE = 99;
-var NUMPAD_FOUR = 100;
-var NUMPAD_FIVE = 101;
-var NUMPAD_SIX = 102;
-var NUMPAD_SEVEN = 103;
-var NUMPAD_EIGHT = 104;
-var NUMPAD_NINE = 105;
-var NUMPAD_MULTIPLY = 106;
-var NUMPAD_PLUS = 107;
-var NUMPAD_MINUS = 109;
-var NUMPAD_PERIOD = 110;
-var NUMPAD_DIVIDE = 111;
-var F1 = 112;
-var F2 = 113;
-var F3 = 114;
-var F4 = 115;
-var F5 = 116;
-var F6 = 117;
-var F7 = 118;
-var F8 = 119;
-var F9 = 120;
-var F10 = 121;
-var F11 = 122;
-var F12 = 123;
-var NUM_LOCK = 144;
-var SCROLL_LOCK = 145;
-var FIRST_MEDIA = 166;
-var FF_MINUS = 173;
-var MUTE = 173;
-var VOLUME_DOWN = 174;
-var VOLUME_UP = 175;
-var FF_MUTE = 181;
-var FF_VOLUME_DOWN = 182;
-var LAST_MEDIA = 183;
-var FF_VOLUME_UP = 183;
-var SEMICOLON = 186;
-var EQUALS = 187;
-var COMMA = 188;
-var DASH = 189;
-var SLASH = 191;
-var APOSTROPHE = 192;
-var TILDE = 192;
-var OPEN_SQUARE_BRACKET = 219;
-var BACKSLASH = 220;
-var CLOSE_SQUARE_BRACKET = 221;
-var SINGLE_QUOTE = 222;
-var MAC_META = 224;
+const MAC_ENTER = 3;
+const BACKSPACE = 8;
+const TAB = 9;
+const NUM_CENTER = 12;
+const ENTER = 13;
+const SHIFT = 16;
+const CONTROL = 17;
+const ALT = 18;
+const PAUSE = 19;
+const CAPS_LOCK = 20;
+const ESCAPE = 27;
+const SPACE = 32;
+const PAGE_UP = 33;
+const PAGE_DOWN = 34;
+const END = 35;
+const HOME = 36;
+const LEFT_ARROW = 37;
+const UP_ARROW = 38;
+const RIGHT_ARROW = 39;
+const DOWN_ARROW = 40;
+const PLUS_SIGN = 43;
+const PRINT_SCREEN = 44;
+const INSERT = 45;
+const DELETE = 46;
+const ZERO = 48;
+const ONE = 49;
+const TWO = 50;
+const THREE = 51;
+const FOUR = 52;
+const FIVE = 53;
+const SIX = 54;
+const SEVEN = 55;
+const EIGHT = 56;
+const NINE = 57;
+const FF_SEMICOLON = 59;
+const FF_EQUALS = 61;
+const QUESTION_MARK = 63;
+const AT_SIGN = 64;
+const A = 65;
+const B = 66;
+const C = 67;
+const D = 68;
+const E = 69;
+const F = 70;
+const G = 71;
+const H = 72;
+const I = 73;
+const J = 74;
+const K = 75;
+const L = 76;
+const M = 77;
+const N = 78;
+const O = 79;
+const P = 80;
+const Q = 81;
+const R = 82;
+const S = 83;
+const T = 84;
+const U = 85;
+const V = 86;
+const W = 87;
+const X = 88;
+const Y = 89;
+const Z = 90;
+const META = 91;
+const MAC_WK_CMD_LEFT = 91;
+const MAC_WK_CMD_RIGHT = 93;
+const CONTEXT_MENU = 93;
+const NUMPAD_ZERO = 96;
+const NUMPAD_ONE = 97;
+const NUMPAD_TWO = 98;
+const NUMPAD_THREE = 99;
+const NUMPAD_FOUR = 100;
+const NUMPAD_FIVE = 101;
+const NUMPAD_SIX = 102;
+const NUMPAD_SEVEN = 103;
+const NUMPAD_EIGHT = 104;
+const NUMPAD_NINE = 105;
+const NUMPAD_MULTIPLY = 106;
+const NUMPAD_PLUS = 107;
+const NUMPAD_MINUS = 109;
+const NUMPAD_PERIOD = 110;
+const NUMPAD_DIVIDE = 111;
+const F1 = 112;
+const F2 = 113;
+const F3 = 114;
+const F4 = 115;
+const F5 = 116;
+const F6 = 117;
+const F7 = 118;
+const F8 = 119;
+const F9 = 120;
+const F10 = 121;
+const F11 = 122;
+const F12 = 123;
+const NUM_LOCK = 144;
+const SCROLL_LOCK = 145;
+const FIRST_MEDIA = 166;
+const FF_MINUS = 173;
+const MUTE = 173;
+const VOLUME_DOWN = 174;
+const VOLUME_UP = 175;
+const FF_MUTE = 181;
+const FF_VOLUME_DOWN = 182;
+const LAST_MEDIA = 183;
+const FF_VOLUME_UP = 183;
+const SEMICOLON = 186;
+const EQUALS = 187;
+const COMMA = 188;
+const DASH = 189;
+const SLASH = 191;
+const APOSTROPHE = 192;
+const TILDE = 192;
+const OPEN_SQUARE_BRACKET = 219;
+const BACKSLASH = 220;
+const CLOSE_SQUARE_BRACKET = 221;
+const SINGLE_QUOTE = 222;
+const MAC_META = 224;
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/slider.vue?vue&type=script&lang=js&
-
-
-
+//
+//
+//
 //
 //
 //
@@ -512,19 +362,28 @@ var MAC_META = 224;
 
 /** The thumb gap size for a disabled slider. */
 
-var DISABLED_THUMB_GAP = 7;
+const DISABLED_THUMB_GAP = 7;
 /** The thumb gap size for a non-active slider at its minimum value. */
 
-var MIN_VALUE_NONACTIVE_THUMB_GAP = 7;
+const MIN_VALUE_NONACTIVE_THUMB_GAP = 7;
 /** The thumb gap size for an active slider at its minimum value. */
 
-var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
+const MIN_VALUE_ACTIVE_THUMB_GAP = 10;
 /* harmony default export */ var slidervue_type_script_lang_js_ = ({
   name: "vue-material-slider",
   props: {
-    value: [Number, String],
-    min: [Number, String],
-    max: [Number, String],
+    value: {
+      type: [Number, String],
+      default: 0
+    },
+    min: {
+      type: [Number, String],
+      default: 0
+    },
+    max: {
+      type: [Number, String],
+      default: 100
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -547,12 +406,16 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
     },
     dir: {
       type: String,
-      validator: value => value.includes('rtl') || value.includes('ltr'),
-      default: 'ltr'
+      validator: value => value.includes("rtl") || value.includes("ltr"),
+      default: "ltr"
     },
     displayWith: {
       type: Function,
       default: null
+    },
+    stepSize: {
+      type: [String, Number],
+      default: 1
     }
   },
   watch: {
@@ -561,169 +424,156 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
     },
 
     min(val) {
-      if (val) this.curMin = Number(val);
+      if (val) {
+        this.curMin = Number(val);
+      }
     },
 
     max(val) {
-      if (val) this.curMax = Number(val);
+      if (val) {
+        this.curMax = Number(val);
+      }
     }
 
   },
   computed: {
     val: {
       get() {
-        if (this.$data._value === null) {
-          this.$data._value = this.$data._min;
+        if (this.localValue === null) {
+          return this.min;
         }
 
-        return this.$data._value;
+        return this.localValue;
       },
 
       set(v) {
-        if (v !== this.$data._value) {
-          var value = v; // While incrementing by a decimal we can end up with values like 33.300000000000004.
+        if (v !== this.localValue) {
+          let value = v; // While incrementing by a decimal we can end up with values like 33.300000000000004.
           // Truncate it to ensure that it matches the label and to make it easier to work with.
 
-          if (this.$data._roundToDecimal) {
-            value = parseFloat(value.toFixed(this.$data._roundToDecimal));
+          if (this.roundToDecimal) {
+            value = parseFloat(value.toFixed(this.roundToDecimal));
           }
 
-          this.$data._value = value;
-          this.$data._percent = this._calculatePercentage(this.$data._value);
+          this.localValue = value;
+          this.localPercent = this.calculatePercentage(this.localValue);
         }
       }
 
     },
-    displayValue: {
-      get() {
-        if (this.displayWith) {
-          return this.displayWith(this.val);
-        } // Note that this could be improved further by rounding something like 0.999 to 1 or
-        // 0.899 to 0.9, however it is very performance sensitive, because it gets called on
-        // every change detection cycle.
+
+    displayValue() {
+      if (this.displayWith) {
+        return this.displayWith(this.val);
+      } // When incrementing using a decimal value make sure its rounded 
 
 
-        if (this._roundToDecimal && this.val && this.val % 1 !== 0) {
-          return this.val.toFixed(this._roundToDecimal);
-        }
-
-        return this.val;
+      if (this.roundToDecimal && this.val && this.val % 1 !== 0) {
+        return this.val.toFixed(this.roundToDecimal);
       }
 
+      return this.val;
     },
+
     curMin: {
       get() {
-        return this.$data._min;
+        return this.min;
       },
 
       set(v) {
-        this.$data._min = v;
+        this.min = v;
 
-        if (this.$data._value === null) {
-          this.val = this.$data._min;
+        if (this.localValue === null) {
+          this.val = this.min;
         }
 
-        this.$data._percent = this._calculatePercentage(this.$data._value);
+        this.localPercent = this.calculatePercentage(this.localValue);
       }
 
     },
     curMax: {
       get() {
-        return this.$data._max;
+        return this.max;
       },
 
-      set() {
-        var v = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.$data._max;
-        this.$data._max = v;
-        this.$data._percent = this._calculatePercentage(this.$data._value);
+      set(v = this.max) {
+        this.max = v;
+        this.localPercent = this.calculatePercentage(this.localValue);
       }
 
     },
     step: {
       get() {
-        return this.$data._step;
+        return this.localStep;
       },
 
       set(v) {
-        this.$data._step = v;
+        this.localStep = v;
 
-        if (this._step % 1 !== 0) {
-          this.$data._roundToDecimal = this.$data._step.toString().split(".").pop().length;
+        if (this.localStep % 1 !== 0) {
+          this.roundToDecimal = this.localStep.toString().split(".").pop().length;
         }
       }
 
     },
-    _thumbContainerStyles: {
-      get() {
-        var axis = this.vertical ? "Y" : "X"; // For a horizontal slider in RTL languages we push the thumb container off the left edge
-        // instead of the right edge to avoid causing a horizontal scrollbar to appear.
 
-        var invertOffset = this._getDirection() == "rtl" && !this.vertical ? !this._invertAxis : this._invertAxis;
-        var offset = (invertOffset ? this.percent : 1 - this.percent) * 100;
-        return {
-          transform: `translate${axis}(-${offset}%)`
-        };
-      }
+    thumbContainerStyles() {
+      let axis = this.vertical ? "Y" : "X"; // For a horizontal slider in RTL languages we push the thumb container off the left edge
+      // instead of the right edge to avoid causing a horizontal scrollbar to appear.
 
+      let invertOffset = this.getDirection() == "rtl" && !this.vertical ? !this.invertAxis : this.invertAxis;
+      let offset = (invertOffset ? this.percent : 1 - this.percent) * 100;
+      return {
+        transform: `translate${axis}(-${offset}%)`
+      };
     },
-    _trackBackgroundStyles: {
-      get() {
-        var axis = this.vertical ? "Y" : "X";
-        var scale = this.vertical ? `1, ${1 - this.percent}, 1` : `${1 - this.percent}, 1, 1`;
-        var sign = this._shouldInvertMouseCoords() ? "-" : "";
-        return {
-          // scale3d avoids some rendering issues in Chrome. See #12071.
-          transform: `translate${axis}(${sign}${this._thumbGap}px) scale3d(${scale})`
-        };
-      }
 
+    trackBackgroundStyles() {
+      const axis = this.vertical ? "Y" : "X";
+      const scale = this.vertical ? `1, ${1 - this.percent}, 1` : `${1 - this.percent}, 1, 1`;
+      const sign = this.shouldInvertMouseCoords() ? "-" : "";
+      return {
+        // scale3d avoids some rendering issues in Chrome. See #12071.
+        transform: `translate${axis}(${sign}${this.thumbGap}px) scale3d(${scale})`
+      };
     },
-    _trackFillStyles: {
-      get() {
-        var axis = this.vertical ? "Y" : "X";
-        var scale = this.vertical ? `1, ${this.percent}, 1` : `${this.percent}, 1, 1`;
-        var sign = this._shouldInvertMouseCoords() ? "" : "-";
-        return {
-          // scale3d avoids some rendering issues in Chrome. See #12071.
-          transform: `translate${axis}(${sign}${this._thumbGap}px) scale3d(${scale})`
-        };
-      }
 
+    trackFillStyles() {
+      const axis = this.vertical ? "Y" : "X";
+      const scale = this.vertical ? `1, ${this.percent}, 1` : `${this.percent}, 1, 1`;
+      const sign = this.shouldInvertMouseCoords() ? "" : "-";
+      return {
+        // scale3d avoids some rendering issues in Chrome. See #12071.
+        transform: `translate${axis}(${sign}${this.thumbGap}px) scale3d(${scale})`
+      };
     },
-    _thumbGap: {
-      get() {
-        if (this.disabled) {
-          return DISABLED_THUMB_GAP;
-        }
 
-        if (this._isMinValue && !this.thumbLabel) {
-          return this.isActive ? MIN_VALUE_ACTIVE_THUMB_GAP : MIN_VALUE_NONACTIVE_THUMB_GAP;
-        }
-
-        return 0;
+    thumbGap() {
+      if (this.disabled) {
+        return DISABLED_THUMB_GAP;
       }
 
+      if (this.isMinValue && !this.thumbLabel) {
+        return this.isActive ? MIN_VALUE_ACTIVE_THUMB_GAP : MIN_VALUE_NONACTIVE_THUMB_GAP;
+      }
+
+      return 0;
     },
-    percent: {
-      get() {
-        return this._clamp(this.$data._percent);
-      }
 
+    percent() {
+      return this.clamp(this.localPercent);
     },
-    _invertAxis: {
-      get() {
-        // Standard non-inverted mode for a vertical slider should be dragging the thumb from bottom to
-        // top. However from a y-axis standpoint this is inverted.
-        return this.vertical ? !this.invert : this.invert;
-      }
 
+    invertAxis() {
+      // Standard non-inverted mode for a vertical slider should be dragging the thumb from bottom to
+      // top. However from a y-axis standpoint this is inverted.
+      return this.vertical ? !this.invert : this.invert;
     },
-    _isMinValue: {
-      get() {
-        return this.percent === 0;
-      }
 
+    isMinValue() {
+      return this.percent === 0;
     }
+
   },
 
   data() {
@@ -731,213 +581,131 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
       mc: null,
       isSliding: false,
       isActive: false,
-      _sliderDimensions: null,
-      _min: 0,
-      _max: 100,
-      _value: null,
-      _roundToDecimal: null,
-      _step: 1,
-      _percent: 0,
-      _isActive: false,
-      _valueOnSlideStart: null
+      sliderDimensions: null,
+      roundToDecimal: null,
+      localStep: null,
+      localPercent: 0,
+      localValue: this.value,
+      valueOnSlideStart: null
     };
   },
 
   mounted() {
     this.mc = new custom_gesture_GestureConfig().buildHammer(this.$refs.slider);
-    this.mc.on("slide", this._onSlide);
-    this.mc.on("slideend", this._onSlideEnd);
-    this.mc.on("slidestart", this._onSlideStart); // Set initial values
+    this.mc.on("slide", this.onSlide);
+    this.mc.on("slideend", this.onSlideEnd);
+    this.mc.on("slidestart", this.onSlideStart); // Set initial values
 
-    this.val = this.value;
+    this.val = this.localValue;
+    this.step = this.stepSize;
     if (this.min) this.curMin = this.min;
     if (this.max) this.curMax = this.max;
   },
 
   methods: {
-    _onMouseenter() {
+    onMouseenter() {
       if (this.disabled) {
         return;
       } // We save the dimensions of the slider here so we can use them to update the spacing of the
       // ticks and determine where on the slider click and slide events happen.
 
 
-      this.$data._sliderDimensions = this._getSliderDimensions();
+      this.sliderDimensions = this.getSliderDimensions();
     },
 
-    _onMousedown(event) {
+    onMousedown(event) {
       // Don't do anything if the slider is disabled or the
       // user is using anything other than the main mouse button.
       if (this.disabled || event.button !== 0) {
         return;
       }
 
-      var oldValue = this.val;
+      const oldValue = this.val;
       this.isSliding = false;
-
-      this._focusHostElement();
-
-      this._updateValueFromPosition({
+      this.focusHostElement();
+      this.updateValueFromPosition({
         x: event.clientX,
         y: event.clientY
       }); // Emit a change and input event if the value changed.
 
-
       if (oldValue != this.val) {
-        this._emitInputEvent();
-
-        this._emitChangeEvent();
+        this.emitInputEvent();
+        this.emitChangeEvent();
       }
     },
 
-    _onSlide(event) {
+    onSlide(event) {
       if (this.disabled) {
         return;
       }
 
       if (!this.isSliding) {
-        this._onSlideStart(null);
+        this.onSlideStart(event);
       }
 
       event.preventDefault();
-      var oldValue = this.val;
-
-      this._updateValueFromPosition({
+      let oldValue = this.val;
+      this.updateValueFromPosition({
         x: event.center.x,
         y: event.center.y
       });
 
       if (oldValue != this.val) {
-        this._emitInputEvent();
-
-        this._emitChangeEvent();
+        this.emitInputEvent();
+        this.emitChangeEvent();
       }
     },
 
-    _onSlideStart(event) {
+    onSlideStart(event) {
       if (this.disabled || this.isSliding) {
         return;
       } // Simulate mouseenter in case this is a mobile device.
 
 
-      this._onMouseenter();
-
+      this.onMouseenter();
       this.isSliding = true;
-
-      this._focusHostElement();
-
-      this.$data._valueOnSlideStart = this.val;
+      this.focusHostElement();
+      this.valueOnSlideStart = this.val;
 
       if (event) {
-        this._updateValueFromPosition({
+        this.updateValueFromPosition({
           x: event.center.x,
           y: event.center.y
         });
-
         event.preventDefault();
       }
     },
 
-    _onSlideEnd() {
+    onSlideEnd() {
       this.isSliding = false;
 
-      if (this.$data._valueOnSlideStart != this.val && !this.disabled) {
-        this._emitChangeEvent();
+      if (this.valueOnSlideStart != this.val && !this.disabled) {
+        this.emitChangeEvent();
       }
 
-      this.$data._valueOnSlideStart = null;
+      this.valueOnSlideStart = null;
     },
 
-    _onKeydown(event) {
-      if (this.disabled) {
+    onKeyup() {
+      this.isSliding = false;
+    },
+
+    onFocus() {
+      this.sliderDimensions = this.getSliderDimensions();
+    },
+
+    updateValueFromPosition(pos) {
+      if (!this.sliderDimensions) {
         return;
       }
 
-      var oldValue = this.value;
+      let offset = this.vertical ? this.sliderDimensions.top : this.sliderDimensions.left;
+      let size = this.vertical ? this.sliderDimensions.height : this.sliderDimensions.width;
+      let posComponent = this.vertical ? pos.y : pos.x; // The exact value is calculated from the event and used to find the closest snap value.
 
-      switch (event.keyCode) {
-        case PAGE_UP:
-          this._increment(10);
+      let percent = this.clamp((posComponent - offset) / size);
 
-          break;
-
-        case PAGE_DOWN:
-          this._increment(-10);
-
-          break;
-
-        case END:
-          this.value = this.max;
-          break;
-
-        case HOME:
-          this.value = this.min;
-          break;
-
-        case LEFT_ARROW:
-          // NOTE: For a sighted user it would make more sense that when they press an arrow key on an
-          // inverted slider the thumb moves in that direction. However for a blind user, nothing
-          // about the slider indicates that it is inverted. They will expect left to be decrement,
-          // regardless of how it appears on the screen. For speakers ofRTL languages, they probably
-          // expect left to mean increment. Therefore we flip the meaning of the side arrow keys for
-          // RTL. For inverted sliders we prefer a good a11y experience to having it "look right" for
-          // sighted users, therefore we do not swap the meaning.
-          this._increment(this._getDirection() == "rtl" ? 1 : -1);
-
-          break;
-
-        case UP_ARROW:
-          this._increment(1);
-
-          break;
-
-        case RIGHT_ARROW:
-          // See comment on LEFT_ARROW about the conditions under which we flip the meaning.
-          this._increment(this._getDirection() == "rtl" ? -1 : 1);
-
-          break;
-
-        case DOWN_ARROW:
-          this._increment(-1);
-
-          break;
-
-        default:
-          // Return if the key is not one that we explicitly handle to avoid calling preventDefault on
-          // it.
-          return;
-      }
-
-      if (oldValue != this.value) {
-        this._emitInputEvent();
-
-        this._emitChangeEvent();
-      }
-
-      this._isSliding = true;
-      event.preventDefault();
-    },
-
-    _onKeyup() {
-      this._isSliding = false;
-    },
-
-    _onFocus() {
-      this.$data._sliderDimensions = this._getSliderDimensions();
-    },
-
-    _updateValueFromPosition(pos) {
-      if (!this.$data._sliderDimensions) {
-        return;
-      }
-
-      var offset = this.vertical ? this.$data._sliderDimensions.top : this.$data._sliderDimensions.left;
-      var size = this.vertical ? this.$data._sliderDimensions.height : this.$data._sliderDimensions.width;
-      var posComponent = this.vertical ? pos.y : pos.x; // The exact value is calculated from the event and used to find the closest snap value.
-
-      var percent = this._clamp((posComponent - offset) / size);
-
-      if (this._shouldInvertMouseCoords()) {
+      if (this.shouldInvertMouseCoords()) {
         percent = 1 - percent;
       } // Since the steps may not divide cleanly into the max value, if the user
       // slide to 0 or 100 percent, we jump to the min/max value. This approach
@@ -950,40 +718,37 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
       } else if (percent === 1) {
         this.val = this.curMax;
       } else {
-        var exactValue = this._calculateValue(percent); // This calculation finds the closest step by finding the closest
+        const exactValue = this.calculateValue(percent); // This calculation finds the closest step by finding the closest
         // whole number divisible by the step relative to the min.
 
+        const closestValue = Math.round((exactValue - this.curMin) / this.step) * this.step + this.curMin; // The value needs to snap to the min and max.
 
-        var closestValue = Math.round((exactValue - this.curMin) / this.step) * this.step + this.curMin; // The value needs to snap to the min and max.
-
-        this.val = this._clamp(closestValue, this.curMin, this.curMax);
+        this.val = this.clamp(closestValue, this.curMin, this.curMax);
       }
     },
 
-    _onKeydown(event) {
+    onKeydown(event) {
       if (this.disabled) {
         return;
       }
 
-      var oldValue = this.val;
+      let oldValue = this.val;
 
       switch (event.keyCode) {
         case PAGE_UP:
-          this._increment(10);
-
+          this.increment(10);
           break;
 
         case PAGE_DOWN:
-          this._increment(-10);
-
+          this.increment(-10);
           break;
 
         case END:
-          this.value = this.max;
+          this.localValue = this.max;
           break;
 
         case HOME:
-          this.value = this.min;
+          this.localValue = this.min;
           break;
 
         case LEFT_ARROW:
@@ -994,24 +759,20 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
           // expect left to mean increment. Therefore we flip the meaning of the side arrow keys for
           // RTL. For inverted sliders we prefer a good a11y experience to having it "look right" for
           // sighted users, therefore we do not swap the meaning.
-          this._increment(this._getDirection() == "rtl" ? 1 : -1);
-
+          this.increment(this.getDirection() == "rtl" ? 1 : -1);
           break;
 
         case UP_ARROW:
-          this._increment(1);
-
+          this.increment(1);
           break;
 
         case RIGHT_ARROW:
           // See comment on LEFT_ARROW about the conditions under which we flip the meaning.
-          this._increment(this._getDirection() == "rtl" ? -1 : 1);
-
+          this.increment(this.getDirection() == "rtl" ? -1 : 1);
           break;
 
         case DOWN_ARROW:
-          this._increment(-1);
-
+          this.increment(-1);
           break;
 
         default:
@@ -1020,69 +781,58 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
           return;
       }
 
-      if (oldValue != this.value) {
-        this._emitInputEvent();
-
-        this._emitChangeEvent();
+      if (oldValue != this.localValue) {
+        this.emitInputEvent();
+        this.emitChangeEvent();
       }
 
-      this._isSliding = true;
+      this.isSliding = true;
       event.preventDefault();
     },
 
-    _onKeyup() {
-      this._isSliding = false;
+    increment(numSteps) {
+      this.val = this.clamp((this.val || 0) + this.step * numSteps, this.curMin, this.curMax);
     },
 
-    _increment(numSteps) {
-      this.val = this._clamp((this.val || 0) + this.step * numSteps, this.curMin, this.curMax);
-    },
-
-    _getSliderDimensions() {
+    getSliderDimensions() {
       return this.$refs.slider ? this.$refs.slider.getBoundingClientRect() : null;
     },
 
-    _clamp(value) {
-      var min = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-      var max = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+    clamp(value, min = 0, max = 1) {
       return Math.max(min, Math.min(value, max));
     },
 
-    _onBlur() {
+    onBlur() {
       this.isActive = false;
     },
 
-    _focusHostElement() {
+    focusHostElement() {
       this.isActive = true;
       this.$refs.slider.focus();
     },
 
-    _calculateValue(percentage) {
+    calculateValue(percentage) {
       return this.curMin + percentage * (this.curMax - this.curMin);
     },
 
-    _calculatePercentage(value) {
+    calculatePercentage(value) {
       return ((value || 0) - this.curMin) / (this.curMax - this.curMin);
     },
 
-    _emitInputEvent() {
+    emitInputEvent() {
       this.$emit("input", this.val);
     },
 
-    _emitChangeEvent() {
+    emitChangeEvent() {
       this.$emit("change", this.val);
     },
 
-    _getDirection() {
+    getDirection() {
       return this.dir == "rtl" ? "rtl" : "ltr";
     },
 
-    _shouldInvertMouseCoords() {
-      return this._getDirection() == "rtl" && !this.vertical ? !this._invertAxis : this._invertAxis;
-    },
-
-    _increment(numSteps) {
-      this.val = this._clamp((this.val || 0) + this.step * numSteps, this.curMin, this.curMax);
+    shouldInvertMouseCoords() {
+      return this.getDirection() == "rtl" && !this.vertical ? !this.invertAxis : this.invertAxis;
     }
 
   }
@@ -1154,7 +904,12 @@ function normalizeComponent (
     options._ssrRegister = hook
   } else if (injectStyles) {
     hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      ? function () {
+        injectStyles.call(
+          this,
+          (options.functional ? this.parent : this).$root.$options.shadowRoot
+        )
+      }
       : injectStyles
   }
 
@@ -1163,7 +918,7 @@ function normalizeComponent (
       // for template-only hot-reload because in that case the render fn doesn't
       // go through the normalizer
       options._injectStyles = hook
-      // register for functioal component in vue file
+      // register for functional component in vue file
       var originalRender = options.render
       options.render = function renderWithStyleInjection (h, context) {
         hook.call(context)
@@ -1208,857 +963,99 @@ var component = normalizeComponent(
   ,true
 )
 
-component.options.__file = "slider.vue"
 /* harmony default export */ var slider = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
 
-/***/ "214f":
+/***/ "8875":
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// addapted from the document.currentScript polyfill by Adam Miller
+// MIT license
+// source: https://github.com/amiller-gh/currentScript-polyfill
 
-var hide = __webpack_require__("32e9");
-var redefine = __webpack_require__("2aba");
-var fails = __webpack_require__("79e5");
-var defined = __webpack_require__("be13");
-var wks = __webpack_require__("2b4c");
+// added support for Firefox https://bugzilla.mozilla.org/show_bug.cgi?id=1620505
 
-module.exports = function (KEY, length, exec) {
-  var SYMBOL = wks(KEY);
-  var fns = exec(defined, SYMBOL, ''[KEY]);
-  var strfn = fns[0];
-  var rxfn = fns[1];
-  if (fails(function () {
-    var O = {};
-    O[SYMBOL] = function () { return 7; };
-    return ''[KEY](O) != 7;
-  })) {
-    redefine(String.prototype, KEY, strfn);
-    hide(RegExp.prototype, SYMBOL, length == 2
-      // 21.2.5.8 RegExp.prototype[@@replace](string, replaceValue)
-      // 21.2.5.11 RegExp.prototype[@@split](string, limit)
-      ? function (string, arg) { return rxfn.call(string, this, arg); }
-      // 21.2.5.6 RegExp.prototype[@@match](string)
-      // 21.2.5.9 RegExp.prototype[@@search](string)
-      : function (string) { return rxfn.call(string, this); }
-    );
-  }
-};
+(function (root, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else {}
+}(typeof self !== 'undefined' ? self : this, function () {
+  function getCurrentScript () {
+    var descriptor = Object.getOwnPropertyDescriptor(document, 'currentScript')
+    // for chrome
+    if (!descriptor && 'currentScript' in document && document.currentScript) {
+      return document.currentScript
+    }
 
-
-/***/ }),
-
-/***/ "230e":
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__("d3f4");
-var document = __webpack_require__("7726").document;
-// typeof document.createElement is 'object' in old IE
-var is = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
-  return is ? document.createElement(it) : {};
-};
-
-
-/***/ }),
-
-/***/ "28a5":
-/***/ (function(module, exports, __webpack_require__) {
-
-// @@split logic
-__webpack_require__("214f")('split', 2, function (defined, SPLIT, $split) {
-  'use strict';
-  var isRegExp = __webpack_require__("aae3");
-  var _split = $split;
-  var $push = [].push;
-  var $SPLIT = 'split';
-  var LENGTH = 'length';
-  var LAST_INDEX = 'lastIndex';
-  if (
-    'abbc'[$SPLIT](/(b)*/)[1] == 'c' ||
-    'test'[$SPLIT](/(?:)/, -1)[LENGTH] != 4 ||
-    'ab'[$SPLIT](/(?:ab)*/)[LENGTH] != 2 ||
-    '.'[$SPLIT](/(.?)(.?)/)[LENGTH] != 4 ||
-    '.'[$SPLIT](/()()/)[LENGTH] > 1 ||
-    ''[$SPLIT](/.?/)[LENGTH]
-  ) {
-    var NPCG = /()??/.exec('')[1] === undefined; // nonparticipating capturing group
-    // based on es5-shim implementation, need to rework it
-    $split = function (separator, limit) {
-      var string = String(this);
-      if (separator === undefined && limit === 0) return [];
-      // If `separator` is not a regex, use native split
-      if (!isRegExp(separator)) return _split.call(string, separator, limit);
-      var output = [];
-      var flags = (separator.ignoreCase ? 'i' : '') +
-                  (separator.multiline ? 'm' : '') +
-                  (separator.unicode ? 'u' : '') +
-                  (separator.sticky ? 'y' : '');
-      var lastLastIndex = 0;
-      var splitLimit = limit === undefined ? 4294967295 : limit >>> 0;
-      // Make `global` and avoid `lastIndex` issues by working with a copy
-      var separatorCopy = new RegExp(separator.source, flags + 'g');
-      var separator2, match, lastIndex, lastLength, i;
-      // Doesn't need flags gy, but they don't hurt
-      if (!NPCG) separator2 = new RegExp('^' + separatorCopy.source + '$(?!\\s)', flags);
-      while (match = separatorCopy.exec(string)) {
-        // `separatorCopy.lastIndex` is not reliable cross-browser
-        lastIndex = match.index + match[0][LENGTH];
-        if (lastIndex > lastLastIndex) {
-          output.push(string.slice(lastLastIndex, match.index));
-          // Fix browsers whose `exec` methods don't consistently return `undefined` for NPCG
-          // eslint-disable-next-line no-loop-func
-          if (!NPCG && match[LENGTH] > 1) match[0].replace(separator2, function () {
-            for (i = 1; i < arguments[LENGTH] - 2; i++) if (arguments[i] === undefined) match[i] = undefined;
-          });
-          if (match[LENGTH] > 1 && match.index < string[LENGTH]) $push.apply(output, match.slice(1));
-          lastLength = match[0][LENGTH];
-          lastLastIndex = lastIndex;
-          if (output[LENGTH] >= splitLimit) break;
-        }
-        if (separatorCopy[LAST_INDEX] === match.index) separatorCopy[LAST_INDEX]++; // Avoid an infinite loop
+    // for other browsers with native support for currentScript
+    if (descriptor && descriptor.get !== getCurrentScript && document.currentScript) {
+      return document.currentScript
+    }
+  
+    // IE 8-10 support script readyState
+    // IE 11+ & Firefox support stack trace
+    try {
+      throw new Error();
+    }
+    catch (err) {
+      // Find the second match for the "at" string to get file src url from stack.
+      var ieStackRegExp = /.*at [^(]*\((.*):(.+):(.+)\)$/ig,
+        ffStackRegExp = /@([^@]*):(\d+):(\d+)\s*$/ig,
+        stackDetails = ieStackRegExp.exec(err.stack) || ffStackRegExp.exec(err.stack),
+        scriptLocation = (stackDetails && stackDetails[1]) || false,
+        line = (stackDetails && stackDetails[2]) || false,
+        currentLocation = document.location.href.replace(document.location.hash, ''),
+        pageSource,
+        inlineScriptSourceRegExp,
+        inlineScriptSource,
+        scripts = document.getElementsByTagName('script'); // Live NodeList collection
+  
+      if (scriptLocation === currentLocation) {
+        pageSource = document.documentElement.outerHTML;
+        inlineScriptSourceRegExp = new RegExp('(?:[^\\n]+?\\n){0,' + (line - 2) + '}[^<]*<script>([\\d\\D]*?)<\\/script>[\\d\\D]*', 'i');
+        inlineScriptSource = pageSource.replace(inlineScriptSourceRegExp, '$1').trim();
       }
-      if (lastLastIndex === string[LENGTH]) {
-        if (lastLength || !separatorCopy.test('')) output.push('');
-      } else output.push(string.slice(lastLastIndex));
-      return output[LENGTH] > splitLimit ? output.slice(0, splitLimit) : output;
-    };
-  // Chakra, V8
-  } else if ('0'[$SPLIT](undefined, 0)[LENGTH]) {
-    $split = function (separator, limit) {
-      return separator === undefined && limit === 0 ? [] : _split.call(this, separator, limit);
-    };
-  }
-  // 21.1.3.17 String.prototype.split(separator, limit)
-  return [function split(separator, limit) {
-    var O = defined(this);
-    var fn = separator == undefined ? undefined : separator[SPLIT];
-    return fn !== undefined ? fn.call(separator, O, limit) : $split.call(String(O), separator, limit);
-  }, $split];
-});
-
-
-/***/ }),
-
-/***/ "2aba":
-/***/ (function(module, exports, __webpack_require__) {
-
-var global = __webpack_require__("7726");
-var hide = __webpack_require__("32e9");
-var has = __webpack_require__("69a8");
-var SRC = __webpack_require__("ca5a")('src');
-var TO_STRING = 'toString';
-var $toString = Function[TO_STRING];
-var TPL = ('' + $toString).split(TO_STRING);
-
-__webpack_require__("8378").inspectSource = function (it) {
-  return $toString.call(it);
-};
-
-(module.exports = function (O, key, val, safe) {
-  var isFunction = typeof val == 'function';
-  if (isFunction) has(val, 'name') || hide(val, 'name', key);
-  if (O[key] === val) return;
-  if (isFunction) has(val, SRC) || hide(val, SRC, O[key] ? '' + O[key] : TPL.join(String(key)));
-  if (O === global) {
-    O[key] = val;
-  } else if (!safe) {
-    delete O[key];
-    hide(O, key, val);
-  } else if (O[key]) {
-    O[key] = val;
-  } else {
-    hide(O, key, val);
-  }
-// add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
-})(Function.prototype, TO_STRING, function toString() {
-  return typeof this == 'function' && this[SRC] || $toString.call(this);
-});
-
-
-/***/ }),
-
-/***/ "2aeb":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject = __webpack_require__("cb7c");
-var dPs = __webpack_require__("1495");
-var enumBugKeys = __webpack_require__("e11e");
-var IE_PROTO = __webpack_require__("613b")('IE_PROTO');
-var Empty = function () { /* empty */ };
-var PROTOTYPE = 'prototype';
-
-// Create object with fake `null` prototype: use iframe Object with cleared prototype
-var createDict = function () {
-  // Thrash, waste and sodomy: IE GC bug
-  var iframe = __webpack_require__("230e")('iframe');
-  var i = enumBugKeys.length;
-  var lt = '<';
-  var gt = '>';
-  var iframeDocument;
-  iframe.style.display = 'none';
-  __webpack_require__("fab2").appendChild(iframe);
-  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
-  // createDict = iframe.contentWindow.Object;
-  // html.removeChild(iframe);
-  iframeDocument = iframe.contentWindow.document;
-  iframeDocument.open();
-  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
-  iframeDocument.close();
-  createDict = iframeDocument.F;
-  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
-  return createDict();
-};
-
-module.exports = Object.create || function create(O, Properties) {
-  var result;
-  if (O !== null) {
-    Empty[PROTOTYPE] = anObject(O);
-    result = new Empty();
-    Empty[PROTOTYPE] = null;
-    // add "__proto__" for Object.getPrototypeOf polyfill
-    result[IE_PROTO] = O;
-  } else result = createDict();
-  return Properties === undefined ? result : dPs(result, Properties);
-};
-
-
-/***/ }),
-
-/***/ "2b4c":
-/***/ (function(module, exports, __webpack_require__) {
-
-var store = __webpack_require__("5537")('wks');
-var uid = __webpack_require__("ca5a");
-var Symbol = __webpack_require__("7726").Symbol;
-var USE_SYMBOL = typeof Symbol == 'function';
-
-var $exports = module.exports = function (name) {
-  return store[name] || (store[name] =
-    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
-};
-
-$exports.store = store;
-
-
-/***/ }),
-
-/***/ "2d00":
-/***/ (function(module, exports) {
-
-module.exports = false;
-
-
-/***/ }),
-
-/***/ "2d95":
-/***/ (function(module, exports) {
-
-var toString = {}.toString;
-
-module.exports = function (it) {
-  return toString.call(it).slice(8, -1);
-};
-
-
-/***/ }),
-
-/***/ "32e9":
-/***/ (function(module, exports, __webpack_require__) {
-
-var dP = __webpack_require__("86cc");
-var createDesc = __webpack_require__("4630");
-module.exports = __webpack_require__("9e1e") ? function (object, key, value) {
-  return dP.f(object, key, createDesc(1, value));
-} : function (object, key, value) {
-  object[key] = value;
-  return object;
-};
-
-
-/***/ }),
-
-/***/ "3846":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 21.2.5.3 get RegExp.prototype.flags()
-if (__webpack_require__("9e1e") && /./g.flags != 'g') __webpack_require__("86cc").f(RegExp.prototype, 'flags', {
-  configurable: true,
-  get: __webpack_require__("0bfb")
-});
-
-
-/***/ }),
-
-/***/ "38fd":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = __webpack_require__("69a8");
-var toObject = __webpack_require__("4bf8");
-var IE_PROTO = __webpack_require__("613b")('IE_PROTO');
-var ObjectProto = Object.prototype;
-
-module.exports = Object.getPrototypeOf || function (O) {
-  O = toObject(O);
-  if (has(O, IE_PROTO)) return O[IE_PROTO];
-  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
-    return O.constructor.prototype;
-  } return O instanceof Object ? ObjectProto : null;
-};
-
-
-/***/ }),
-
-/***/ "41a0":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var create = __webpack_require__("2aeb");
-var descriptor = __webpack_require__("4630");
-var setToStringTag = __webpack_require__("7f20");
-var IteratorPrototype = {};
-
-// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-__webpack_require__("32e9")(IteratorPrototype, __webpack_require__("2b4c")('iterator'), function () { return this; });
-
-module.exports = function (Constructor, NAME, next) {
-  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
-  setToStringTag(Constructor, NAME + ' Iterator');
-};
-
-
-/***/ }),
-
-/***/ "4588":
-/***/ (function(module, exports) {
-
-// 7.1.4 ToInteger
-var ceil = Math.ceil;
-var floor = Math.floor;
-module.exports = function (it) {
-  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-};
-
-
-/***/ }),
-
-/***/ "4630":
-/***/ (function(module, exports) {
-
-module.exports = function (bitmap, value) {
-  return {
-    enumerable: !(bitmap & 1),
-    configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
+  
+      for (var i = 0; i < scripts.length; i++) {
+        // If ready state is interactive, return the script tag
+        if (scripts[i].readyState === 'interactive') {
+          return scripts[i];
+        }
+  
+        // If src matches, return the script tag
+        if (scripts[i].src === scriptLocation) {
+          return scripts[i];
+        }
+  
+        // If inline source matches, return the script tag
+        if (
+          scriptLocation === currentLocation &&
+          scripts[i].innerHTML &&
+          scripts[i].innerHTML.trim() === inlineScriptSource
+        ) {
+          return scripts[i];
+        }
+      }
+  
+      // If no match, return null
+      return null;
+    }
   };
-};
+
+  return getCurrentScript
+}));
 
 
 /***/ }),
 
-/***/ "4ab6":
+/***/ "bd45":
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ "4bf8":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.1.13 ToObject(argument)
-var defined = __webpack_require__("be13");
-module.exports = function (it) {
-  return Object(defined(it));
-};
-
-
-/***/ }),
-
-/***/ "5537":
-/***/ (function(module, exports, __webpack_require__) {
-
-var core = __webpack_require__("8378");
-var global = __webpack_require__("7726");
-var SHARED = '__core-js_shared__';
-var store = global[SHARED] || (global[SHARED] = {});
-
-(module.exports = function (key, value) {
-  return store[key] || (store[key] = value !== undefined ? value : {});
-})('versions', []).push({
-  version: core.version,
-  mode: __webpack_require__("2d00") ? 'pure' : 'global',
-  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
-});
-
-
-/***/ }),
-
-/***/ "5ca1":
-/***/ (function(module, exports, __webpack_require__) {
-
-var global = __webpack_require__("7726");
-var core = __webpack_require__("8378");
-var hide = __webpack_require__("32e9");
-var redefine = __webpack_require__("2aba");
-var ctx = __webpack_require__("9b43");
-var PROTOTYPE = 'prototype';
-
-var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] || (global[name] = {}) : (global[name] || {})[PROTOTYPE];
-  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-  var expProto = exports[PROTOTYPE] || (exports[PROTOTYPE] = {});
-  var key, own, out, exp;
-  if (IS_GLOBAL) source = name;
-  for (key in source) {
-    // contains in native
-    own = !IS_FORCED && target && target[key] !== undefined;
-    // export native or passed
-    out = (own ? target : source)[key];
-    // bind timers to global for call from export context
-    exp = IS_BIND && own ? ctx(out, global) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-    // extend global
-    if (target) redefine(target, key, out, type & $export.U);
-    // export
-    if (exports[key] != out) hide(exports, key, exp);
-    if (IS_PROTO && expProto[key] != out) expProto[key] = out;
-  }
-};
-global.core = core;
-// type bitmap
-$export.F = 1;   // forced
-$export.G = 2;   // global
-$export.S = 4;   // static
-$export.P = 8;   // proto
-$export.B = 16;  // bind
-$export.W = 32;  // wrap
-$export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
-module.exports = $export;
-
-
-/***/ }),
-
-/***/ "613b":
-/***/ (function(module, exports, __webpack_require__) {
-
-var shared = __webpack_require__("5537")('keys');
-var uid = __webpack_require__("ca5a");
-module.exports = function (key) {
-  return shared[key] || (shared[key] = uid(key));
-};
-
-
-/***/ }),
-
-/***/ "626a":
-/***/ (function(module, exports, __webpack_require__) {
-
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-var cof = __webpack_require__("2d95");
-// eslint-disable-next-line no-prototype-builtins
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
-  return cof(it) == 'String' ? it.split('') : Object(it);
-};
-
-
-/***/ }),
-
-/***/ "6762":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// https://github.com/tc39/Array.prototype.includes
-var $export = __webpack_require__("5ca1");
-var $includes = __webpack_require__("c366")(true);
-
-$export($export.P, 'Array', {
-  includes: function includes(el /* , fromIndex = 0 */) {
-    return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
-  }
-});
-
-__webpack_require__("9c6c")('includes');
-
-
-/***/ }),
-
-/***/ "6821":
-/***/ (function(module, exports, __webpack_require__) {
-
-// to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = __webpack_require__("626a");
-var defined = __webpack_require__("be13");
-module.exports = function (it) {
-  return IObject(defined(it));
-};
-
-
-/***/ }),
-
-/***/ "69a8":
-/***/ (function(module, exports) {
-
-var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
-
-
-/***/ }),
-
-/***/ "6a99":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __webpack_require__("d3f4");
-// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-// and the second argument - flag - preferred type is a string
-module.exports = function (it, S) {
-  if (!isObject(it)) return it;
-  var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  throw TypeError("Can't convert object to primitive value");
-};
-
-
-/***/ }),
-
-/***/ "6b54":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-__webpack_require__("3846");
-var anObject = __webpack_require__("cb7c");
-var $flags = __webpack_require__("0bfb");
-var DESCRIPTORS = __webpack_require__("9e1e");
-var TO_STRING = 'toString';
-var $toString = /./[TO_STRING];
-
-var define = function (fn) {
-  __webpack_require__("2aba")(RegExp.prototype, TO_STRING, fn, true);
-};
-
-// 21.2.5.14 RegExp.prototype.toString()
-if (__webpack_require__("79e5")(function () { return $toString.call({ source: 'a', flags: 'b' }) != '/a/b'; })) {
-  define(function toString() {
-    var R = anObject(this);
-    return '/'.concat(R.source, '/',
-      'flags' in R ? R.flags : !DESCRIPTORS && R instanceof RegExp ? $flags.call(R) : undefined);
-  });
-// FF44- RegExp#toString has a wrong name
-} else if ($toString.name != TO_STRING) {
-  define(function toString() {
-    return $toString.call(this);
-  });
-}
-
-
-/***/ }),
-
-/***/ "7726":
-/***/ (function(module, exports) {
-
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
-
-/***/ }),
-
-/***/ "77f1":
-/***/ (function(module, exports, __webpack_require__) {
-
-var toInteger = __webpack_require__("4588");
-var max = Math.max;
-var min = Math.min;
-module.exports = function (index, length) {
-  index = toInteger(index);
-  return index < 0 ? max(index + length, 0) : min(index, length);
-};
-
-
-/***/ }),
-
-/***/ "79e5":
-/***/ (function(module, exports) {
-
-module.exports = function (exec) {
-  try {
-    return !!exec();
-  } catch (e) {
-    return true;
-  }
-};
-
-
-/***/ }),
-
-/***/ "7f20":
-/***/ (function(module, exports, __webpack_require__) {
-
-var def = __webpack_require__("86cc").f;
-var has = __webpack_require__("69a8");
-var TAG = __webpack_require__("2b4c")('toStringTag');
-
-module.exports = function (it, tag, stat) {
-  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
-};
-
-
-/***/ }),
-
-/***/ "8378":
-/***/ (function(module, exports) {
-
-var core = module.exports = { version: '2.5.7' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
-
-/***/ }),
-
-/***/ "84f2":
-/***/ (function(module, exports) {
-
-module.exports = {};
-
-
-/***/ }),
-
-/***/ "86cc":
-/***/ (function(module, exports, __webpack_require__) {
-
-var anObject = __webpack_require__("cb7c");
-var IE8_DOM_DEFINE = __webpack_require__("c69a");
-var toPrimitive = __webpack_require__("6a99");
-var dP = Object.defineProperty;
-
-exports.f = __webpack_require__("9e1e") ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  anObject(O);
-  P = toPrimitive(P, true);
-  anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
-    return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
-  return O;
-};
-
-
-/***/ }),
-
-/***/ "9b43":
-/***/ (function(module, exports, __webpack_require__) {
-
-// optional / simple context binding
-var aFunction = __webpack_require__("d8e8");
-module.exports = function (fn, that, length) {
-  aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
-      return fn.call(that, a);
-    };
-    case 2: return function (a, b) {
-      return fn.call(that, a, b);
-    };
-    case 3: return function (a, b, c) {
-      return fn.call(that, a, b, c);
-    };
-  }
-  return function (/* ...args */) {
-    return fn.apply(that, arguments);
-  };
-};
-
-
-/***/ }),
-
-/***/ "9c6c":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 22.1.3.31 Array.prototype[@@unscopables]
-var UNSCOPABLES = __webpack_require__("2b4c")('unscopables');
-var ArrayProto = Array.prototype;
-if (ArrayProto[UNSCOPABLES] == undefined) __webpack_require__("32e9")(ArrayProto, UNSCOPABLES, {});
-module.exports = function (key) {
-  ArrayProto[UNSCOPABLES][key] = true;
-};
-
-
-/***/ }),
-
-/***/ "9def":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.1.15 ToLength
-var toInteger = __webpack_require__("4588");
-var min = Math.min;
-module.exports = function (it) {
-  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-};
-
-
-/***/ }),
-
-/***/ "9e1e":
-/***/ (function(module, exports, __webpack_require__) {
-
-// Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__("79e5")(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
-});
-
-
-/***/ }),
-
-/***/ "aae3":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.2.8 IsRegExp(argument)
-var isObject = __webpack_require__("d3f4");
-var cof = __webpack_require__("2d95");
-var MATCH = __webpack_require__("2b4c")('match');
-module.exports = function (it) {
-  var isRegExp;
-  return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : cof(it) == 'RegExp');
-};
-
-
-/***/ }),
-
-/***/ "ac6a":
-/***/ (function(module, exports, __webpack_require__) {
-
-var $iterators = __webpack_require__("cadf");
-var getKeys = __webpack_require__("0d58");
-var redefine = __webpack_require__("2aba");
-var global = __webpack_require__("7726");
-var hide = __webpack_require__("32e9");
-var Iterators = __webpack_require__("84f2");
-var wks = __webpack_require__("2b4c");
-var ITERATOR = wks('iterator');
-var TO_STRING_TAG = wks('toStringTag');
-var ArrayValues = Iterators.Array;
-
-var DOMIterables = {
-  CSSRuleList: true, // TODO: Not spec compliant, should be false.
-  CSSStyleDeclaration: false,
-  CSSValueList: false,
-  ClientRectList: false,
-  DOMRectList: false,
-  DOMStringList: false,
-  DOMTokenList: true,
-  DataTransferItemList: false,
-  FileList: false,
-  HTMLAllCollection: false,
-  HTMLCollection: false,
-  HTMLFormElement: false,
-  HTMLSelectElement: false,
-  MediaList: true, // TODO: Not spec compliant, should be false.
-  MimeTypeArray: false,
-  NamedNodeMap: false,
-  NodeList: true,
-  PaintRequestList: false,
-  Plugin: false,
-  PluginArray: false,
-  SVGLengthList: false,
-  SVGNumberList: false,
-  SVGPathSegList: false,
-  SVGPointList: false,
-  SVGStringList: false,
-  SVGTransformList: false,
-  SourceBufferList: false,
-  StyleSheetList: true, // TODO: Not spec compliant, should be false.
-  TextTrackCueList: false,
-  TextTrackList: false,
-  TouchList: false
-};
-
-for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++) {
-  var NAME = collections[i];
-  var explicit = DOMIterables[NAME];
-  var Collection = global[NAME];
-  var proto = Collection && Collection.prototype;
-  var key;
-  if (proto) {
-    if (!proto[ITERATOR]) hide(proto, ITERATOR, ArrayValues);
-    if (!proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
-    Iterators[NAME] = ArrayValues;
-    if (explicit) for (key in $iterators) if (!proto[key]) redefine(proto, key, $iterators[key], true);
-  }
-}
-
-
-/***/ }),
-
-/***/ "be13":
-/***/ (function(module, exports) {
-
-// 7.2.1 RequireObjectCoercible(argument)
-module.exports = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
-  return it;
-};
-
-
-/***/ }),
-
-/***/ "c366":
-/***/ (function(module, exports, __webpack_require__) {
-
-// false -> Array#indexOf
-// true  -> Array#includes
-var toIObject = __webpack_require__("6821");
-var toLength = __webpack_require__("9def");
-var toAbsoluteIndex = __webpack_require__("77f1");
-module.exports = function (IS_INCLUDES) {
-  return function ($this, el, fromIndex) {
-    var O = toIObject($this);
-    var length = toLength(O.length);
-    var index = toAbsoluteIndex(fromIndex, length);
-    var value;
-    // Array#includes uses SameValueZero equality algorithm
-    // eslint-disable-next-line no-self-compare
-    if (IS_INCLUDES && el != el) while (length > index) {
-      value = O[index++];
-      // eslint-disable-next-line no-self-compare
-      if (value != value) return true;
-    // Array#indexOf ignores holes, Array#includes - not
-    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
-      if (O[index] === el) return IS_INCLUDES || index || 0;
-    } return !IS_INCLUDES && -1;
-  };
-};
-
-
-/***/ }),
-
-/***/ "c69a":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = !__webpack_require__("9e1e") && !__webpack_require__("79e5")(function () {
-  return Object.defineProperty(__webpack_require__("230e")('div'), 'a', { get: function () { return 7; } }).a != 7;
-});
-
 
 /***/ }),
 
@@ -2067,10 +1064,10 @@ module.exports = !__webpack_require__("9e1e") && !__webpack_require__("79e5")(fu
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_slider_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("4ab6");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_slider_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_slider_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_slider_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_slider_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_slider_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_slider_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("bd45");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_slider_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_slider_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_slider_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_slider_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
 
 /***/ }),
 
@@ -4748,160 +3745,34 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "ca5a":
-/***/ (function(module, exports) {
-
-var id = 0;
-var px = Math.random();
-module.exports = function (key) {
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-};
-
-
-/***/ }),
-
-/***/ "cadf":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var addToUnscopables = __webpack_require__("9c6c");
-var step = __webpack_require__("d53b");
-var Iterators = __webpack_require__("84f2");
-var toIObject = __webpack_require__("6821");
-
-// 22.1.3.4 Array.prototype.entries()
-// 22.1.3.13 Array.prototype.keys()
-// 22.1.3.29 Array.prototype.values()
-// 22.1.3.30 Array.prototype[@@iterator]()
-module.exports = __webpack_require__("01f9")(Array, 'Array', function (iterated, kind) {
-  this._t = toIObject(iterated); // target
-  this._i = 0;                   // next index
-  this._k = kind;                // kind
-// 22.1.5.2.1 %ArrayIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var kind = this._k;
-  var index = this._i++;
-  if (!O || index >= O.length) {
-    this._t = undefined;
-    return step(1);
-  }
-  if (kind == 'keys') return step(0, index);
-  if (kind == 'values') return step(0, O[index]);
-  return step(0, [index, O[index]]);
-}, 'values');
-
-// argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
-Iterators.Arguments = Iterators.Array;
-
-addToUnscopables('keys');
-addToUnscopables('values');
-addToUnscopables('entries');
-
-
-/***/ }),
-
-/***/ "cb7c":
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__("d3f4");
-module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
-  return it;
-};
-
-
-/***/ }),
-
-/***/ "ce10":
-/***/ (function(module, exports, __webpack_require__) {
-
-var has = __webpack_require__("69a8");
-var toIObject = __webpack_require__("6821");
-var arrayIndexOf = __webpack_require__("c366")(false);
-var IE_PROTO = __webpack_require__("613b")('IE_PROTO');
-
-module.exports = function (object, names) {
-  var O = toIObject(object);
-  var i = 0;
-  var result = [];
-  var key;
-  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
-  // Don't enum bug & hidden keys
-  while (names.length > i) if (has(O, key = names[i++])) {
-    ~arrayIndexOf(result, key) || result.push(key);
-  }
-  return result;
-};
-
-
-/***/ }),
-
-/***/ "d3f4":
-/***/ (function(module, exports) {
-
-module.exports = function (it) {
-  return typeof it === 'object' ? it !== null : typeof it === 'function';
-};
-
-
-/***/ }),
-
-/***/ "d53b":
-/***/ (function(module, exports) {
-
-module.exports = function (done, value) {
-  return { value: value, done: !!done };
-};
-
-
-/***/ }),
-
-/***/ "d8e8":
-/***/ (function(module, exports) {
-
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
-  return it;
-};
-
-
-/***/ }),
-
-/***/ "e11e":
-/***/ (function(module, exports) {
-
-// IE 8- don't enum bug keys
-module.exports = (
-  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
-).split(',');
-
-
-/***/ }),
-
-/***/ "fab2":
-/***/ (function(module, exports, __webpack_require__) {
-
-var document = __webpack_require__("7726").document;
-module.exports = document && document.documentElement;
-
-
-/***/ }),
-
 /***/ "fb15":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ src_plugin["b" /* install */]; });
 
 // CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
 // This file is imported into lib/wc client bundles.
 
 if (typeof window !== 'undefined') {
-  var i
-  if ((i = window.document.currentScript) && (i = i.src.match(/(.+\/)[^/]+\.js(\?.*)?$/))) {
-    __webpack_require__.p = i[1] // eslint-disable-line
+  var currentScript = window.document.currentScript
+  if (true) {
+    var getCurrentScript = __webpack_require__("8875")
+    currentScript = getCurrentScript()
+
+    // for backward compatibility, because previously we directly included the polyfill
+    if (!('currentScript' in document)) {
+      Object.defineProperty(document, 'currentScript', { get: getCurrentScript })
+    }
+  }
+
+  var src = currentScript && currentScript.src.match(/(.+\/)[^/]+\.js(\?.*)?$/)
+  if (src) {
+    __webpack_require__.p = src[1] // eslint-disable-line
   }
 }
 
@@ -4912,7 +3783,6 @@ if (typeof window !== 'undefined') {
 var src_plugin = __webpack_require__("fe83");
 
 // CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
-/* concated harmony reexport install */__webpack_require__.d(__webpack_exports__, "install", function() { return src_plugin["b" /* install */]; });
 
 
 /* harmony default export */ var entry_lib = __webpack_exports__["default"] = (src_plugin["a" /* default */]);
