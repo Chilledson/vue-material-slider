@@ -97,7 +97,7 @@ export default {
     },
     thumbLabel: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     dir: {
       type: String,
@@ -146,21 +146,19 @@ export default {
         }
       },
     },
-    displayValue: {
-      get() {
-        if (this.displayWith) {
-          return this.displayWith(this.val);
-        }
+    displayValue() {
+      if (this.displayWith) {
+        return this.displayWith(this.val);
+      }
 
-        // Note that this could be improved further by rounding something like 0.999 to 1 or
-        // 0.899 to 0.9, however it is very performance sensitive, because it gets called on
-        // every change detection cycle.
-        if (this.roundToDecimal && this.val && this.val % 1 !== 0) {
-          return this.val.toFixed(this.roundToDecimal);
-        }
+      // Note that this could be improved further by rounding something like 0.999 to 1 or
+      // 0.899 to 0.9, however it is very performance sensitive, because it gets called on
+      // every change detection cycle.
+      if (this.roundToDecimal && this.val && this.val % 1 !== 0) {
+        return this.val.toFixed(this.roundToDecimal);
+      }
 
-        return this.val;
-      },
+      return this.val;
     },
     curMin: {
       get() {
@@ -200,81 +198,66 @@ export default {
         }
       },
     },
-    thumbContainerStyles: {
-      get() {
-        let axis = this.vertical ? "Y" : "X";
-        // For a horizontal slider in RTL languages we push the thumb container off the left edge
-        // instead of the right edge to avoid causing a horizontal scrollbar to appear.
-        let invertOffset =
-          this.getDirection() == "rtl" && !this.vertical
-            ? !this.invertAxis
-            : this.invertAxis;
-        let offset = (invertOffset ? this.percent : 1 - this.percent) * 100;
+    thumbContainerStyles() {
+      let axis = this.vertical ? "Y" : "X";
+      // For a horizontal slider in RTL languages we push the thumb container off the left edge
+      // instead of the right edge to avoid causing a horizontal scrollbar to appear.
+      let invertOffset =
+        this.getDirection() == "rtl" && !this.vertical
+          ? !this.invertAxis
+          : this.invertAxis;
+      let offset = (invertOffset ? this.percent : 1 - this.percent) * 100;
 
-        return {
-          transform: `translate${axis}(-${offset}%)`,
-        };
-      },
+      return {
+        transform: `translate${axis}(-${offset}%)`,
+      };
     },
-    trackBackgroundStyles: {
-      get() {
-        const axis = this.vertical ? "Y" : "X";
+    trackBackgroundStyles() {
+      const axis = this.vertical ? "Y" : "X";
+      const scale = this.vertical
+        ? `1, ${1 - this.percent}, 1`
+        : `${1 - this.percent}, 1, 1`;
+      const sign = this.shouldInvertMouseCoords() ? "-" : "";
 
-        const scale = this.vertical
-          ? `1, ${1 - this.percent}, 1`
-          : `${1 - this.percent}, 1, 1`;
-        const sign = this.shouldInvertMouseCoords() ? "-" : "";
+      return {
+        // scale3d avoids some rendering issues in Chrome. See #12071.
+        transform: `translate${axis}(${sign}${this.thumbGap}px) scale3d(${scale})`,
+      };
+    },
+    trackFillStyles() {
+      const axis = this.vertical ? "Y" : "X";
 
-        return {
-          // scale3d avoids some rendering issues in Chrome. See #12071.
-          transform: `translate${axis}(${sign}${this.thumbGap}px) scale3d(${scale})`,
-        };
-      },
-    },
-    trackFillStyles: {
-      get() {
-        const axis = this.vertical ? "Y" : "X";
+      const scale = this.vertical
+        ? `1, ${this.percent}, 1`
+        : `${this.percent}, 1, 1`;
+      const sign = this.shouldInvertMouseCoords() ? "" : "-";
 
-        const scale = this.vertical
-          ? `1, ${this.percent}, 1`
-          : `${this.percent}, 1, 1`;
-        const sign = this.shouldInvertMouseCoords() ? "" : "-";
-
-        return {
-          // scale3d avoids some rendering issues in Chrome. See #12071.
-          transform: `translate${axis}(${sign}${this.thumbGap}px) scale3d(${scale})`,
-        };
-      },
+      return {
+        // scale3d avoids some rendering issues in Chrome. See #12071.
+        transform: `translate${axis}(${sign}${this.thumbGap}px) scale3d(${scale})`,
+      };
     },
-    thumbGap: {
-      get() {
-        if (this.disabled) {
-          return DISABLED_THUMB_GAP;
-        }
-        if (this.isMinValue && !this.thumbLabel) {
-          return this.isActive
-            ? MIN_VALUE_ACTIVE_THUMB_GAP
-            : MIN_VALUE_NONACTIVE_THUMB_GAP;
-        }
-        return 0;
-      },
+    thumbGap() {
+      if (this.disabled) {
+        return DISABLED_THUMB_GAP;
+      }
+      if (this.isMinValue && !this.thumbLabel) {
+        return this.isActive
+          ? MIN_VALUE_ACTIVE_THUMB_GAP
+          : MIN_VALUE_NONACTIVE_THUMB_GAP;
+      }
+      return 0;
     },
-    percent: {
-      get() {
-        return this.clamp(this.localPercent);
-      },
+    percent() {
+      return this.clamp(this.localPercent);
     },
-    invertAxis: {
-      get() {
-        // Standard non-inverted mode for a vertical slider should be dragging the thumb from bottom to
-        // top. However from a y-axis standpoint this is inverted.
-        return this.vertical ? !this.invert : this.invert;
-      },
+    invertAxis() {
+      // Standard non-inverted mode for a vertical slider should be dragging the thumb from bottom to
+      // top. However from a y-axis standpoint this is inverted.
+      return this.vertical ? !this.invert : this.invert;
     },
-    isMinValue: {
-      get() {
-        return this.percent === 0;
-      },
+    isMinValue() {
+      return this.percent === 0;
     },
   },
   data() {
@@ -283,14 +266,11 @@ export default {
       isSliding: false,
       isActive: false,
       sliderDimensions: null,
-      // min: 0,
-      // max: 100,
       roundToDecimal: null,
       localStep: 1,
       localPercent: 0,
       localValue: this.value,
       valueOnSlideStart: null,
-      // thumbLabel: false
     };
   },
   mounted() {
