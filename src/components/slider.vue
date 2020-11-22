@@ -505,7 +505,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .slider {
   display: inline-block;
   position: relative;
@@ -519,34 +519,24 @@ export default {
   position: absolute;
 }
 
-.slider {
-  display: inline-block;
-  position: relative;
-  box-sizing: border-box;
-  padding: 8px;
-  outline: 0;
-  vertical-align: middle;
-}
-
 .slider-track-wrapper {
   position: absolute;
   top: 0;
   left: 0;
   overflow: hidden;
-}
+  .slider-track-fill {
+    position: absolute;
+    transform-origin: 0 0;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+      background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
 
-.slider-track-fill {
-  position: absolute;
-  transform-origin: 0 0;
-  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.slider-track-background {
-  position: absolute;
-  transform-origin: 100% 100%;
-  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  .slider-track-background {
+    position: absolute;
+    transform-origin: 100% 100%;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+      background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
 }
 
 .slider-ticks-container {
@@ -554,38 +544,31 @@ export default {
   left: 0;
   top: 0;
   overflow: hidden;
+  .slider-ticks {
+    background-repeat: repeat;
+    background-clip: content-box;
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
 }
 
-.slider-ticks {
-  background-repeat: repeat;
-  background-clip: content-box;
-  box-sizing: border-box;
-  opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
 
 .slider-thumb-container {
   position: absolute;
   z-index: 1;
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.slider-focus-ring {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  transform: scale(0);
-  opacity: 0;
-  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.cdk-keyboard-focused .slider-focus-ring,
-.cdk-program-focused .slider-focus-ring {
-  transform: scale(1);
-  opacity: 1;
+  .slider-focus-ring {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+      background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+      opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
 }
 
 .slider:not(.slider-disabled) .slider-thumb,
@@ -615,37 +598,31 @@ export default {
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
     background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
     border-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.slider-thumb-label {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-/* @media screen and (-ms-high-contrast:active) {
   .slider-thumb-label {
-      outline: solid 1px
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+      border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+      background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
-} */
-
-.slider-thumb-label-text {
-  z-index: 1;
-  opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  .slider-thumb-label-text {
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
 }
 
-.slider-sliding .slider-thumb-container,
-.slider-sliding .slider-track-background,
-.slider-sliding .slider-track-fill {
-  transition-duration: 0s;
+.slider-sliding {
+  .slider-thumb-container,
+  .slider-track-background,
+  .slider-track-fill {
+    transition-duration: 0s;
+  }
 }
 
 .slider-has-ticks .slider-wrapper::after {
