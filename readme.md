@@ -1,5 +1,6 @@
 # Vue Material Slider
 A material design slider build with vue.
+[Live demo](https://codesandbox.io/s/priceless-raman-6s9ey?file=/src/App.vue)
 
 ## Contents
 - [Vue Material Slider](#vue-material-slider)
