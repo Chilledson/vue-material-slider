@@ -18,7 +18,7 @@
     @keyup="onKeyup"
     @blur="onBlur"
     ref="slider"
-    :tabindex="tabindex"
+    tabindex="0"
   >
     <div class="slider-wrapper" v-bind:class="{ 'slider-sliding': isSliding }">
       <div class="slider-track-wrapper">
@@ -598,23 +598,25 @@ export default {
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
     background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
     border-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  .slider-thumb-label {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-      border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-      background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  }
-  .slider-thumb-label-text {
-    z-index: 1;
-    opacity: 0;
-    transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  }
+}
+
+.slider-thumb-label {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.slider-thumb-label-text {
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .slider-sliding {

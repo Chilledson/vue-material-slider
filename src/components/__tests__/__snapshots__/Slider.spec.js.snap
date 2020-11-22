@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div tabindex="0" class="slider slider-horizontal slider-min-value" style="user-select: none; webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+  <div class="slider-wrapper">
+    <div class="slider-track-wrapper">
+      <div class="slider-track-background" style="transform: translateX(7px) scale3d(1, 1, 1);"></div>
+      <div class="slider-track-fill" style="transform: translateX(-7px) scale3d(0, 1, 1);"></div>
+    </div>
+    <div class="slider-ticks-container">
+      <div class="slider-ticks"></div>
+    </div>
+    <div class="slider-thumb-container" style="transform: translateX(-100%);">
+      <div class="slider-focus-ring"></div>
+      <div class="slider-thumb"></div>
+      <div class="slider-thumb-label"><span class="slider-thumb-label-text">0</span></div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders disabled 1`] = `
+<div tabindex="0" class="slider slider-disabled slider-horizontal slider-min-value" style="user-select: none; webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+  <div class="slider-wrapper">
+    <div class="slider-track-wrapper">
+      <div class="slider-track-background" style="transform: translateX(7px) scale3d(1, 1, 1);"></div>
+      <div class="slider-track-fill" style="transform: translateX(-7px) scale3d(0, 1, 1);"></div>
+    </div>
+    <div class="slider-ticks-container">
+      <div class="slider-ticks"></div>
+    </div>
+    <div class="slider-thumb-container" style="transform: translateX(-100%);">
+      <div class="slider-focus-ring"></div>
+      <div class="slider-thumb"></div>
+      <div class="slider-thumb-label"><span class="slider-thumb-label-text">0</span></div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders inverted 1`] = `
+<div tabindex="0" class="slider slider-horizontal slider-min-value" inverted="true" style="user-select: none; webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+  <div class="slider-wrapper">
+    <div class="slider-track-wrapper">
+      <div class="slider-track-background" style="transform: translateX(7px) scale3d(1, 1, 1);"></div>
+      <div class="slider-track-fill" style="transform: translateX(-7px) scale3d(0, 1, 1);"></div>
+    </div>
+    <div class="slider-ticks-container">
+      <div class="slider-ticks"></div>
+    </div>
+    <div class="slider-thumb-container" style="transform: translateX(-100%);">
+      <div class="slider-focus-ring"></div>
+      <div class="slider-thumb"></div>
+      <div class="slider-thumb-label"><span class="slider-thumb-label-text">0</span></div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders vertically 1`] = `
+<div tabindex="0" class="slider slider-vertical slider-axis-inverted slider-min-value" style="user-select: none; webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+  <div class="slider-wrapper">
+    <div class="slider-track-wrapper">
+      <div class="slider-track-background" style="transform: translateY(-7px) scale3d(1, 1, 1);"></div>
+      <div class="slider-track-fill" style="transform: translateY(7px) scale3d(1, 0, 1);"></div>
+    </div>
+    <div class="slider-ticks-container">
+      <div class="slider-ticks"></div>
+    </div>
+    <div class="slider-thumb-container" style="transform: translateY(-0%);">
+      <div class="slider-focus-ring"></div>
+      <div class="slider-thumb"></div>
+      <div class="slider-thumb-label"><span class="slider-thumb-label-text">0</span></div>
+    </div>
+  </div>
+</div>
+`;
