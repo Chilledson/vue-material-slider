@@ -43,7 +43,6 @@
 </template>
 
 <script>
-// import { GestureConfig } from "../custom-gesture";
 import {
   DOWN_ARROW,
   END,
