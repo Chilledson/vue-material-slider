@@ -11,8 +11,8 @@
       'slider-min-value': isMinValue,
       'slider-thumb-label-showing': thumbLabel,
     }"
-    @mousedown="onMousedown"
     @mouseenter="onMouseenter"
+    @mousedown="onMousedown"
     @keydown="onKeydown"
     @focus="onFocus"
     @keyup="onKeyup"
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { GestureConfig } from "../custom-gesture";
+// import { GestureConfig } from "../custom-gesture";
 import {
   DOWN_ARROW,
   END,
@@ -63,6 +63,12 @@ const MIN_VALUE_NONACTIVE_THUMB_GAP = 7;
 
 /** The thumb gap size for an active slider at its minimum value. */
 const MIN_VALUE_ACTIVE_THUMB_GAP = 10;
+
+/** Returns the window element for the givent el. */
+function getWindowForElement(element) {
+  var doc = element.ownerDocument || element;
+  return doc.defaultView || doc.parentWindow || window;
+}
 
 export default {
   name: "vue-material-slider",
@@ -264,7 +270,6 @@ export default {
   },
   data() {
     return {
-      mc: null,
       isSliding: false,
       isActive: false,
       sliderDimensions: null,
@@ -276,10 +281,16 @@ export default {
     };
   },
   mounted() {
-    this.mc = new GestureConfig().buildHammer(this.$refs.slider);
-    this.mc.on("slide", this.onSlide);
-    this.mc.on("slideend", this.onSlideEnd);
-    this.mc.on("slidestart", this.onSlideStart);
+    // Mousemove/mouseup are bound to the window so they area always recognised
+    const el = this.$el;
+    const win = getWindowForElement(this.$el);
+
+    this.addEventListener(win, 'mousemove', this.onSlide);
+    this.addEventListener(win, 'mouseup', this.onSlideEnd);
+    this.addEventListener(el, 'touchstart', this.onSlideStart);
+    this.addEventListener(el, 'touchmove', this.onSlide);
+    this.addEventListener(el, 'touchend', this.onSlideEnd);
+    this.addEventListener(el, 'touchcancel', this.onSlideEnd);
 
     // Set initial values
     this.val = this.localValue;
@@ -303,35 +314,33 @@ export default {
       if (this.disabled || event.button !== 0) {
         return;
       }
-
+    
       const oldValue = this.val;
+
       this.isSliding = false;
-
       this.focusHostElement();
-      this.updateValueFromPosition({ x: event.clientX, y: event.clientY });
-
+      
+      const { clientX: x, clientY: y } = event.touches && event.touches[0] || event;
+      this.updateValueFromPosition({ x, y });
       // Emit a change and input event if the value changed.
       if (oldValue != this.val) {
-        this.emitInputEvent();
         this.emitChangeEvent();
       }
     },
     onSlide(event) {
-      if (this.disabled) {
+      if (this.disabled || !this.isActive) {
         return;
       }
 
-      if (!this.isSliding) {
-        this.onSlideStart(event);
-      }
+      this.isSliding = true;
 
       event.preventDefault();
 
-      let oldValue = this.val;
-      this.updateValueFromPosition({ x: event.center.x, y: event.center.y });
+      const oldValue = this.val;
+      const { clientX: x, clientY: y } = event.touches && event.touches[0] || event;
+      this.updateValueFromPosition({ x, y });
 
       if (oldValue != this.val) {
-        this.emitInputEvent();
         this.emitChangeEvent();
       }
     },
@@ -342,13 +351,13 @@ export default {
 
       // Simulate mouseenter in case this is a mobile device.
       this.onMouseenter();
-
-      this.isSliding = true;
       this.focusHostElement();
+
       this.valueOnSlideStart = this.val;
 
       if (event) {
-        this.updateValueFromPosition({ x: event.center.x, y: event.center.y });
+        const { clientX: x, clientY: y } = event.touches && event.touches[0] || event;
+        this.updateValueFromPosition({ x, y });
         event.preventDefault();
       }
     },
@@ -359,6 +368,7 @@ export default {
         this.emitChangeEvent();
       }
       this.valueOnSlideStart = null;
+      this.isActive = false;
     },
     onKeyup() {
       this.isSliding = false;
@@ -452,7 +462,6 @@ export default {
       }
 
       if (oldValue != this.localValue) {
-        this.emitInputEvent();
         this.emitChangeEvent();
       }
 
@@ -472,7 +481,7 @@ export default {
         : null;
     },
     clamp(value, min = 0, max = 1) {
-      return Math.max(min, Math.min(value, max));
+      return Math.max(min, Math.min(value || 0, max));
     },
     onBlur() {
       this.isActive = false;
@@ -487,9 +496,6 @@ export default {
     calculatePercentage(value) {
       return ((value || 0) - this.curMin) / (this.curMax - this.curMin);
     },
-    emitInputEvent() {
-      this.$emit("input", this.val);
-    },
     emitChangeEvent() {
       this.$emit("change", this.val);
     },
@@ -501,6 +507,12 @@ export default {
         ? !this.invertAxis
         : this.invertAxis;
     },
+    addEventListener(el, event, handler) {
+      el.addEventListener(event, handler.bind(this));
+      this.$once('hook:beforeDestroy', () => {
+        el.removeEventListener(event, handler)
+      });
+    }
   },
 };
 </script>

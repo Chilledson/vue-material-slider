@@ -89,3 +89,11 @@ it('should increment with a given step size', () => {
   wrapper.trigger('keydown.up');
   expect(wrapper.vm.val).toBe(10);
 })
+
+
+it('should call change on drag', () => {
+  wrapper = mountComponent();
+
+  wrapper.trigger('mousedown');
+  expect(wrapper.vm.val).toBe(0);
+})
