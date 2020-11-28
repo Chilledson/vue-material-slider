@@ -6,8 +6,8 @@
     "build": "npm run build:wc && npm run build:lib",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "build:lib": "vue-cli-service build src/plugin.js --target lib --name vue-material-slider --dest dist/lib",
-    "build:wc": "vue-cli-service build src/plugin.js --target wc --name vue-material-slider --dest dist/wc"
+    "build:lib": "vue-cli-service build src/plugin.js --target lib --name vue-material-slider --dest dist",
+    "build:wc": "vue-cli-service build src/plugin.js --target wc --name vue-material-slider --dest dist"
   },
   "main": "dist/vue-virtual-scroller.common.js",
   "files": [
@@ -17,7 +17,7 @@
     "*.json",
     "*.js"
   ],
-  "dependencies": {
+  "peerDependencies": {
     "core-js": "^3.6.5",
     "vue": "^2.5.17"
   },
@@ -37,7 +37,8 @@
     "eslint-plugin-vue": "^6.2.2",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0",
-    "vue-template-compiler": "^2.5.17"
+    "vue-loader": "^15.9.5",
+    "vue-template-compiler": "^2.6.12"
   },
   "eslintConfig": {
     "root": true,
@@ -79,5 +80,8 @@
     "material",
     "slider",
     "range-slider"
-  ]
+  ],
+  "dependencies": {
+    "vue": "^2.6.12"
+  }
 }
