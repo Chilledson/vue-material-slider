@@ -9,9 +9,7 @@
     "build:lib": "vue-cli-service build src/plugin.js --target lib --name vue-material-slider --dest dist/lib",
     "build:wc": "vue-cli-service build src/plugin.js --target wc --name vue-material-slider --dest dist/wc"
   },
-  "main": "dist/lib/vue-virtual-scroller.umd.js",
-  "module": "dist/vue-virtual-scroller.common.js",
-  "unpkg": "dist/vue-virtual-scroller.min.js",
+  "main": "dist/vue-virtual-scroller.common.js",
   "files": [
     "dist/*",
     "src/*",
