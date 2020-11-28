@@ -18,7 +18,7 @@ Import and use in vue
 
 ```javascript
 import Vue from 'vue'
-import "vue-material-slider/dist/lib/vue-material-slider.css";
+import "vue-material-slider/dist/vue-material-slider.css";
 import VueMaterialSlider from "vue-material-slider";
 Vue.component("vue-material-slider", VueMaterialSlider);
 ```
