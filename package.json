@@ -11,11 +11,7 @@
   },
   "main": "dist/vue-material-slider.common.js",
   "files": [
-    "dist/*",
-    "src/*",
-    "public/*",
-    "*.json",
-    "*.js"
+    "dist/*"
   ],
   "peerDependencies": {
     "core-js": "^3.6.5",
