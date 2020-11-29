@@ -1,6 +1,6 @@
 {
   "name": "vue-material-slider",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "scripts": {
     "serve": "vue serve src/components/slider.vue",
     "build": "npm run build:wc && npm run build:lib",
@@ -9,7 +9,7 @@
     "build:lib": "vue-cli-service build src/plugin.js --target lib --name vue-material-slider --dest dist",
     "build:wc": "vue-cli-service build src/plugin.js --target wc --name vue-material-slider --dest dist"
   },
-  "main": "dist/vue-virtual-scroller.common.js",
+  "main": "dist/vue-material-slider.common.js",
   "files": [
     "dist/*",
     "src/*",
