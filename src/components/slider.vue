@@ -20,18 +20,18 @@
     ref="slider"
     tabindex="0"
   >
-    <div class="slider-wrapper" v-bind:class="{ 'slider-sliding': isSliding }">
+    <div class="slider-wrapper" :class="{ 'slider-sliding': isSliding }">
       <div class="slider-track-wrapper">
         <div
           class="slider-track-background"
-          v-bind:style="trackBackgroundStyles"
+          :style="trackBackgroundStyles"
         ></div>
-        <div class="slider-track-fill" v-bind:style="trackFillStyles"></div>
+        <div class="slider-track-fill" :style="trackFillStyles"></div>
       </div>
       <div class="slider-ticks-container">
         <div class="slider-ticks"></div>
       </div>
-      <div class="slider-thumb-container" v-bind:style="thumbContainerStyles">
+      <div class="slider-thumb-container" :style="thumbContainerStyles">
         <div class="slider-focus-ring"></div>
         <div class="slider-thumb"></div>
         <div class="slider-thumb-label">
@@ -124,14 +124,17 @@ export default {
     },
     min(val) {
       if (val) {
-        this.curMin = Number(val);
+        this.localMin = Number(val);
       }
     },
     max(val) {
       if (val) {
-        this.curMax = Number(val);
+        this.localMax = Number(val);
       }
     },
+    stepSize(val) {
+      this.localStep = val;
+    }
   },
   computed: {
     val: {
@@ -167,7 +170,7 @@ export default {
 
       return this.val;
     },
-    curMin: {
+    localMin: {
       get() {
         return this.min;
       },
@@ -181,7 +184,7 @@ export default {
         this.localPercent = this.calculatePercentage(this.localValue);
       },
     },
-    curMax: {
+    localMax: {
       get() {
         return this.max;
       },
@@ -294,8 +297,8 @@ export default {
     // Set initial values
     this.val = this.localValue;
     this.step = this.stepSize;
-    if (this.min) this.curMin = this.min;
-    if (this.max) this.curMax = this.max;
+    if (this.min) this.localMin = this.min;
+    if (this.max) this.localMax = this.max;
   },
   methods: {
     onMouseenter() {
@@ -319,8 +322,8 @@ export default {
       this.isSliding = false;
       this.focusHostElement();
       
-      const { clientX: x, clientY: y } = event.touches && event.touches[0] || event;
-      this.updateValueFromPosition({ x, y });
+      const position = this.getTouchPoint(event);
+      this.updateValueFromPosition(position);
       // Emit a change and input event if the value changed.
       if (oldValue != this.val) {
         this.emitChangeEvent();
@@ -336,8 +339,8 @@ export default {
       event.preventDefault();
 
       const oldValue = this.val;
-      const { clientX: x, clientY: y } = event.touches && event.touches[0] || event;
-      this.updateValueFromPosition({ x, y });
+      const position = this.getTouchPoint(event);
+      this.updateValueFromPosition(position);
 
       if (oldValue != this.val) {
         this.emitChangeEvent();
@@ -355,8 +358,8 @@ export default {
       this.valueOnSlideStart = this.val;
 
       if (event) {
-        const { clientX: x, clientY: y } = event.touches && event.touches[0] || event;
-        this.updateValueFromPosition({ x, y });
+        const position = this.getTouchPoint(event);
+        this.updateValueFromPosition(position);
         event.preventDefault();
       }
     },
@@ -375,7 +378,10 @@ export default {
     onFocus() {
       this.sliderDimensions = this.getSliderDimensions();
     },
-    updateValueFromPosition(pos) {
+    onBlur() {
+      this.isActive = false;
+    },
+    updateValueFromPosition({ x, y }) {
       if (!this.sliderDimensions) {
         return;
       }
@@ -386,10 +392,10 @@ export default {
       let size = this.vertical
         ? this.sliderDimensions.height
         : this.sliderDimensions.width;
-      let posComponent = this.vertical ? pos.y : pos.x;
+      let position = this.vertical ? y : x;
 
       // The exact value is calculated from the event and used to find the closest snap value.
-      let percent = this.clamp((posComponent - offset) / size);
+      let percent = this.clamp((position - offset) / size);
 
       if (this.shouldInvertMouseCoords()) {
         percent = 1 - percent;
@@ -400,18 +406,18 @@ export default {
       // is slightly more intuitive than using `Math.ceil` below, because it
       // follows the user's pointer closer.
       if (percent === 0) {
-        this.val = this.curMin;
+        this.val = this.localMin;
       } else if (percent === 1) {
-        this.val = this.curMax;
+        this.val = this.localMax;
       } else {
         const exactValue = this.calculateValue(percent);
         // This calculation finds the closest step by finding the closest
         // whole number divisible by the step relative to the min.
         const closestValue =
-          Math.round((exactValue - this.curMin) / this.step) * this.step +
-          this.curMin;
+          Math.round((exactValue - this.localMin) / this.step) * this.step +
+          this.localMin;
         // The value needs to snap to the min and max.
-        this.val = this.clamp(closestValue, this.curMin, this.curMax);
+        this.val = this.clamp(closestValue, this.localMin, this.localMax);
       }
     },
     onKeydown(event) {
@@ -470,8 +476,8 @@ export default {
     increment(numSteps) {
       this.val = this.clamp(
         (this.val || 0) + this.step * numSteps,
-        this.curMin,
-        this.curMax
+        this.localMin,
+        this.localMax
       );
     },
     getSliderDimensions() {
@@ -482,18 +488,15 @@ export default {
     clamp(value, min = 0, max = 1) {
       return Math.max(min, Math.min(value || 0, max));
     },
-    onBlur() {
-      this.isActive = false;
-    },
     focusHostElement() {
       this.isActive = true;
       this.$refs.slider.focus();
     },
     calculateValue(percentage) {
-      return this.curMin + percentage * (this.curMax - this.curMin);
+      return this.localMin + percentage * (this.localMax - this.localMin);
     },
     calculatePercentage(value) {
-      return ((value || 0) - this.curMin) / (this.curMax - this.curMin);
+      return ((value || 0) - this.localMin) / (this.localMax - this.localMin);
     },
     emitChangeEvent() {
       this.$emit("change", this.val);
@@ -511,6 +514,10 @@ export default {
       this.$once('hook:beforeDestroy', () => {
         el.removeEventListener(event, handler)
       });
+    },
+    getTouchPoint(event) {
+      const { clientX, clientY } = event.touches && event.touches[0] || event;
+      return { x: clientX, y: clientY } 
     }
   },
 };
