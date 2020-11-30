@@ -73,7 +73,7 @@ export default {
   name: "vue-material-slider",
   props: {
     value: {
-      type: [Number, String],
+      type: [Number, String, Array],
       default: 0,
     },
     min: {
@@ -115,83 +115,29 @@ export default {
     },
     stepSize: {
       type: [String, Number],
-      default: 1
-    }
+      default: 1,
+    },
   },
   watch: {
     value(val) {
-      this.val = Number(val);
-    },
-    min(val) {
-      if (val) {
-        this.localMin = Number(val);
-      }
-    },
-    max(val) {
-      if (val) {
-        this.localMax = Number(val);
-      }
+      this.setLocalValue(val);
     },
     stepSize(val) {
       this.localStep = val;
-    }
+    },
   },
   computed: {
-    val: {
-      get() {
-        if (this.localValue === null) {
-          return this.min;
-        }
-        return this.localValue;
-      },
-      set(v) {
-        if (v !== this.localValue) {
-          let value = v;
-          // While incrementing by a decimal we can end up with values like 33.300000000000004.
-          // Truncate it to ensure that it matches the label and to make it easier to work with.
-          if (this.roundToDecimal) {
-            value = parseFloat(value.toFixed(this.roundToDecimal));
-          }
-
-          this.localValue = value;
-          this.localPercent = this.calculatePercentage(this.localValue);
-        }
-      },
-    },
     displayValue() {
       if (this.displayWith) {
-        return this.displayWith(this.val);
+        return this.displayWith(this.localValue);
       }
 
-      // When incrementing using a decimal value make sure its rounded 
-      if (this.roundToDecimal && this.val && this.val % 1 !== 0) {
-        return this.val.toFixed(this.roundToDecimal);
+      // When incrementing using a decimal value make sure its rounded
+      if (this.roundToDecimal && this.localValue && this.localValue % 1 !== 0) {
+        return this.localValue.toFixed(this.roundToDecimal);
       }
 
-      return this.val;
-    },
-    localMin: {
-      get() {
-        return this.min;
-      },
-      set(v) {
-        this.min = v;
-
-        if (this.localValue === null) {
-          this.val = this.min;
-        }
-
-        this.localPercent = this.calculatePercentage(this.localValue);
-      },
-    },
-    localMax: {
-      get() {
-        return this.max;
-      },
-      set(v = this.max) {
-        this.max = v;
-        this.localPercent = this.calculatePercentage(this.localValue);
-      },
+      return this.localValue;
     },
     step: {
       get() {
@@ -280,6 +226,7 @@ export default {
       localPercent: 0,
       localValue: this.value,
       valueOnSlideStart: null,
+      activeThumb: 0,
     };
   },
   mounted() {
@@ -287,18 +234,15 @@ export default {
     const el = this.$el;
     const win = getWindowForElement(this.$el);
 
-    this.addEventListener(win, 'mousemove', this.onSlide);
-    this.addEventListener(win, 'mouseup', this.onSlideEnd);
-    this.addEventListener(el, 'touchstart', this.onSlideStart);
-    this.addEventListener(el, 'touchmove', this.onSlide);
-    this.addEventListener(el, 'touchend', this.onSlideEnd);
-    this.addEventListener(el, 'touchcancel', this.onSlideEnd);
+    this.addEventListener(win, "mousemove", this.onSlide);
+    this.addEventListener(win, "mouseup", this.onSlideEnd);
+    this.addEventListener(el, "touchstart", this.onSlideStart);
+    this.addEventListener(el, "touchmove", this.onSlide);
+    this.addEventListener(el, "touchend", this.onSlideEnd);
+    this.addEventListener(el, "touchcancel", this.onSlideEnd);
 
     // Set initial values
-    this.val = this.localValue;
     this.step = this.stepSize;
-    if (this.min) this.localMin = this.min;
-    if (this.max) this.localMax = this.max;
   },
   methods: {
     onMouseenter() {
@@ -316,16 +260,16 @@ export default {
       if (this.disabled || event.button !== 0) {
         return;
       }
-    
-      const oldValue = this.val;
+
+      const oldValue = this.localValue;
 
       this.isSliding = false;
       this.focusHostElement();
-      
+
       const position = this.getTouchPoint(event);
       this.updateValueFromPosition(position);
       // Emit a change and input event if the value changed.
-      if (oldValue != this.val) {
+      if (oldValue != this.localValue) {
         this.emitChangeEvent();
       }
     },
@@ -338,11 +282,11 @@ export default {
 
       event.preventDefault();
 
-      const oldValue = this.val;
+      const oldValue = this.localValue;
       const position = this.getTouchPoint(event);
       this.updateValueFromPosition(position);
 
-      if (oldValue != this.val) {
+      if (oldValue != this.localValue) {
         this.emitChangeEvent();
       }
     },
@@ -355,7 +299,7 @@ export default {
       this.onMouseenter();
       this.focusHostElement();
 
-      this.valueOnSlideStart = this.val;
+      this.localValueueOnSlideStart = this.localValue;
 
       if (event) {
         const position = this.getTouchPoint(event);
@@ -366,10 +310,10 @@ export default {
     onSlideEnd() {
       this.isSliding = false;
 
-      if (this.valueOnSlideStart != this.val && !this.disabled) {
+      if (this.localValueueOnSlideStart != this.localValue && !this.disabled) {
         this.emitChangeEvent();
       }
-      this.valueOnSlideStart = null;
+      this.localValueueOnSlideStart = null;
       this.isActive = false;
     },
     onKeyup() {
@@ -401,31 +345,35 @@ export default {
         percent = 1 - percent;
       }
 
+      const exactValue = this.calculateValue(percent);
+      // This calculation finds the closest step by finding the closest
+      // whole number divisible by the step relative to the min.
+      const closestValue =
+        Math.round((exactValue - this.min) / this.step) * this.step + this.min;
+      // The value needs to snap to the min and max.
+      let value = this.clamp(closestValue, this.min, this.max);
+
+      // When using multiple thumbs find the closest
+      this.activeThumb = this.getClosestThumb(this.localValue, value);
+
       // Since the steps may not divide cleanly into the max value, if the user
       // slide to 0 or 100 percent, we jump to the min/max value. This approach
       // is slightly more intuitive than using `Math.ceil` below, because it
       // follows the user's pointer closer.
       if (percent === 0) {
-        this.val = this.localMin;
+        value = this.min;
       } else if (percent === 1) {
-        this.val = this.localMax;
-      } else {
-        const exactValue = this.calculateValue(percent);
-        // This calculation finds the closest step by finding the closest
-        // whole number divisible by the step relative to the min.
-        const closestValue =
-          Math.round((exactValue - this.localMin) / this.step) * this.step +
-          this.localMin;
-        // The value needs to snap to the min and max.
-        this.val = this.clamp(closestValue, this.localMin, this.localMax);
+        value = this.max;
       }
+
+      this.setLocalValue(value);
     },
     onKeydown(event) {
       if (this.disabled) {
         return;
       }
 
-      let oldValue = this.val;
+      let oldValue = this.localValue;
 
       switch (event.keyCode) {
         case PAGE_UP:
@@ -435,10 +383,10 @@ export default {
           this.increment(-10);
           break;
         case END:
-          this.localValue = this.max;
+          this.setLocalValue(this.max);
           break;
         case HOME:
-          this.localValue = this.min;
+          this.setLocalValue(this.min);
           break;
         case LEFT_ARROW:
           // NOTE: For a sighted user it would make more sense that when they press an arrow key on an
@@ -474,11 +422,13 @@ export default {
       event.preventDefault();
     },
     increment(numSteps) {
-      this.val = this.clamp(
-        (this.val || 0) + this.step * numSteps,
-        this.localMin,
-        this.localMax
+      let value = this.clamp(
+        (this.localValue || 0) + this.step * numSteps,
+        this.min,
+        this.max
       );
+
+      this.setLocalValue(value);
     },
     getSliderDimensions() {
       return this.$refs.slider
@@ -493,13 +443,13 @@ export default {
       this.$refs.slider.focus();
     },
     calculateValue(percentage) {
-      return this.localMin + percentage * (this.localMax - this.localMin);
+      return this.min + percentage * (this.max - this.min);
     },
     calculatePercentage(value) {
-      return ((value || 0) - this.localMin) / (this.localMax - this.localMin);
+      return ((value || 0) - this.min) / (this.max - this.min);
     },
     emitChangeEvent() {
-      this.$emit("change", this.val);
+      this.$emit("change", this.localValue);
     },
     getDirection() {
       return this.dir == "rtl" ? "rtl" : "ltr";
@@ -511,14 +461,37 @@ export default {
     },
     addEventListener(el, event, handler) {
       el.addEventListener(event, handler.bind(this));
-      this.$once('hook:beforeDestroy', () => {
-        el.removeEventListener(event, handler)
+      this.$once("hook:beforeDestroy", () => {
+        el.removeEventListener(event, handler);
       });
     },
     getTouchPoint(event) {
-      const { clientX, clientY } = event.touches && event.touches[0] || event;
-      return { x: clientX, y: clientY } 
-    }
+      const { clientX, clientY } = (event.touches && event.touches[0]) || event;
+      return { x: clientX, y: clientY };
+    },
+    getClosestThumb(array, value) {
+      if (Math.abs(array[0] - value) < Math.abs(array[1] - value)) {
+        return 0;
+      } else {
+        return 1;
+      }
+    },
+    setActiveThumb(index) {
+      this.activeThumb = index;
+    },
+    setLocalValue(v) {
+      if (v !== this.localValue) {
+        let value = v;
+        // While incrementing by a decimal we can end up with values like 33.300000000000004.
+        // Truncate it to ensure that it matches the label and to make it easier to work with.
+        if (this.roundToDecimal) {
+          value = parseFloat(value.toFixed(this.roundToDecimal));
+        }
+
+        this.localValue = value;
+        this.localPercent = this.calculatePercentage(this.localValue);
+      }
+    },
   },
 };
 </script>
@@ -570,7 +543,6 @@ export default {
     transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
 }
-
 
 .slider-thumb-container {
   position: absolute;
