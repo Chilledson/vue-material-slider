@@ -46,7 +46,6 @@ it('renders disabled', () => {
 it('should change value on key press', () => {
   wrapper = mountComponent();
 
-  console.log(wrapper)
   wrapper.trigger('keydown.up');
 
   expect(wrapper.vm.localValue).toBe(1);
@@ -91,10 +90,25 @@ it('should increment with a given step size', () => {
   expect(wrapper.vm.localValue).toBe(10);
 })
 
-
 it('should call change on drag', () => {
   wrapper = mountComponent();
 
   wrapper.trigger('mousedown');
   expect(wrapper.vm.localValue).toBe(0);
 })
+
+it('should emit change event slide start', () => {
+  wrapper = mountComponent();
+
+  wrapper.trigger('mousedown');
+  expect(wrapper.emitted().change).toBeDefined();
+})
+
+it('should emit change event slide end', () => {
+  wrapper = mountComponent();
+
+  wrapper.trigger('touchstart');
+  wrapper.trigger('touchend');
+  expect(wrapper.emitted().change).toBeDefined();
+})
+
