@@ -8,7 +8,7 @@ export default {
   props: {
     value: {
       type: Array,
-      default: () => [10, 50, 75],
+      default: () => [0, 100],
     }
   },
   data() {
