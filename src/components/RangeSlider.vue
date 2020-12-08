@@ -128,15 +128,10 @@ export default {
         percent = percents[index];
         offset = -this.thumbGap;
       } else if (index > 0 && index < percents.length) {
+        const thumbGap = this.thumbGap * 2;
+        const thumbGapPercent = -(thumbGap * 100 / size) / 100;
         // Calculate inbetween the current thumb and the next
-        percent = percents[index - 1] - percents[index];
-
-        const trim = this.thumbGap * 2;
-
-        const trimPercent = -(trim * 100 / size) / 100;
-
-        percent -= trimPercent
-
+        percent = percents[index - 1] - percents[index] - thumbGapPercent;
         // Calculate the amount to trim off either side of the track when there is a thumbGap
         offset = size * percents[index] - this.thumbGap;
       } else if (index === percents.length) {
