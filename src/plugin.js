@@ -1,15 +1,28 @@
 import Slider from './components/slider.vue';
+import RangeSlider from './components/RangeSlider.vue'
+
+export {
+  Slider,
+  RangeSlider
+}
 
 // Declare install function executed by Vue.use()
-export function install(Vue) {
-  if (install.installed) return;
-  install.installed = true;
+function registerComponents(Vue) {
   Vue.component('vue-material-slider', Slider);
+  Vue.component('vue-material-range-slider', RangeSlider);
 }
 
 // Create module definition for Vue.use()
 const plugin = {
-  install,
+  install(Vue, options) {
+    const defaultOptions = Object.assign({}, {
+      registerComponents: true
+    }, options);
+
+    if (defaultOptions.registerComponents) {
+      registerComponents(Vue);
+    }
+  },
 };
 
 // Auto-install when vue is found (eg. in browser via <script> tag)
@@ -23,4 +36,4 @@ if (GlobalVue) {
   GlobalVue.use(plugin);
 }
 
-export default Slider;
+export default plugin;
