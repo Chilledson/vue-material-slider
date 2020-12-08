@@ -7,22 +7,14 @@ exports[`renders disabled 1`] = `
       <div class="slider-track-background"></div>
       <div class="slider-track-background"></div>
       <div class="slider-track-background"></div>
-      <div class="slider-track-background"></div>
       <div class="slider-track-fill"></div>
     </div>
     <div tabindex="0" class="slider-thumb-container slider-thumb-active slider-min-value" style="transform: translateX(-100%);">
       <div class="slider-focus-ring"></div>
       <div class="slider-thumb"></div>
-      <div class="slider-thumb-label"><span class="slider-thumb-label-text">10</span></div>
+      <div class="slider-thumb-label"><span class="slider-thumb-label-text">0</span></div>
     </div>
     <div tabindex="0" class="slider-thumb-container slider-min-value" style="transform: translateX(-100%);">
-      <div class="slider-focus-ring"></div>
-      <div class="slider-thumb"></div>
-      <div class="slider-thumb-label">
-        <!---->
-      </div>
-    </div>
-    <div tabindex="0" class="slider-thumb-container slider-min-value" style="transform: translateX(-NaN%);">
       <div class="slider-focus-ring"></div>
       <div class="slider-thumb"></div>
       <div class="slider-thumb-label">
@@ -40,22 +32,14 @@ exports[`renders inverted 1`] = `
       <div class="slider-track-background"></div>
       <div class="slider-track-background"></div>
       <div class="slider-track-background"></div>
-      <div class="slider-track-background"></div>
       <div class="slider-track-fill"></div>
     </div>
     <div tabindex="0" class="slider-thumb-container slider-thumb-active slider-min-value" style="transform: translateX(-100%);">
       <div class="slider-focus-ring"></div>
       <div class="slider-thumb"></div>
-      <div class="slider-thumb-label"><span class="slider-thumb-label-text">10</span></div>
+      <div class="slider-thumb-label"><span class="slider-thumb-label-text">0</span></div>
     </div>
     <div tabindex="0" class="slider-thumb-container slider-min-value" style="transform: translateX(-100%);">
-      <div class="slider-focus-ring"></div>
-      <div class="slider-thumb"></div>
-      <div class="slider-thumb-label">
-        <!---->
-      </div>
-    </div>
-    <div tabindex="0" class="slider-thumb-container slider-min-value" style="transform: translateX(-NaN%);">
       <div class="slider-focus-ring"></div>
       <div class="slider-thumb"></div>
       <div class="slider-thumb-label">
@@ -98,22 +82,14 @@ exports[`renders vertically 1`] = `
       <div class="slider-track-background"></div>
       <div class="slider-track-background"></div>
       <div class="slider-track-background"></div>
-      <div class="slider-track-background"></div>
       <div class="slider-track-fill"></div>
     </div>
     <div tabindex="0" class="slider-thumb-container slider-thumb-active slider-min-value" style="transform: translateY(-0%);">
       <div class="slider-focus-ring"></div>
       <div class="slider-thumb"></div>
-      <div class="slider-thumb-label"><span class="slider-thumb-label-text">10</span></div>
+      <div class="slider-thumb-label"><span class="slider-thumb-label-text">0</span></div>
     </div>
     <div tabindex="0" class="slider-thumb-container slider-min-value" style="transform: translateY(-0%);">
-      <div class="slider-focus-ring"></div>
-      <div class="slider-thumb"></div>
-      <div class="slider-thumb-label">
-        <!---->
-      </div>
-    </div>
-    <div tabindex="0" class="slider-thumb-container slider-min-value" style="transform: translateY(-NaN%);">
       <div class="slider-focus-ring"></div>
       <div class="slider-thumb"></div>
       <div class="slider-thumb-label">
