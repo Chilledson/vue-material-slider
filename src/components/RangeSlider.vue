@@ -2,8 +2,10 @@
 import { indexOFClosest, isEqual } from "./helpers/util";
 import BaseSlider from "./base-slider";
 
+const CLASS_NAME = 'range-slider slider';
+
 export default {
-  name: "vue-material-slider",
+  name: "vue-material-range-slider",
   extends: BaseSlider,
   props: {
     value: {
@@ -28,6 +30,9 @@ export default {
     this.setActiveThumb(null);
   },
   computed: {
+    baseCls() {
+      return CLASS_NAME
+    },
     maxThumbIndex() {
       return this.localValue.indexOf(Math.max(...this.localValue));
     },
@@ -251,13 +256,13 @@ export default {
 
 <style lang="scss">
 @import "./slider.scss";
-
-.slider-track-wrapper .slider-track-background {
-  transform-origin: 0 0; 
+.range-slider {
+  .slider-track-wrapper .slider-track-background {
+    transform-origin: 0 0; 
+  }
+  
+  .slider-disabled .slider-track-fill {
+    display: none;
+  }
 }
-
-.slider-disabled .slider-track-fill {
-  display: none;
-}
-
 </style>

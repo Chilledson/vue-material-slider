@@ -442,7 +442,7 @@ export default Vue.extend({
       const children = this.createChildren();
       const wrapper = this.createWrapper(children)
       return h('div', {
-        staticClass: 'slider',
+        staticClass: this.baseCls,
         class: {
           'slider-disabled': this.disabled,
           'slider-vertical': this.vertical,
