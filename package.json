@@ -13,10 +13,6 @@
   "files": [
     "dist/*"
   ],
-  "peerDependencies": {
-    "core-js": "^3.6.5",
-    "vue": "^2.5.17"
-  },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.9",
     "@vue/cli-plugin-eslint": "^4.5.9",
@@ -76,5 +72,8 @@
     "material",
     "slider",
     "range-slider"
-  ]
+  ],
+  "dependencies": {
+    "vue": "^2.6.12"
+  }
 }
