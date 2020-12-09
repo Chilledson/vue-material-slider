@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders disabled 1`] = `
-<div class="slider slider-disabled slider-horizontal">
+<div class="range-slider slider slider-disabled slider-horizontal">
   <div class="slider-wrapper">
     <div class="slider-track-wrapper">
       <div class="slider-track-background"></div>
@@ -26,7 +26,7 @@ exports[`renders disabled 1`] = `
 `;
 
 exports[`renders inverted 1`] = `
-<div class="slider slider-horizontal" inverted="true">
+<div class="range-slider slider slider-horizontal" inverted="true">
   <div class="slider-wrapper">
     <div class="slider-track-wrapper">
       <div class="slider-track-background"></div>
@@ -51,7 +51,7 @@ exports[`renders inverted 1`] = `
 `;
 
 exports[`renders multiple thumbs 1`] = `
-<div class="slider slider-horizontal">
+<div class="range-slider slider slider-horizontal">
   <div class="slider-wrapper">
     <div class="slider-track-wrapper">
       <div class="slider-track-background"></div>
@@ -76,7 +76,7 @@ exports[`renders multiple thumbs 1`] = `
 `;
 
 exports[`renders vertically 1`] = `
-<div class="slider slider-vertical slider-axis-inverted">
+<div class="range-slider slider slider-vertical slider-axis-inverted">
   <div class="slider-wrapper">
     <div class="slider-track-wrapper">
       <div class="slider-track-background"></div>
