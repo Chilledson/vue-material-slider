@@ -6,30 +6,67 @@ A material design slider build with vue.
 - [Vue Material Slider](#vue-material-slider)
   - [Contents](#contents)
   - [Installation](#installation)
-  - [Usage](#usage)
+  - [Import](#import)
+  - [Basic slider](#basic-slider)
+  - [Range Slider](#range-slider)
   - [Properties](#properties)
 
 ## Installation
 ```
 npm install vue-material-slider --save
 ```
-## Usage
-Import and use in vue
+## Import
+Import and use in vue individually
 
 ```javascript
 import Vue from 'vue'
 import "vue-material-slider/dist/vue-material-slider.css";
-import VueMaterialSlider from "vue-material-slider";
-Vue.component("vue-material-slider", VueMaterialSlider);
+import { Slider, RangeSlider }  from "vue-material-slider";
 ```
+Install all at once
+
+```javascript
+import 'vue-material-slider/dist/vue-material-slider.css';
+import VueMaterialSlider from 'vue-material-slider';
+Vue.use(VueMaterialSlider);
+```
+## Basic slider
 Use in your components
 ```html
-<vue-material-slider
-:min="10"
-:max="20"
-v-model="value"
-></vue-material-slider>
+<template>
+  <vue-material-slider
+    :min="10"
+    :max="20"
+    v-model="value"
+  />
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      value: 0
+    }
+  }
+}
+</script>
 ```
+## Range Slider
+```html
+<template>
+  <vue-material-range-slider v-model="value" />
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      // Each array value corresponds to a new thumb
+      value: [0, 25, 50]
+    }
+  }
+}
+</script>
 
 ## Properties
 | Prop| Type| default| Description |
