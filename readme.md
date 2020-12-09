@@ -67,7 +67,7 @@ export default {
   }
 }
 </script>
-
+```
 ## Properties
 | Prop| Type| default| Description |
 | --- | --- | --- |--- |

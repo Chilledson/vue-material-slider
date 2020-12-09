@@ -2,7 +2,7 @@
   "name": "vue-material-slider",
   "version": "1.1.8",
   "scripts": {
-    "serve": "vue serve src/components/RangeSlider.vue",
+    "serve": "vue serve src/components/slider.vue",
     "build": "npm run build:wc && npm run build:lib",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
