@@ -48,35 +48,35 @@ it('should change value on key press', () => {
 
   wrapper.trigger('keydown.up');
 
-  expect(wrapper.vm.val).toBe(1);
+  expect(wrapper.vm.localValue).toBe(1);
 
   wrapper.trigger('keydown.down');
 
-  expect(wrapper.vm.val).toBe(0);
+  expect(wrapper.vm.localValue).toBe(0);
 
   wrapper.trigger('keydown.pageup');
 
-  expect(wrapper.vm.val).toBe(10);
+  expect(wrapper.vm.localValue).toBe(10);
 
   wrapper.trigger('keydown.pagedown');
   
-  expect(wrapper.vm.val).toBe(0);
+  expect(wrapper.vm.localValue).toBe(0);
 
   wrapper.trigger('keydown.end');
   
-  expect(wrapper.vm.val).toBe(100);
+  expect(wrapper.vm.localValue).toBe(100);
   
   wrapper.trigger('keydown.home');
 
-  expect(wrapper.vm.val).toBe(0);
+  expect(wrapper.vm.localValue).toBe(0);
 
   wrapper.trigger('keydown.right');
 
-  expect(wrapper.vm.val).toBe(1);
+  expect(wrapper.vm.localValue).toBe(1);
 
   wrapper.trigger('keydown.left');
 
-  expect(wrapper.vm.val).toBe(0);
+  expect(wrapper.vm.localValue).toBe(0);
 });
 
 it('should increment with a given step size', () => {
@@ -87,13 +87,28 @@ it('should increment with a given step size', () => {
   });
 
   wrapper.trigger('keydown.up');
-  expect(wrapper.vm.val).toBe(10);
+  expect(wrapper.vm.localValue).toBe(10);
 })
-
 
 it('should call change on drag', () => {
   wrapper = mountComponent();
 
   wrapper.trigger('mousedown');
-  expect(wrapper.vm.val).toBe(0);
+  expect(wrapper.vm.localValue).toBe(0);
 })
+
+it('should emit change event slide start', () => {
+  wrapper = mountComponent();
+
+  wrapper.trigger('mousedown');
+  expect(wrapper.emitted().change).toBeDefined();
+})
+
+it('should emit change event slide end', () => {
+  wrapper = mountComponent();
+
+  wrapper.trigger('touchstart');
+  wrapper.trigger('touchend');
+  expect(wrapper.emitted().change).toBeDefined();
+})
+

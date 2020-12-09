@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders disabled 1`] = `
+<div class="range-slider slider slider-disabled slider-horizontal">
+  <div class="slider-wrapper">
+    <div class="slider-track-wrapper">
+      <div class="slider-track-background"></div>
+      <div class="slider-track-background"></div>
+      <div class="slider-track-background"></div>
+      <div class="slider-track-fill"></div>
+    </div>
+    <div tabindex="0" class="slider-thumb-container slider-thumb-active slider-min-value" style="transform: translateX(-100%);">
+      <div class="slider-focus-ring"></div>
+      <div class="slider-thumb"></div>
+      <div class="slider-thumb-label"><span class="slider-thumb-label-text">0</span></div>
+    </div>
+    <div tabindex="0" class="slider-thumb-container slider-min-value" style="transform: translateX(-100%);">
+      <div class="slider-focus-ring"></div>
+      <div class="slider-thumb"></div>
+      <div class="slider-thumb-label">
+        <!---->
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders inverted 1`] = `
+<div class="range-slider slider slider-horizontal" inverted="true">
+  <div class="slider-wrapper">
+    <div class="slider-track-wrapper">
+      <div class="slider-track-background"></div>
+      <div class="slider-track-background"></div>
+      <div class="slider-track-background"></div>
+      <div class="slider-track-fill"></div>
+    </div>
+    <div tabindex="0" class="slider-thumb-container slider-thumb-active slider-min-value" style="transform: translateX(-100%);">
+      <div class="slider-focus-ring"></div>
+      <div class="slider-thumb"></div>
+      <div class="slider-thumb-label"><span class="slider-thumb-label-text">0</span></div>
+    </div>
+    <div tabindex="0" class="slider-thumb-container slider-min-value" style="transform: translateX(-100%);">
+      <div class="slider-focus-ring"></div>
+      <div class="slider-thumb"></div>
+      <div class="slider-thumb-label">
+        <!---->
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders multiple thumbs 1`] = `
+<div class="range-slider slider slider-horizontal">
+  <div class="slider-wrapper">
+    <div class="slider-track-wrapper">
+      <div class="slider-track-background"></div>
+      <div class="slider-track-background"></div>
+      <div class="slider-track-background"></div>
+      <div class="slider-track-fill"></div>
+    </div>
+    <div tabindex="0" class="slider-thumb-container slider-thumb-active slider-min-value" style="transform: translateX(-100%);">
+      <div class="slider-focus-ring"></div>
+      <div class="slider-thumb"></div>
+      <div class="slider-thumb-label"><span class="slider-thumb-label-text">10</span></div>
+    </div>
+    <div tabindex="0" class="slider-thumb-container slider-min-value" style="transform: translateX(-100%);">
+      <div class="slider-focus-ring"></div>
+      <div class="slider-thumb"></div>
+      <div class="slider-thumb-label">
+        <!---->
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders vertically 1`] = `
+<div class="range-slider slider slider-vertical slider-axis-inverted">
+  <div class="slider-wrapper">
+    <div class="slider-track-wrapper">
+      <div class="slider-track-background"></div>
+      <div class="slider-track-background"></div>
+      <div class="slider-track-background"></div>
+      <div class="slider-track-fill"></div>
+    </div>
+    <div tabindex="0" class="slider-thumb-container slider-thumb-active slider-min-value" style="transform: translateY(-0%);">
+      <div class="slider-focus-ring"></div>
+      <div class="slider-thumb"></div>
+      <div class="slider-thumb-label"><span class="slider-thumb-label-text">0</span></div>
+    </div>
+    <div tabindex="0" class="slider-thumb-container slider-min-value" style="transform: translateY(-0%);">
+      <div class="slider-focus-ring"></div>
+      <div class="slider-thumb"></div>
+      <div class="slider-thumb-label">
+        <!---->
+      </div>
+    </div>
+  </div>
+</div>
+`;
