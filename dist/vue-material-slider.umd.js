@@ -157,9 +157,16 @@ var base_slider = __webpack_require__("2d54");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/slider.vue?vue&type=script&lang=js&
 
+const CLASS_NAME = 'slider';
 /* harmony default export */ var slidervue_type_script_lang_js_ = ({
   name: "vue-material-slider",
   extends: base_slider["a" /* default */],
+  computed: {
+    baseCls() {
+      return CLASS_NAME;
+    }
+
+  },
 
   render() {
     return this.createSlider();
@@ -907,7 +914,7 @@ function getWindowForElement(element) {
       const children = this.createChildren();
       const wrapper = this.createWrapper(children);
       return h('div', {
-        staticClass: 'slider',
+        staticClass: this.baseCls,
         class: {
           'slider-disabled': this.disabled,
           'slider-vertical': this.vertical,
@@ -1265,8 +1272,9 @@ var base_slider = __webpack_require__("2d54");
 
 
 
+const CLASS_NAME = 'range-slider slider';
 /* harmony default export */ var RangeSlidervue_type_script_lang_js_ = ({
-  name: "vue-material-slider",
+  name: "vue-material-range-slider",
   extends: base_slider["a" /* default */],
   props: {
     value: {
@@ -1292,6 +1300,10 @@ var base_slider = __webpack_require__("2d54");
   },
 
   computed: {
+    baseCls() {
+      return CLASS_NAME;
+    },
+
     maxThumbIndex() {
       return this.localValue.indexOf(Math.max(...this.localValue));
     },
