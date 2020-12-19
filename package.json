@@ -7,8 +7,7 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "build:lib": "vue-cli-service build src/plugin.js --target lib --name vue-material-slider --dest dist",
-    "build:wc": "vue-cli-service build src/plugin.js --target wc --name vue-material-slider --dest dist",
-    "prepublishOnly": "npm run build"
+    "build:wc": "vue-cli-service build src/plugin.js --target wc --name vue-material-slider --dest dist"
   },
   "main": "dist/vue-material-slider.common.js",
   "files": [
