@@ -1,6 +1,6 @@
 {
   "name": "vue-material-slider",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "scripts": {
     "serve": "vue serve src/components/slider.vue",
     "build": "npm run build:wc && npm run build:lib",
