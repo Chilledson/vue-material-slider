@@ -4,8 +4,8 @@ exports[`renders correctly 1`] = `
 <div class="slider slider-horizontal">
   <div class="slider-wrapper">
     <div class="slider-track-wrapper">
-      <div class="slider-track-background" style="transform: translateX(7px) scale3d(1, 1, 1);"></div>
-      <div class="slider-track-fill" style="transform: translateX(-7px) scale3d(0, 1, 1);"></div>
+      <div class="slider-track-background" style="transform: translateX(var(--min-value-nonactive-thumb-gap, 7px)) scale3d(1, 1, 1);"></div>
+      <div class="slider-track-fill" style="transform: translateX(calc(0px - var(--min-value-nonactive-thumb-gap, 7px))) scale3d(0, 1, 1);"></div>
     </div>
     <div tabindex="0" class="slider-thumb-container slider-min-value" style="transform: translateX(-100%);">
       <div class="slider-focus-ring"></div>
@@ -22,8 +22,8 @@ exports[`renders disabled 1`] = `
 <div class="slider slider-disabled slider-horizontal">
   <div class="slider-wrapper">
     <div class="slider-track-wrapper">
-      <div class="slider-track-background" style="transform: translateX(7px) scale3d(1, 1, 1);"></div>
-      <div class="slider-track-fill" style="transform: translateX(-7px) scale3d(0, 1, 1);"></div>
+      <div class="slider-track-background" style="transform: translateX(var(--disabled-thumb-gap, 7px)) scale3d(1, 1, 1);"></div>
+      <div class="slider-track-fill" style="transform: translateX(calc(0px - var(--disabled-thumb-gap, 7px))) scale3d(0, 1, 1);"></div>
     </div>
     <div tabindex="0" class="slider-thumb-container slider-min-value" style="transform: translateX(-100%);">
       <div class="slider-focus-ring"></div>
@@ -40,8 +40,8 @@ exports[`renders inverted 1`] = `
 <div class="slider slider-horizontal" inverted="true">
   <div class="slider-wrapper">
     <div class="slider-track-wrapper">
-      <div class="slider-track-background" style="transform: translateX(7px) scale3d(1, 1, 1);"></div>
-      <div class="slider-track-fill" style="transform: translateX(-7px) scale3d(0, 1, 1);"></div>
+      <div class="slider-track-background" style="transform: translateX(var(--min-value-nonactive-thumb-gap, 7px)) scale3d(1, 1, 1);"></div>
+      <div class="slider-track-fill" style="transform: translateX(calc(0px - var(--min-value-nonactive-thumb-gap, 7px))) scale3d(0, 1, 1);"></div>
     </div>
     <div tabindex="0" class="slider-thumb-container slider-min-value" style="transform: translateX(-100%);">
       <div class="slider-focus-ring"></div>
@@ -58,8 +58,8 @@ exports[`renders vertically 1`] = `
 <div class="slider slider-vertical slider-axis-inverted">
   <div class="slider-wrapper">
     <div class="slider-track-wrapper">
-      <div class="slider-track-background" style="transform: translateY(-7px) scale3d(1, 1, 1);"></div>
-      <div class="slider-track-fill" style="transform: translateY(7px) scale3d(1, 0, 1);"></div>
+      <div class="slider-track-background" style="transform: translateY(calc(0px - var(--min-value-nonactive-thumb-gap, 7px))) scale3d(1, 1, 1);"></div>
+      <div class="slider-track-fill" style="transform: translateY(var(--min-value-nonactive-thumb-gap, 7px)) scale3d(1, 0, 1);"></div>
     </div>
     <div tabindex="0" class="slider-thumb-container slider-min-value" style="transform: translateY(-0%);">
       <div class="slider-focus-ring"></div>
