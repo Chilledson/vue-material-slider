@@ -295,7 +295,7 @@ export default Vue.extend({
       if (this.shouldInvertMouseCoords()) {
         percent = 1 - percent;
       }
-      
+
       let value;
 
       // Since the steps may not divide cleanly into the max value, if the user
@@ -396,7 +396,7 @@ export default Vue.extend({
       return ((value || 0) - this.min) / (this.max - this.min);
     },
     emitChangeEvent() {
-      this.$emit("change", this.localValue);  
+      this.$emit("change", this.localValue);
     },
     emitInputEvent(newValue, oldValue) {
       if (newValue != oldValue) {
@@ -430,10 +430,12 @@ export default Vue.extend({
           value = parseFloat(value.toFixed(this.roundToDecimal));
         }
 
+        const oldValue = this.localValue;
+
         this.localValue = value;
         this.localPercent = this.calculatePercentage(this.localValue);
-      
-        this.emitInputEvent(this.localValue, v);
+
+        this.emitInputEvent(this.localValue, oldValue);
       }
     },
     createSlider() {
@@ -486,32 +488,32 @@ export default Vue.extend({
     createTrack() {
       const h = this.$createElement;
 
-      const background = h('div', { 
+      const background = h('div', {
         staticClass: 'slider-track-background',
         style: this.trackBackgroundStyles(this.percent)
       });
 
-      return h('div', { 
+      return h('div', {
         staticClass: 'slider-track-wrapper'
       }, [background, this.createTrackFill(this.percent)]);
     },
     createThumb(percent, listeners = {}, isActive = this.isActive) {
       const h = this.$createElement;
 
-      const thumbText = isActive 
-        ? h('span', { 
-            staticClass: 'slider-thumb-label-text' 
-          }, this.displayValue) 
+      const thumbText = isActive
+        ? h('span', {
+            staticClass: 'slider-thumb-label-text'
+          }, this.displayValue)
         : h();
       const focusEl = h('div', { staticClass: 'slider-focus-ring' });
       const thumb = h('div', { staticClass: 'slider-thumb' });
       const thumbLabel = h('div', { staticClass: 'slider-thumb-label' }, [thumbText]);
 
-      return h('div', { 
-        staticClass: 'slider-thumb-container', 
-        class: { 
-          'slider-thumb-active': isActive,          
-          'slider-min-value': this.isMinValue, 
+      return h('div', {
+        staticClass: 'slider-thumb-container',
+        class: {
+          'slider-thumb-active': isActive,
+          'slider-min-value': this.isMinValue,
         },
         style: this.thumbContainerStyles(percent),
         on: { ...listeners },

@@ -2,7 +2,19 @@ import Slider from '../slider';
 import { mount } from '@vue/test-utils';
 
 const mountComponent = (options = {}) => {
-  return mount(Slider, options);
+  const component = mount(Slider, options);
+  // Mock the slider rect to properly simulate position changes
+  component.vm.$refs.slider.getBoundingClientRect = () => {
+    return {
+      bottom: 20,
+      height: 20,
+      left: 0,
+      right: 100,
+      top: 0,
+      width: 100
+    }
+  };
+  return component;
 }
 
 let wrapper = null
@@ -17,7 +29,7 @@ it('renders correctly', () => {
 });
 
 it('renders vertically', () => {
-  wrapper = mountComponent({ 
+  wrapper = mountComponent({
     propsData: {
       vertical: true
     }
@@ -26,7 +38,7 @@ it('renders vertically', () => {
 });
 
 it('renders inverted', () => {
-  wrapper = mountComponent({ 
+  wrapper = mountComponent({
     propsData: {
       inverted: true
     }
@@ -35,7 +47,7 @@ it('renders inverted', () => {
 });
 
 it('renders disabled', () => {
-  wrapper = mountComponent({ 
+  wrapper = mountComponent({
     propsData: {
       disabled: true
     }
@@ -59,13 +71,13 @@ it('should change value on key press', () => {
   expect(wrapper.vm.localValue).toBe(10);
 
   wrapper.trigger('keydown.pagedown');
-  
+
   expect(wrapper.vm.localValue).toBe(0);
 
   wrapper.trigger('keydown.end');
-  
+
   expect(wrapper.vm.localValue).toBe(100);
-  
+
   wrapper.trigger('keydown.home');
 
   expect(wrapper.vm.localValue).toBe(0);
@@ -102,6 +114,7 @@ it('should emit change event slide start', () => {
 
   wrapper.trigger('mousedown');
   expect(wrapper.emitted().change).toBeDefined();
+  expect(wrapper.emitted().input).toBeUndefined();
 })
 
 it('should emit change event slide end', () => {
@@ -110,5 +123,24 @@ it('should emit change event slide end', () => {
   wrapper.trigger('touchstart');
   wrapper.trigger('touchend');
   expect(wrapper.emitted().change).toBeDefined();
+  expect(wrapper.emitted().input).toBeUndefined();
 })
 
+it('should emit input event delta slide start', () => {
+  wrapper = mountComponent();
+
+  const mouseEvent = {clientX: 50, clientY: 0};
+  wrapper.trigger('mouseenter', mouseEvent);
+  wrapper.trigger('mousedown', mouseEvent);
+  expect(wrapper.emitted().change).toBeDefined();
+  expect(wrapper.emitted().input).toBeDefined();
+})
+
+it('should emit input event delta slide end', () => {
+  wrapper = mountComponent();
+
+  wrapper.trigger('touchstart', {touches: [{clientX: 50, clientY: 0}]});
+  wrapper.trigger('touchend');
+  expect(wrapper.emitted().change).toBeDefined();
+  expect(wrapper.emitted().input).toBeDefined();
+})
