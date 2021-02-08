@@ -5,6 +5,9 @@
   padding: 8px;
   outline: 0;
   vertical-align: middle;
+  --disabled-thumb-gap: 7px;
+  --min-value-nonactive-thumb-gap: 7px;
+  --min-value-active-thumb-gap: 10px;
 }
 
 .slider-wrapper {
