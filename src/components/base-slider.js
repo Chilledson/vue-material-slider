@@ -441,10 +441,12 @@ export default Vue.extend({
           value = parseFloat(value.toFixed(this.roundToDecimal));
         }
 
+        const oldValue = this.localValue;
+
         this.localValue = value;
         this.localPercent = this.calculatePercentage(this.localValue);
 
-        this.emitInputEvent(this.localValue, v);
+        this.emitInputEvent(this.localValue, oldValue);
       }
     },
     createSlider() {
